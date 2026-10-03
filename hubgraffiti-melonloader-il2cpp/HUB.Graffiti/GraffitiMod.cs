@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
-using System.Reflection;
-using HarmonyLib;
 using HUB.Graffiti.Network;
-using Il2CppScheduleOne.Networking;
 using MelonLoader;
 using ModHub.Core;
 using UnityEngine;
@@ -49,7 +46,6 @@ namespace HUB.Graffiti
 			MelonLogger.Msg("===========================================");
 			DebugLog.LogSessionStart();
 			ModHubCore.RegisterCustomContent(ModName, new CustomContentRenderer(CustomUI.RenderContent));
-			ApplyLobbyChatPatch();
 		}
 
 		private void SetupPreferences()
@@ -60,26 +56,6 @@ namespace HUB.Graffiti
 			StickerResolution = Category.CreateEntry("03_StickerResolution", DefaultStickerResolution, "Sticker Resolution",
 				"Longest side in pixels that placed stickers are rendered at (" + MinStickerResolution + "-" + MaxStickerResolutionLimit + "). Never exceeds the PNG's own size.");
 			MelonPreferences.Save();
-		}
-
-		private void ApplyLobbyChatPatch()
-		{
-			try
-			{
-				MethodInfo target = typeof(Lobby).GetMethod("OnLobbyChatMessage", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-				if (target == null)
-				{
-					DebugLog.Log("Init", "Lobby.OnLobbyChatMessage not found - MP chat sync unavailable");
-					return;
-				}
-				MethodInfo postfix = typeof(LobbyChatPatch).GetMethod("Postfix", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-				HarmonyInstance.Patch(target, null, new HarmonyMethod(postfix));
-				DebugLog.Log("Init", "Lobby chat patch applied");
-			}
-			catch (Exception ex)
-			{
-				DebugLog.Log("Init", "Lobby chat patch failed: " + ex.Message);
-			}
 		}
 
 		public override void OnUpdate()

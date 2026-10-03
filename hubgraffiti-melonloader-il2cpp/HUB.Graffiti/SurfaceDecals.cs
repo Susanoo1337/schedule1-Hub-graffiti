@@ -692,9 +692,9 @@ namespace HUB.Graffiti
 		}
 
 		/// <summary>
-		/// Best effort at putting the game's own state for the surface back to "never painted" so it can be
-		/// sprayed again. The game has no documented API for this, so try the likely method names and log
-		/// what exists if none match.
+		/// Puts the game's own state for the surface back to blank so it can be sprayed again. Uses
+		/// SpraySurface.ClearDrawing, the server RPC behind the graffiti menu's clear button, so in
+		/// multiplayer the server clears it and replicates the blank drawing to everyone.
 		/// </summary>
 		internal static void ResetGameSurface(SpraySurface surface)
 		{
@@ -702,33 +702,22 @@ namespace HUB.Graffiti
 			{
 				return;
 			}
-			object target = (object)surface.TryCast<WorldSpraySurface>() ?? surface;
-			string used = GameReflection.TryInvokeFirst(target, "ClearDrawing", "ResetDrawing", "ClearSurface", "ResetSurface", "Clear", "Clean", "Erase", "Wipe");
-			if (used == null)
+			try
 			{
-				Drawing drawing = null;
+				surface.ClearDrawing();
+				DebugLog.Log("Decals", "Cleared game drawing via ClearDrawing()");
+			}
+			catch (Exception ex)
+			{
+				DebugLog.Log("Decals", "ClearDrawing failed (" + ex.Message + "), trying CleanGraffiti()");
 				try
 				{
-					drawing = surface.drawing;
+					surface.CleanGraffiti();
 				}
-				catch
+				catch (Exception ex2)
 				{
+					DebugLog.Log("Decals", "CleanGraffiti failed: " + ex2.Message + "; only the sticker visual was removed");
 				}
-				used = GameReflection.TryInvokeFirst(drawing, "Clear", "ClearStrokes", "Reset");
-				if (used != null)
-				{
-					used = "Drawing." + used;
-				}
-			}
-			if (used == null)
-			{
-				GameReflection.LogMethodsOnce(target, "Clear", "Reset", "Clean", "Erase", "Wipe", "Remove", "Restart");
-				GameReflection.LogMethodsOnce(surface.drawing, "Clear", "Reset", "Clean", "Erase", "Remove", "Stroke");
-				DebugLog.Log("Decals", "No drawing-clear method found; only the sticker visual was removed");
-			}
-			else
-			{
-				DebugLog.Log("Decals", "Cleared game drawing via " + used + "()");
 			}
 
 			try

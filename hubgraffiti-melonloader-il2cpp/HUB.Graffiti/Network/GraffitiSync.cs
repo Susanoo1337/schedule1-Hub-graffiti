@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using Il2CppInterop.Runtime;
 using Il2CppScheduleOne.Networking;
-using Il2CppSteamworks;
 using MelonLoader;
 
 namespace HUB.Graffiti.Network
 {
 	/// <summary>
-	/// Multiplayer sync over the Steam lobby. The host owns the placement list and publishes it as lobby
-	/// data; clients poll it and send their own place/remove requests to the host as lobby chat messages.
+	/// Multiplayer sync over the game's lobby service (Steam lobby under the hood). The host owns the
+	/// placement list and publishes it as lobby data; clients poll it and send their own place/remove
+	/// requests to the host as lobby messages, which the host receives through ILobbyService.OnLobbyMessage.
 	/// </summary>
 	internal static class GraffitiSync
 	{
@@ -22,7 +22,6 @@ namespace HUB.Graffiti.Network
 		private const string MsgPrefix = "GRAF:";
 		private const string ActionPlace = "place_sticker";
 		private const string ActionRemove = "remove_sticker";
-		private const int ChatBufferSize = 4096;
 		// Steam rejects lobby data values above 8 KB.
 		private const int MaxLobbyDataBytes = 8192;
 		private const int MaxGuidLength = 64;
@@ -36,6 +35,10 @@ namespace HUB.Graffiti.Network
 		private static bool _warnedOversize;
 		private static bool _sleepPaused;
 		private static float _sleepResumeDelay;
+
+		// The lobby service we're listening to and the delegate we gave it, so we can unsubscribe.
+		private static ILobbyService _subscribedService;
+		private static Il2CppSystem.Action<string> _messageHandler;
 
 		internal static bool IsRunning => _running;
 
@@ -58,12 +61,14 @@ namespace HUB.Graffiti.Network
 			MelonLogger.Msg("[Graffiti] Steam lobby sync initialized as " + (NetworkHelper.IsHost ? "HOST" : "CLIENT"));
 			if (NetworkHelper.IsHost)
 			{
+				EnsureMessageSubscription();
 				BroadcastState();
 			}
 		}
 
 		internal static void Shutdown()
 		{
+			Unsubscribe();
 			if (_running && NetworkHelper.IsHost)
 			{
 				try
@@ -129,6 +134,8 @@ namespace HUB.Graffiti.Network
 				if (_broadcastTimer >= BroadcastInterval)
 				{
 					_broadcastTimer = 0f;
+					// The game may recreate its lobby service (e.g. a new lobby); follow it.
+					EnsureMessageSubscription();
 					BroadcastState();
 				}
 			}
@@ -236,7 +243,12 @@ namespace HUB.Graffiti.Network
 				{
 					return;
 				}
-				string state = SteamMatchmaking.GetLobbyData(lobby.LobbySteamID, StateKey);
+				ILobbyService service = lobby._lobbyService;
+				if (service == null)
+				{
+					return;
+				}
+				string state = service.GetLobbyData(StateKey);
 				if (string.IsNullOrEmpty(state) || state == _lastReceivedState)
 				{
 					return;
@@ -258,34 +270,58 @@ namespace HUB.Graffiti.Network
 			}
 		}
 
-		internal static void OnLobbyChatReceived(LobbyChatMsg_t result)
+		private static void EnsureMessageSubscription()
 		{
-			if (!_running || !NetworkHelper.IsHost || _sleepPaused)
+			try
+			{
+				Lobby lobby = NetworkHelper.GetLobby();
+				ILobbyService service = lobby != null ? lobby._lobbyService : null;
+				if (service == null)
+				{
+					return;
+				}
+				if (_subscribedService != null && _subscribedService.Pointer == service.Pointer)
+				{
+					return;
+				}
+				Unsubscribe();
+				_messageHandler = DelegateSupport.ConvertDelegate<Il2CppSystem.Action<string>>(new Action<string>(OnLobbyMessage));
+				service.add_OnLobbyMessage(_messageHandler);
+				_subscribedService = service;
+				DebugLog.Log("Sync", "Listening for lobby messages");
+			}
+			catch (Exception ex)
+			{
+				DebugLog.Log("Sync", "Lobby message subscribe failed: " + ex.Message);
+			}
+		}
+
+		private static void Unsubscribe()
+		{
+			if (_subscribedService != null && _messageHandler != null)
+			{
+				try
+				{
+					_subscribedService.remove_OnLobbyMessage(_messageHandler);
+				}
+				catch
+				{
+				}
+			}
+			_subscribedService = null;
+			_messageHandler = null;
+		}
+
+		/// <summary>Host side: every lobby message arrives here; only ours (GRAF: prefix) are handled.</summary>
+		private static void OnLobbyMessage(string message)
+		{
+			if (!_running || !NetworkHelper.IsHost || _sleepPaused || string.IsNullOrEmpty(message))
 			{
 				return;
 			}
 			try
 			{
-				Lobby lobby = NetworkHelper.GetLobby();
-				if (lobby == null)
-				{
-					return;
-				}
-				Il2CppStructArray<byte> buffer = new Il2CppStructArray<byte>(ChatBufferSize);
-				CSteamID sender = default(CSteamID);
-				EChatEntryType entryType = default(EChatEntryType);
-				int length = SteamMatchmaking.GetLobbyChatEntry(lobby.LobbySteamID, (int)result.m_iChatID, ref sender, buffer, ChatBufferSize, ref entryType);
-				if (length <= 0)
-				{
-					return;
-				}
-				length = Math.Min(length, ChatBufferSize);
-				byte[] bytes = new byte[length];
-				for (int i = 0; i < length; i++)
-				{
-					bytes[i] = buffer[i];
-				}
-				string message = Encoding.UTF8.GetString(bytes, 0, length).TrimEnd('\0');
+				message = message.TrimEnd('\0');
 				if (!message.StartsWith(MsgPrefix))
 				{
 					return;
@@ -317,7 +353,7 @@ namespace HUB.Graffiti.Network
 			}
 			catch (Exception ex)
 			{
-				DebugLog.Log("Sync", "Chat handler error: " + ex.Message);
+				DebugLog.Log("Sync", "Lobby message handler error: " + ex.Message);
 			}
 		}
 

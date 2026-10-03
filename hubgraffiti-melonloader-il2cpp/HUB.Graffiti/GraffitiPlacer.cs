@@ -6,6 +6,7 @@ using HUB.Graffiti.Network;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using Il2CppScheduleOne.DevUtilities;
 using Il2CppScheduleOne.Graffiti;
+using Il2CppScheduleOne.UI;
 using Il2CppTMPro;
 using MelonLoader;
 using UnityEngine;
@@ -553,7 +554,7 @@ namespace HUB.Graffiti
 						UShort2 end = default(UShort2);
 						end.X = 101;
 						end.Y = 101;
-						drawing.AddStroke(new SprayStroke(start, end, 1, 1));
+						drawing.AddStroke(new SprayStroke(start, end, ESprayColor.Black, 1));
 					}
 					catch (Exception ex)
 					{

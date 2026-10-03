@@ -25,8 +25,8 @@ not be compiled as-is; every file was rewritten into buildable C#.
   down, premultiplied alpha), with mipmaps for distance.
 - **Remove stickers.** The ModHub page lists every sticker in the current save with a thumbnail and a
   **Remove** button (click twice to confirm), plus **Remove All**. Removing restores the surface's original
-  look and asks the game to clear the surface so it can be sprayed again. Works in multiplayer (clients ask
-  the host).
+  look and clears it through the game's own `SpraySurface.ClearDrawing` (the server RPC behind the graffiti
+  menu's clear button), so the spot can be sprayed again and the clear replicates to other players.
 - **STICKER button aligned** in the same row as UNDO / RESTART / DONE, using the game's button shape, with
   the row re-centred.
 - **Bug fixes**, among others:
@@ -35,6 +35,9 @@ not be compiled as-is; every file was rewritten into buildable C#.
   - Spray rewards could be farmed again after a reload; now paid once per surface, like hand-spraying.
   - "Spots tagged" also counted replacing a sticker on an already-stickered surface.
   - The rewarded-surface list was never cleared between saves, so switching saves could withhold rewards.
+  - Multiplayer sync was dead on the current game version: the game moved lobby chat from
+    `Lobby.OnLobbyChatMessage` into `SteamLobbyService`, so the Harmony patch never fired. Sync now uses the
+    game's `ILobbyService` (`GetLobbyData` / `SetLobbyData` / `OnLobbyMessage`) and needs no Harmony patch.
   - Multiplayer clients wrote the host's placements into their own local file.
   - Clients polled Steam lobby data every frame; now once a second, and the host only republishes on change.
   - Placements removed by the host stayed visible on clients.
@@ -65,9 +68,7 @@ roughly 100 placements.
 
 Logs for bug reports: `UserData/HUB_Graffiti/logs/` (the ModHub page has a button to open it).
 
-## Known limitations
+## Reference source
 
-- Clearing the game's own record of the surface on removal is best effort: the game has no documented API for
-  it, so the mod tries the likely method names and logs what it finds. The sticker image itself is always
-  removed; if a surface still can't be re-sprayed afterwards, the log's `[Reflect]` lines list the methods
-  available in your game version.
+`Assembly-Csharp/` and `Unity-Core/` hold MelonLoader's decompiled interop assemblies of the game, used to
+verify the game API the mod calls. They are not part of the build.

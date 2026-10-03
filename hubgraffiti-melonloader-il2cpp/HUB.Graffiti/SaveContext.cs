@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using Il2CppScheduleOne.DevUtilities;
+using Il2CppScheduleOne.Persistence;
 
 namespace HUB.Graffiti
 {
@@ -10,46 +12,49 @@ namespace HUB.Graffiti
 	/// </summary>
 	internal static class SaveContext
 	{
-		private const string LoadManagerTypeName = "Il2CppScheduleOne.Persistence.LoadManager";
-
 		/// <summary>True once the game reports the save finished loading; null if that can't be determined.</summary>
 		internal static bool? IsGameLoaded()
 		{
-			object loadManager = GetLoadManager();
-			if (loadManager == null)
+			try
 			{
+				LoadManager loadManager = GetLoadManager();
+				if (loadManager == null)
+				{
+					return null;
+				}
+				return !loadManager.IsLoading && loadManager.IsGameLoaded;
+			}
+			catch (Exception ex)
+			{
+				DebugLog.Log("SaveCtx", "Load state read failed: " + ex.Message);
 				return null;
 			}
-			object isLoading = GameReflection.GetProperty(loadManager, "IsLoading");
-			if (isLoading is bool loading && loading)
-			{
-				return false;
-			}
-			object isLoaded = GameReflection.GetProperty(loadManager, "IsGameLoaded");
-			if (isLoaded is bool loaded)
-			{
-				return loaded;
-			}
-			return isLoading is bool ? true : (bool?)null;
 		}
 
 		/// <summary>
 		/// Full path of the loaded save, e.g. ...\LocalLow\TVGS\Schedule I\Saves\7656119...\SaveGame_2,
-		/// or null when no save is loaded or the game's API couldn't be reached.
+		/// or null when no save is loaded.
 		/// </summary>
 		internal static string GetLoadedSaveFolder()
 		{
-			object loadManager = GetLoadManager();
-			if (loadManager == null)
+			string path = null;
+			try
 			{
-				DebugLog.Log("SaveCtx", "LoadManager not found");
-				return null;
+				LoadManager loadManager = GetLoadManager();
+				if (loadManager == null)
+				{
+					DebugLog.Log("SaveCtx", "LoadManager not available");
+					return null;
+				}
+				path = loadManager.LoadedGameFolderPath;
+				if (string.IsNullOrWhiteSpace(path) && loadManager.ActiveSaveInfo != null)
+				{
+					path = loadManager.ActiveSaveInfo.SavePath;
+				}
 			}
-			string path = GameReflection.GetProperty(loadManager, "LoadedGameFolderPath") as string;
-			if (string.IsNullOrWhiteSpace(path))
+			catch (Exception ex)
 			{
-				object saveInfo = GameReflection.GetProperty(loadManager, "ActiveSaveInfo");
-				path = GameReflection.GetProperty(saveInfo, "SavePath") as string;
+				DebugLog.Log("SaveCtx", "Save folder read failed: " + ex.Message);
 			}
 			if (string.IsNullOrWhiteSpace(path))
 			{
@@ -108,10 +113,9 @@ namespace HUB.Graffiti
 			return null;
 		}
 
-		private static object GetLoadManager()
+		private static LoadManager GetLoadManager()
 		{
-			Type type = GameReflection.FindType(LoadManagerTypeName);
-			return type == null ? null : GameReflection.GetStaticProperty(type, "Instance");
+			return Singleton<LoadManager>.InstanceExists ? Singleton<LoadManager>.Instance : null;
 		}
 
 		private static string Sanitize(string segment)
