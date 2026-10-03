@@ -1,0 +1,3886 @@
+﻿using System;
+using Il2CppFishNet.Connection;
+using Il2CppFishNet.Object;
+using Il2CppFishNet.Object.Synchronizing;
+using Il2CppFishNet.Serializing;
+using Il2CppFishNet.Transporting;
+using Il2CppInterop.Common.Attributes;
+using Il2CppInterop.Runtime;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using Il2CppInterop.Runtime.Runtime;
+using Il2CppScheduleOne.EntityFramework;
+using Il2CppScheduleOne.Interaction;
+using Il2CppScheduleOne.ItemFramework;
+using Il2CppScheduleOne.Management;
+using Il2CppScheduleOne.Misc;
+using Il2CppScheduleOne.Persistence.Datas;
+using Il2CppScheduleOne.StationFramework;
+using Il2CppScheduleOne.Storage;
+using Il2CppScheduleOne.Tiles;
+using Il2CppScheduleOne.UI.Management;
+using Il2CppSystem;
+using Il2CppSystem.Collections;
+using Il2CppSystem.Collections.Generic;
+using UnityEngine;
+
+namespace Il2CppScheduleOne.ObjectScripts
+{
+	// Token: 0x020005A5 RID: 1445
+	public class ChemistryStation : GridItem
+	{
+		// Token: 0x0600857E RID: 34174 RVA: 0x00246AF4 File Offset: 0x00244CF4
+		// Note: this type is marked as 'beforefieldinit'.
+		static ChemistryStation()
+		{
+			Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr = IL2CPP.GetIl2CppClass("Assembly-CSharp.dll", "ScheduleOne.ObjectScripts", "ChemistryStation");
+			IL2CPP.il2cpp_runtime_class_init(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr);
+			ChemistryStation.NativeFieldInfoPtr_FOV_OVERRIDE = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "FOV_OVERRIDE");
+			ChemistryStation.NativeFieldInfoPtr_INPUT_SLOT_COUNT = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "INPUT_SLOT_COUNT");
+			ChemistryStation.NativeFieldInfoPtr__ItemSlots_k__BackingField = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "<ItemSlots>k__BackingField");
+			ChemistryStation.NativeFieldInfoPtr__NPCUserObject_k__BackingField = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "<NPCUserObject>k__BackingField");
+			ChemistryStation.NativeFieldInfoPtr__PlayerUserObject_k__BackingField = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "<PlayerUserObject>k__BackingField");
+			ChemistryStation.NativeFieldInfoPtr__CurrentCookOperation_k__BackingField = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "<CurrentCookOperation>k__BackingField");
+			ChemistryStation.NativeFieldInfoPtr_IngredientSlots = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "IngredientSlots");
+			ChemistryStation.NativeFieldInfoPtr_OutputSlot = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "OutputSlot");
+			ChemistryStation.NativeFieldInfoPtr_IntObj = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "IntObj");
+			ChemistryStation.NativeFieldInfoPtr_CameraPosition_Default = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "CameraPosition_Default");
+			ChemistryStation.NativeFieldInfoPtr_CameraPosition_Stirring = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "CameraPosition_Stirring");
+			ChemistryStation.NativeFieldInfoPtr_StaticBeaker = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "StaticBeaker");
+			ChemistryStation.NativeFieldInfoPtr_StaticFunnel = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "StaticFunnel");
+			ChemistryStation.NativeFieldInfoPtr_StaticStirringRod = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "StaticStirringRod");
+			ChemistryStation.NativeFieldInfoPtr_ItemContainer = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "ItemContainer");
+			ChemistryStation.NativeFieldInfoPtr_LabStand = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "LabStand");
+			ChemistryStation.NativeFieldInfoPtr_InputVisuals = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "InputVisuals");
+			ChemistryStation.NativeFieldInfoPtr_OutputVisuals = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "OutputVisuals");
+			ChemistryStation.NativeFieldInfoPtr_AnchorRb = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "AnchorRb");
+			ChemistryStation.NativeFieldInfoPtr_Burner = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "Burner");
+			ChemistryStation.NativeFieldInfoPtr_BoilingFlask = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "BoilingFlask");
+			ChemistryStation.NativeFieldInfoPtr_Alarm = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "Alarm");
+			ChemistryStation.NativeFieldInfoPtr_uiPoint = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "uiPoint");
+			ChemistryStation.NativeFieldInfoPtr_accessPoints = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "accessPoints");
+			ChemistryStation.NativeFieldInfoPtr_configReplicator = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "configReplicator");
+			ChemistryStation.NativeFieldInfoPtr_TrashSpawnVolume = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "TrashSpawnVolume");
+			ChemistryStation.NativeFieldInfoPtr_ExplosionPoint = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "ExplosionPoint");
+			ChemistryStation.NativeFieldInfoPtr_InputSlotsPosition = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "InputSlotsPosition");
+			ChemistryStation.NativeFieldInfoPtr_OutputSlotPosition = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "OutputSlotPosition");
+			ChemistryStation.NativeFieldInfoPtr_IngredientTransforms = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "IngredientTransforms");
+			ChemistryStation.NativeFieldInfoPtr_BeakerAlignmentTransform = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "BeakerAlignmentTransform");
+			ChemistryStation.NativeFieldInfoPtr_BeakerPrefab = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "BeakerPrefab");
+			ChemistryStation.NativeFieldInfoPtr_StirringRodPrefab = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "StirringRodPrefab");
+			ChemistryStation.NativeFieldInfoPtr_WorldspaceUIPrefab = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "WorldspaceUIPrefab");
+			ChemistryStation.NativeFieldInfoPtr_typeIcon = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "typeIcon");
+			ChemistryStation.NativeFieldInfoPtr__InputSlots_k__BackingField = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "<InputSlots>k__BackingField");
+			ChemistryStation.NativeFieldInfoPtr__OutputSlots_k__BackingField = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "<OutputSlots>k__BackingField");
+			ChemistryStation.NativeFieldInfoPtr__Selectable_k__BackingField = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "<Selectable>k__BackingField");
+			ChemistryStation.NativeFieldInfoPtr__IsAcceptingItems_k__BackingField = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "<IsAcceptingItems>k__BackingField");
+			ChemistryStation.NativeFieldInfoPtr__stationConfiguration_k__BackingField = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "<stationConfiguration>k__BackingField");
+			ChemistryStation.NativeFieldInfoPtr__WorldspaceUI_k__BackingField = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "<WorldspaceUI>k__BackingField");
+			ChemistryStation.NativeFieldInfoPtr__CurrentPlayerConfigurer_k__BackingField = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "<CurrentPlayerConfigurer>k__BackingField");
+			ChemistryStation.NativeFieldInfoPtr_syncVar____NPCUserObject_k__BackingField = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "syncVar___<NPCUserObject>k__BackingField");
+			ChemistryStation.NativeFieldInfoPtr_syncVar____PlayerUserObject_k__BackingField = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "syncVar___<PlayerUserObject>k__BackingField");
+			ChemistryStation.NativeFieldInfoPtr_syncVar____CurrentPlayerConfigurer_k__BackingField = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "syncVar___<CurrentPlayerConfigurer>k__BackingField");
+			ChemistryStation.NativeFieldInfoPtr_field_Private_Boolean_0 = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "NetworkInitialize___EarlyScheduleOne.ObjectScripts.ChemistryStationAssembly-CSharp.dll_Excuted");
+			ChemistryStation.NativeFieldInfoPtr_field_Private_Boolean_1 = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "NetworkInitialize__LateScheduleOne.ObjectScripts.ChemistryStationAssembly-CSharp.dll_Excuted");
+			ChemistryStation.NativeMethodInfoPtr_get_isOpen_Public_get_Boolean_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680460);
+			ChemistryStation.NativeMethodInfoPtr_get_ItemSlots_Public_Virtual_Final_New_get_List_1_ItemSlot_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680461);
+			ChemistryStation.NativeMethodInfoPtr_set_ItemSlots_Public_Virtual_Final_New_set_Void_List_1_ItemSlot_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680462);
+			ChemistryStation.NativeMethodInfoPtr_get_NPCUserObject_Public_Virtual_Final_New_get_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680463);
+			ChemistryStation.NativeMethodInfoPtr_set_NPCUserObject_Public_Virtual_Final_New_set_Void_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680464);
+			ChemistryStation.NativeMethodInfoPtr_get_PlayerUserObject_Public_Virtual_Final_New_get_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680465);
+			ChemistryStation.NativeMethodInfoPtr_set_PlayerUserObject_Public_Virtual_Final_New_set_Void_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680466);
+			ChemistryStation.NativeMethodInfoPtr_get_CurrentCookOperation_Public_get_ChemistryCookOperation_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680467);
+			ChemistryStation.NativeMethodInfoPtr_set_CurrentCookOperation_Public_set_Void_ChemistryCookOperation_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680468);
+			ChemistryStation.NativeMethodInfoPtr_get_Name_Public_Virtual_Final_New_get_String_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680469);
+			ChemistryStation.NativeMethodInfoPtr_get_InputSlots_Public_Virtual_Final_New_get_List_1_ItemSlot_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680470);
+			ChemistryStation.NativeMethodInfoPtr_set_InputSlots_Public_Virtual_Final_New_set_Void_List_1_ItemSlot_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680471);
+			ChemistryStation.NativeMethodInfoPtr_get_OutputSlots_Public_Virtual_Final_New_get_List_1_ItemSlot_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680472);
+			ChemistryStation.NativeMethodInfoPtr_set_OutputSlots_Public_Virtual_Final_New_set_Void_List_1_ItemSlot_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680473);
+			ChemistryStation.NativeMethodInfoPtr_get_LinkOrigin_Public_Virtual_Final_New_get_Transform_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680474);
+			ChemistryStation.NativeMethodInfoPtr_get_AccessPoints_Public_Virtual_Final_New_get_Il2CppReferenceArray_1_Transform_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680475);
+			ChemistryStation.NativeMethodInfoPtr_get_Selectable_Public_Virtual_Final_New_get_Boolean_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680476);
+			ChemistryStation.NativeMethodInfoPtr_get_IsAcceptingItems_Public_Virtual_Final_New_get_Boolean_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680477);
+			ChemistryStation.NativeMethodInfoPtr_set_IsAcceptingItems_Public_set_Void_Boolean_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680478);
+			ChemistryStation.NativeMethodInfoPtr_get_Configuration_Public_Virtual_Final_New_get_EntityConfiguration_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680479);
+			ChemistryStation.NativeMethodInfoPtr_get_stationConfiguration_Protected_get_ChemistryStationConfiguration_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680480);
+			ChemistryStation.NativeMethodInfoPtr_set_stationConfiguration_Protected_set_Void_ChemistryStationConfiguration_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680481);
+			ChemistryStation.NativeMethodInfoPtr_get_ConfigReplicator_Public_Virtual_Final_New_get_ConfigurationReplicator_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680482);
+			ChemistryStation.NativeMethodInfoPtr_get_ConfigurableType_Public_Virtual_Final_New_get_EConfigurableType_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680483);
+			ChemistryStation.NativeMethodInfoPtr_get_WorldspaceUI_Public_Virtual_Final_New_get_WorldspaceUIElement_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680484);
+			ChemistryStation.NativeMethodInfoPtr_set_WorldspaceUI_Public_Virtual_Final_New_set_Void_WorldspaceUIElement_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680485);
+			ChemistryStation.NativeMethodInfoPtr_get_CurrentPlayerConfigurer_Public_Virtual_Final_New_get_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680486);
+			ChemistryStation.NativeMethodInfoPtr_set_CurrentPlayerConfigurer_Public_Virtual_Final_New_set_Void_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680487);
+			ChemistryStation.NativeMethodInfoPtr_SetConfigurer_Public_Virtual_Final_New_Void_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680488);
+			ChemistryStation.NativeMethodInfoPtr_get_TypeIcon_Public_Virtual_Final_New_get_Sprite_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680489);
+			ChemistryStation.NativeMethodInfoPtr_get_Transform_Public_Virtual_Final_New_get_Transform_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680490);
+			ChemistryStation.NativeMethodInfoPtr_get_UIPoint_Public_Virtual_Final_New_get_Transform_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680491);
+			ChemistryStation.NativeMethodInfoPtr_get_CanBeSelected_Public_Virtual_Final_New_get_Boolean_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680492);
+			ChemistryStation.NativeMethodInfoPtr_Awake_Public_Virtual_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680493);
+			ChemistryStation.NativeMethodInfoPtr_InitializeGridItem_Public_Virtual_Void_ItemInstance_Grid_Vector2_Int32_String_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680494);
+			ChemistryStation.NativeMethodInfoPtr_GetManagementName_Public_Virtual_String_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680495);
+			ChemistryStation.NativeMethodInfoPtr_OnSpawnServer_Public_Virtual_Void_NetworkConnection_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680496);
+			ChemistryStation.NativeMethodInfoPtr_SendConfigurationToClient_Public_Virtual_Final_New_Void_NetworkConnection_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680497);
+			ChemistryStation.NativeMethodInfoPtr_CanBeDestroyed_Public_Virtual_Boolean_byref_String_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680498);
+			ChemistryStation.NativeMethodInfoPtr_Destroy_Protected_Virtual_Void_1 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680499);
+			ChemistryStation.NativeMethodInfoPtr_OnMinPass_Protected_Virtual_New_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680500);
+			ChemistryStation.NativeMethodInfoPtr_OnTimePass_Private_Void_Int32_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680501);
+			ChemistryStation.NativeMethodInfoPtr_UpdateClock_Private_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680502);
+			ChemistryStation.NativeMethodInfoPtr_Update_Protected_Virtual_New_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680503);
+			ChemistryStation.NativeMethodInfoPtr_CreateBeaker_Public_Beaker_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680504);
+			ChemistryStation.NativeMethodInfoPtr_CreateStirringRod_Public_StirringRod_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680505);
+			ChemistryStation.NativeMethodInfoPtr_SendCookOperation_Public_Void_ChemistryCookOperation_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680506);
+			ChemistryStation.NativeMethodInfoPtr_SetCookOperation_Public_Void_NetworkConnection_ChemistryCookOperation_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680507);
+			ChemistryStation.NativeMethodInfoPtr_FinalizeOperation_Private_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680508);
+			ChemistryStation.NativeMethodInfoPtr_ResetStation_Public_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680509);
+			ChemistryStation.NativeMethodInfoPtr_DoesOutputHaveSpace_Public_Boolean_StationRecipe_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680510);
+			ChemistryStation.NativeMethodInfoPtr_GetIngredients_Public_List_1_ItemInstance_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680511);
+			ChemistryStation.NativeMethodInfoPtr_HasIngredientsForRecipe_Public_Boolean_StationRecipe_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680512);
+			ChemistryStation.NativeMethodInfoPtr_CreateTrash_Public_Void_List_1_StationItem_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680513);
+			ChemistryStation.NativeMethodInfoPtr_Hovered_Public_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680514);
+			ChemistryStation.NativeMethodInfoPtr_Interacted_Public_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680515);
+			ChemistryStation.NativeMethodInfoPtr_Use_Public_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680516);
+			ChemistryStation.NativeMethodInfoPtr_OnEndUse_Private_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680517);
+			ChemistryStation.NativeMethodInfoPtr_SetPlayerUser_Public_Virtual_Final_New_Void_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680518);
+			ChemistryStation.NativeMethodInfoPtr_SetNPCUser_Public_Virtual_Final_New_Void_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680519);
+			ChemistryStation.NativeMethodInfoPtr_SetStoredInstance_Public_Virtual_Final_New_Void_NetworkConnection_Int32_ItemInstance_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680520);
+			ChemistryStation.NativeMethodInfoPtr_SetStoredInstance_Internal_Private_Void_NetworkConnection_Int32_ItemInstance_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680521);
+			ChemistryStation.NativeMethodInfoPtr_SetItemSlotQuantity_Public_Virtual_Final_New_Void_Int32_Int32_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680522);
+			ChemistryStation.NativeMethodInfoPtr_SetItemSlotQuantity_Internal_Private_Void_Int32_Int32_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680523);
+			ChemistryStation.NativeMethodInfoPtr_SetSlotLocked_Public_Virtual_Final_New_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680524);
+			ChemistryStation.NativeMethodInfoPtr_SetSlotLocked_Internal_Private_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680525);
+			ChemistryStation.NativeMethodInfoPtr_SetSlotFilter_Public_Virtual_Final_New_Void_NetworkConnection_Int32_SlotFilter_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680526);
+			ChemistryStation.NativeMethodInfoPtr_SetSlotFilter_Internal_Private_Void_NetworkConnection_Int32_SlotFilter_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680527);
+			ChemistryStation.NativeMethodInfoPtr_CreateWorldspaceUI_Public_Virtual_Final_New_WorldspaceUIElement_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680528);
+			ChemistryStation.NativeMethodInfoPtr_DestroyWorldspaceUI_Public_Virtual_Final_New_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680529);
+			ChemistryStation.NativeMethodInfoPtr_GetBaseData_Public_Virtual_BuildableItemData_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680530);
+			ChemistryStation.NativeMethodInfoPtr_GetSaveData_Public_Virtual_DynamicSaveData_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680531);
+			ChemistryStation.NativeMethodInfoPtr__ctor_Public_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680532);
+			ChemistryStation.NativeMethodInfoPtr__Awake_b__98_0_Private_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680533);
+			ChemistryStation.NativeMethodInfoPtr__Awake_b__98_1_Private_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680534);
+			ChemistryStation.NativeMethodInfoPtr_NetworkInitialize___Early_Public_Virtual_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680535);
+			ChemistryStation.NativeMethodInfoPtr_NetworkInitialize__Late_Public_Virtual_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680536);
+			ChemistryStation.NativeMethodInfoPtr_NetworkInitializeIfDisabled_Public_Virtual_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680537);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SetConfigurer_3323014238_Private_Void_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680538);
+			ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetConfigurer_3323014238_Public_Virtual_Final_New_Void_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680539);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SetConfigurer_3323014238_Private_Void_PooledReader_Channel_NetworkConnection_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680540);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SendCookOperation_3552222198_Private_Void_ChemistryCookOperation_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680541);
+			ChemistryStation.NativeMethodInfoPtr_RpcLogic___SendCookOperation_3552222198_Public_Void_ChemistryCookOperation_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680542);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SendCookOperation_3552222198_Private_Void_PooledReader_Channel_NetworkConnection_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680543);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Observers_SetCookOperation_1024887225_Private_Void_NetworkConnection_ChemistryCookOperation_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680544);
+			ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetCookOperation_1024887225_Public_Void_NetworkConnection_ChemistryCookOperation_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680545);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Observers_SetCookOperation_1024887225_Private_Void_PooledReader_Channel_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680546);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Target_SetCookOperation_1024887225_Private_Void_NetworkConnection_ChemistryCookOperation_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680547);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Target_SetCookOperation_1024887225_Private_Void_PooledReader_Channel_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680548);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Observers_FinalizeOperation_2166136261_Private_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680549);
+			ChemistryStation.NativeMethodInfoPtr_RpcLogic___FinalizeOperation_2166136261_Private_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680550);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Observers_FinalizeOperation_2166136261_Private_Void_PooledReader_Channel_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680551);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SetPlayerUser_3323014238_Private_Void_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680552);
+			ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetPlayerUser_3323014238_Public_Virtual_Final_New_Void_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680553);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SetPlayerUser_3323014238_Private_Void_PooledReader_Channel_NetworkConnection_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680554);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SetNPCUser_3323014238_Private_Void_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680555);
+			ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetNPCUser_3323014238_Public_Virtual_Final_New_Void_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680556);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SetNPCUser_3323014238_Private_Void_PooledReader_Channel_NetworkConnection_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680557);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SetStoredInstance_2652194801_Private_Void_NetworkConnection_Int32_ItemInstance_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680558);
+			ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetStoredInstance_2652194801_Public_Virtual_Final_New_Void_NetworkConnection_Int32_ItemInstance_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680559);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SetStoredInstance_2652194801_Private_Void_PooledReader_Channel_NetworkConnection_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680560);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Observers_SetStoredInstance_Internal_2652194801_Private_Void_NetworkConnection_Int32_ItemInstance_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680561);
+			ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetStoredInstance_Internal_2652194801_Private_Void_NetworkConnection_Int32_ItemInstance_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680562);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Observers_SetStoredInstance_Internal_2652194801_Private_Void_PooledReader_Channel_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680563);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Target_SetStoredInstance_Internal_2652194801_Private_Void_NetworkConnection_Int32_ItemInstance_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680564);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Target_SetStoredInstance_Internal_2652194801_Private_Void_PooledReader_Channel_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680565);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SetItemSlotQuantity_1692629761_Private_Void_Int32_Int32_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680566);
+			ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetItemSlotQuantity_1692629761_Public_Virtual_Final_New_Void_Int32_Int32_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680567);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SetItemSlotQuantity_1692629761_Private_Void_PooledReader_Channel_NetworkConnection_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680568);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Observers_SetItemSlotQuantity_Internal_1692629761_Private_Void_Int32_Int32_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680569);
+			ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetItemSlotQuantity_Internal_1692629761_Private_Void_Int32_Int32_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680570);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Observers_SetItemSlotQuantity_Internal_1692629761_Private_Void_PooledReader_Channel_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680571);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SetSlotLocked_3170825843_Private_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680572);
+			ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetSlotLocked_3170825843_Public_Virtual_Final_New_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680573);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SetSlotLocked_3170825843_Private_Void_PooledReader_Channel_NetworkConnection_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680574);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Target_SetSlotLocked_Internal_3170825843_Private_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680575);
+			ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetSlotLocked_Internal_3170825843_Private_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680576);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Target_SetSlotLocked_Internal_3170825843_Private_Void_PooledReader_Channel_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680577);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Observers_SetSlotLocked_Internal_3170825843_Private_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680578);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Observers_SetSlotLocked_Internal_3170825843_Private_Void_PooledReader_Channel_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680579);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SetSlotFilter_527532783_Private_Void_NetworkConnection_Int32_SlotFilter_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680580);
+			ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetSlotFilter_527532783_Public_Virtual_Final_New_Void_NetworkConnection_Int32_SlotFilter_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680581);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SetSlotFilter_527532783_Private_Void_PooledReader_Channel_NetworkConnection_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680582);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Observers_SetSlotFilter_Internal_527532783_Private_Void_NetworkConnection_Int32_SlotFilter_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680583);
+			ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetSlotFilter_Internal_527532783_Private_Void_NetworkConnection_Int32_SlotFilter_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680584);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Observers_SetSlotFilter_Internal_527532783_Private_Void_PooledReader_Channel_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680585);
+			ChemistryStation.NativeMethodInfoPtr_RpcWriter___Target_SetSlotFilter_Internal_527532783_Private_Void_NetworkConnection_Int32_SlotFilter_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680586);
+			ChemistryStation.NativeMethodInfoPtr_RpcReader___Target_SetSlotFilter_Internal_527532783_Private_Void_PooledReader_Channel_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680587);
+			ChemistryStation.NativeMethodInfoPtr_sync___get_value__NPCUserObject_k__BackingField_Public_get_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680588);
+			ChemistryStation.NativeMethodInfoPtr_sync___set_value__NPCUserObject_k__BackingField_Public_set_Void_NetworkObject_Boolean_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680589);
+			ChemistryStation.NativeMethodInfoPtr_ReadSyncVar___ScheduleOne_ObjectScripts_ChemistryStation_Public_Virtual_Boolean_PooledReader_UInt32_Boolean_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680590);
+			ChemistryStation.NativeMethodInfoPtr_sync___get_value__PlayerUserObject_k__BackingField_Public_get_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680591);
+			ChemistryStation.NativeMethodInfoPtr_sync___set_value__PlayerUserObject_k__BackingField_Public_set_Void_NetworkObject_Boolean_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680592);
+			ChemistryStation.NativeMethodInfoPtr_sync___get_value__CurrentPlayerConfigurer_k__BackingField_Public_get_NetworkObject_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680593);
+			ChemistryStation.NativeMethodInfoPtr_sync___set_value__CurrentPlayerConfigurer_k__BackingField_Public_set_Void_NetworkObject_Boolean_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680594);
+			ChemistryStation.NativeMethodInfoPtr_Method_Protected_Virtual_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, 100680595);
+		}
+
+		// Token: 0x1700297B RID: 10619
+		// (get) Token: 0x0600857F RID: 34175 RVA: 0x00247970 File Offset: 0x00245B70
+		public unsafe bool isOpen
+		{
+			[CallerCount(0)]
+			[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250360, XrefRangeEnd = 250369, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_isOpen_Public_get_Boolean_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				return *IL2CPP.il2cpp_object_unbox(intPtr);
+			}
+		}
+
+		// Token: 0x1700297C RID: 10620
+		// (get) Token: 0x06008580 RID: 34176 RVA: 0x002479AC File Offset: 0x00245BAC
+		// (set) Token: 0x06008581 RID: 34177 RVA: 0x002479EC File Offset: 0x00245BEC
+		public unsafe virtual List<ItemSlot> ItemSlots
+		{
+			[CallerCount(0)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_ItemSlots_Public_Virtual_Final_New_get_List_1_ItemSlot_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<List<ItemSlot>>(intPtr3) : null;
+			}
+			[CallerCount(0)]
+			[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 0, XrefRangeEnd = 0, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			set
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+				*ptr = IL2CPP.Il2CppObjectBaseToPtr(value);
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_set_ItemSlots_Public_Virtual_Final_New_set_Void_List_1_ItemSlot_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			}
+		}
+
+		// Token: 0x1700297D RID: 10621
+		// (get) Token: 0x06008582 RID: 34178 RVA: 0x00247A30 File Offset: 0x00245C30
+		// (set) Token: 0x06008583 RID: 34179 RVA: 0x00247A70 File Offset: 0x00245C70
+		public unsafe virtual NetworkObject NPCUserObject
+		{
+			[CallerCount(2)]
+			[CachedScanResults(RefRangeStart = 102129, RefRangeEnd = 102131, XrefRangeStart = 102129, XrefRangeEnd = 102131, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_NPCUserObject_Public_Virtual_Final_New_get_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<NetworkObject>(intPtr3) : null;
+			}
+			[CallerCount(2)]
+			[CachedScanResults(RefRangeStart = 250377, RefRangeEnd = 250379, XrefRangeStart = 250369, XrefRangeEnd = 250377, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			set
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+				*ptr = IL2CPP.Il2CppObjectBaseToPtr(value);
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_set_NPCUserObject_Public_Virtual_Final_New_set_Void_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			}
+		}
+
+		// Token: 0x1700297E RID: 10622
+		// (get) Token: 0x06008584 RID: 34180 RVA: 0x00247AB4 File Offset: 0x00245CB4
+		// (set) Token: 0x06008585 RID: 34181 RVA: 0x00247AF4 File Offset: 0x00245CF4
+		public unsafe virtual NetworkObject PlayerUserObject
+		{
+			[CallerCount(0)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_PlayerUserObject_Public_Virtual_Final_New_get_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<NetworkObject>(intPtr3) : null;
+			}
+			[CallerCount(2)]
+			[CachedScanResults(RefRangeStart = 250387, RefRangeEnd = 250389, XrefRangeStart = 250379, XrefRangeEnd = 250387, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			set
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+				*ptr = IL2CPP.Il2CppObjectBaseToPtr(value);
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_set_PlayerUserObject_Public_Virtual_Final_New_set_Void_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			}
+		}
+
+		// Token: 0x1700297F RID: 10623
+		// (get) Token: 0x06008586 RID: 34182 RVA: 0x00247B38 File Offset: 0x00245D38
+		// (set) Token: 0x06008587 RID: 34183 RVA: 0x00247B78 File Offset: 0x00245D78
+		public unsafe ChemistryCookOperation CurrentCookOperation
+		{
+			[CallerCount(0)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_CurrentCookOperation_Public_get_ChemistryCookOperation_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<ChemistryCookOperation>(intPtr3) : null;
+			}
+			[CallerCount(0)]
+			[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 0, XrefRangeEnd = 0, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			set
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+				*ptr = IL2CPP.Il2CppObjectBaseToPtr(value);
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_set_CurrentCookOperation_Public_set_Void_ChemistryCookOperation_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			}
+		}
+
+		// Token: 0x17002980 RID: 10624
+		// (get) Token: 0x06008588 RID: 34184 RVA: 0x00247BBC File Offset: 0x00245DBC
+		public unsafe virtual string Name
+		{
+			[CallerCount(0)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_Name_Public_Virtual_Final_New_get_String_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				return IL2CPP.Il2CppStringToManaged(intPtr);
+			}
+		}
+
+		// Token: 0x17002981 RID: 10625
+		// (get) Token: 0x06008589 RID: 34185 RVA: 0x00247BF4 File Offset: 0x00245DF4
+		// (set) Token: 0x0600858A RID: 34186 RVA: 0x00247C34 File Offset: 0x00245E34
+		public unsafe virtual List<ItemSlot> InputSlots
+		{
+			[CallerCount(0)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_InputSlots_Public_Virtual_Final_New_get_List_1_ItemSlot_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<List<ItemSlot>>(intPtr3) : null;
+			}
+			[CallerCount(0)]
+			[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250389, XrefRangeEnd = 250390, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			set
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+				*ptr = IL2CPP.Il2CppObjectBaseToPtr(value);
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_set_InputSlots_Public_Virtual_Final_New_set_Void_List_1_ItemSlot_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			}
+		}
+
+		// Token: 0x17002982 RID: 10626
+		// (get) Token: 0x0600858B RID: 34187 RVA: 0x00247C78 File Offset: 0x00245E78
+		// (set) Token: 0x0600858C RID: 34188 RVA: 0x00247CB8 File Offset: 0x00245EB8
+		public unsafe virtual List<ItemSlot> OutputSlots
+		{
+			[CallerCount(0)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_OutputSlots_Public_Virtual_Final_New_get_List_1_ItemSlot_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<List<ItemSlot>>(intPtr3) : null;
+			}
+			[CallerCount(0)]
+			[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250390, XrefRangeEnd = 250391, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			set
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+				*ptr = IL2CPP.Il2CppObjectBaseToPtr(value);
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_set_OutputSlots_Public_Virtual_Final_New_set_Void_List_1_ItemSlot_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			}
+		}
+
+		// Token: 0x17002983 RID: 10627
+		// (get) Token: 0x0600858D RID: 34189 RVA: 0x00247CFC File Offset: 0x00245EFC
+		public unsafe virtual Transform LinkOrigin
+		{
+			[CallerCount(14)]
+			[CachedScanResults(RefRangeStart = 153845, RefRangeEnd = 153859, XrefRangeStart = 153845, XrefRangeEnd = 153859, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_LinkOrigin_Public_Virtual_Final_New_get_Transform_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<Transform>(intPtr3) : null;
+			}
+		}
+
+		// Token: 0x17002984 RID: 10628
+		// (get) Token: 0x0600858E RID: 34190 RVA: 0x00247D3C File Offset: 0x00245F3C
+		public unsafe virtual Il2CppReferenceArray<Transform> AccessPoints
+		{
+			[CallerCount(0)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_AccessPoints_Public_Virtual_Final_New_get_Il2CppReferenceArray_1_Transform_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<Il2CppReferenceArray<Transform>>(intPtr3) : null;
+			}
+		}
+
+		// Token: 0x17002985 RID: 10629
+		// (get) Token: 0x0600858F RID: 34191 RVA: 0x00247D7C File Offset: 0x00245F7C
+		public unsafe virtual bool Selectable
+		{
+			[CallerCount(0)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_Selectable_Public_Virtual_Final_New_get_Boolean_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				return *IL2CPP.il2cpp_object_unbox(intPtr);
+			}
+		}
+
+		// Token: 0x17002986 RID: 10630
+		// (get) Token: 0x06008590 RID: 34192 RVA: 0x00247DB8 File Offset: 0x00245FB8
+		// (set) Token: 0x06008591 RID: 34193 RVA: 0x00247DF4 File Offset: 0x00245FF4
+		public unsafe virtual bool IsAcceptingItems
+		{
+			[CallerCount(0)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_IsAcceptingItems_Public_Virtual_Final_New_get_Boolean_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				return *IL2CPP.il2cpp_object_unbox(intPtr);
+			}
+			[CallerCount(0)]
+			set
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+				*ptr = ref value;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_set_IsAcceptingItems_Public_set_Void_Boolean_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			}
+		}
+
+		// Token: 0x17002987 RID: 10631
+		// (get) Token: 0x06008592 RID: 34194 RVA: 0x00247E34 File Offset: 0x00246034
+		public unsafe virtual EntityConfiguration Configuration
+		{
+			[CallerCount(19)]
+			[CachedScanResults(RefRangeStart = 250391, RefRangeEnd = 250410, XrefRangeStart = 250391, XrefRangeEnd = 250391, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_Configuration_Public_Virtual_Final_New_get_EntityConfiguration_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<EntityConfiguration>(intPtr3) : null;
+			}
+		}
+
+		// Token: 0x17002988 RID: 10632
+		// (get) Token: 0x06008593 RID: 34195 RVA: 0x00247E74 File Offset: 0x00246074
+		// (set) Token: 0x06008594 RID: 34196 RVA: 0x00247EB4 File Offset: 0x002460B4
+		public unsafe ChemistryStationConfiguration stationConfiguration
+		{
+			[CallerCount(19)]
+			[CachedScanResults(RefRangeStart = 250391, RefRangeEnd = 250410, XrefRangeStart = 250391, XrefRangeEnd = 250410, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_stationConfiguration_Protected_get_ChemistryStationConfiguration_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<ChemistryStationConfiguration>(intPtr3) : null;
+			}
+			[CallerCount(0)]
+			[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250410, XrefRangeEnd = 250411, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			set
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+				*ptr = IL2CPP.Il2CppObjectBaseToPtr(value);
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_set_stationConfiguration_Protected_set_Void_ChemistryStationConfiguration_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			}
+		}
+
+		// Token: 0x17002989 RID: 10633
+		// (get) Token: 0x06008595 RID: 34197 RVA: 0x00247EF8 File Offset: 0x002460F8
+		public unsafe virtual ConfigurationReplicator ConfigReplicator
+		{
+			[CallerCount(0)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_ConfigReplicator_Public_Virtual_Final_New_get_ConfigurationReplicator_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<ConfigurationReplicator>(intPtr3) : null;
+			}
+		}
+
+		// Token: 0x1700298A RID: 10634
+		// (get) Token: 0x06008596 RID: 34198 RVA: 0x00247F38 File Offset: 0x00246138
+		public unsafe virtual EConfigurableType ConfigurableType
+		{
+			[CallerCount(0)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_ConfigurableType_Public_Virtual_Final_New_get_EConfigurableType_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				return *IL2CPP.il2cpp_object_unbox(intPtr);
+			}
+		}
+
+		// Token: 0x1700298B RID: 10635
+		// (get) Token: 0x06008597 RID: 34199 RVA: 0x00247F74 File Offset: 0x00246174
+		// (set) Token: 0x06008598 RID: 34200 RVA: 0x00247FB4 File Offset: 0x002461B4
+		public unsafe virtual WorldspaceUIElement WorldspaceUI
+		{
+			[CallerCount(0)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_WorldspaceUI_Public_Virtual_Final_New_get_WorldspaceUIElement_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<WorldspaceUIElement>(intPtr3) : null;
+			}
+			[CallerCount(0)]
+			[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250411, XrefRangeEnd = 250412, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			set
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+				*ptr = IL2CPP.Il2CppObjectBaseToPtr(value);
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_set_WorldspaceUI_Public_Virtual_Final_New_set_Void_WorldspaceUIElement_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			}
+		}
+
+		// Token: 0x1700298C RID: 10636
+		// (get) Token: 0x06008599 RID: 34201 RVA: 0x00247FF8 File Offset: 0x002461F8
+		// (set) Token: 0x0600859A RID: 34202 RVA: 0x00248038 File Offset: 0x00246238
+		public unsafe virtual NetworkObject CurrentPlayerConfigurer
+		{
+			[CallerCount(5)]
+			[CachedScanResults(RefRangeStart = 174469, RefRangeEnd = 174474, XrefRangeStart = 174469, XrefRangeEnd = 174474, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_CurrentPlayerConfigurer_Public_Virtual_Final_New_get_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<NetworkObject>(intPtr3) : null;
+			}
+			[CallerCount(2)]
+			[CachedScanResults(RefRangeStart = 250420, RefRangeEnd = 250422, XrefRangeStart = 250412, XrefRangeEnd = 250420, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			set
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+				*ptr = IL2CPP.Il2CppObjectBaseToPtr(value);
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_set_CurrentPlayerConfigurer_Public_Virtual_Final_New_set_Void_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			}
+		}
+
+		// Token: 0x0600859B RID: 34203 RVA: 0x0024807C File Offset: 0x0024627C
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250422, XrefRangeEnd = 250444, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void SetConfigurer(NetworkObject player)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(player);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_SetConfigurer_Public_Virtual_Final_New_Void_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x1700298D RID: 10637
+		// (get) Token: 0x0600859C RID: 34204 RVA: 0x002480C0 File Offset: 0x002462C0
+		public unsafe virtual Sprite TypeIcon
+		{
+			[CallerCount(0)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_TypeIcon_Public_Virtual_Final_New_get_Sprite_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<Sprite>(intPtr3) : null;
+			}
+		}
+
+		// Token: 0x1700298E RID: 10638
+		// (get) Token: 0x0600859D RID: 34205 RVA: 0x00248100 File Offset: 0x00246300
+		public unsafe virtual Transform Transform
+		{
+			[CallerCount(2)]
+			[CachedScanResults(RefRangeStart = 44652, RefRangeEnd = 44654, XrefRangeStart = 44652, XrefRangeEnd = 44654, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_Transform_Public_Virtual_Final_New_get_Transform_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<Transform>(intPtr3) : null;
+			}
+		}
+
+		// Token: 0x1700298F RID: 10639
+		// (get) Token: 0x0600859E RID: 34206 RVA: 0x00248140 File Offset: 0x00246340
+		public unsafe virtual Transform UIPoint
+		{
+			[CallerCount(14)]
+			[CachedScanResults(RefRangeStart = 153845, RefRangeEnd = 153859, XrefRangeStart = 153845, XrefRangeEnd = 153859, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_UIPoint_Public_Virtual_Final_New_get_Transform_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<Transform>(intPtr3) : null;
+			}
+		}
+
+		// Token: 0x17002990 RID: 10640
+		// (get) Token: 0x0600859F RID: 34207 RVA: 0x00248180 File Offset: 0x00246380
+		public unsafe virtual bool CanBeSelected
+		{
+			[CallerCount(18)]
+			[CachedScanResults(RefRangeStart = 29255, RefRangeEnd = 29273, XrefRangeStart = 29255, XrefRangeEnd = 29273, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_get_CanBeSelected_Public_Virtual_Final_New_get_Boolean_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				return *IL2CPP.il2cpp_object_unbox(intPtr);
+			}
+		}
+
+		// Token: 0x060085A0 RID: 34208 RVA: 0x002481BC File Offset: 0x002463BC
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250444, XrefRangeEnd = 250445, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe override void Awake()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(IL2CPP.il2cpp_object_get_virtual_method(IL2CPP.Il2CppObjectBaseToPtr(this), ChemistryStation.NativeMethodInfoPtr_Awake_Public_Virtual_Void_0), IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085A1 RID: 34209 RVA: 0x002481F8 File Offset: 0x002463F8
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250445, XrefRangeEnd = 250482, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe override void InitializeGridItem(ItemInstance instance, Grid grid, Vector2 originCoordinate, int rotation, string GUID)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)5) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(instance);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(grid);
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref originCoordinate;
+			ptr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref rotation;
+			ptr[checked(unchecked((UIntPtr)4) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.ManagedStringToIl2Cpp(GUID);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(IL2CPP.il2cpp_object_get_virtual_method(IL2CPP.Il2CppObjectBaseToPtr(this), ChemistryStation.NativeMethodInfoPtr_InitializeGridItem_Public_Virtual_Void_ItemInstance_Grid_Vector2_Int32_String_0), IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085A2 RID: 34210 RVA: 0x00248288 File Offset: 0x00246488
+		[CallerCount(0)]
+		public unsafe override string GetManagementName()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(IL2CPP.il2cpp_object_get_virtual_method(IL2CPP.Il2CppObjectBaseToPtr(this), ChemistryStation.NativeMethodInfoPtr_GetManagementName_Public_Virtual_String_0), IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			return IL2CPP.Il2CppStringToManaged(intPtr);
+		}
+
+		// Token: 0x060085A3 RID: 34211 RVA: 0x002482CC File Offset: 0x002464CC
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250482, XrefRangeEnd = 250526, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe override void OnSpawnServer(NetworkConnection connection)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(connection);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(IL2CPP.il2cpp_object_get_virtual_method(IL2CPP.Il2CppObjectBaseToPtr(this), ChemistryStation.NativeMethodInfoPtr_OnSpawnServer_Public_Virtual_Void_NetworkConnection_0), IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085A4 RID: 34212 RVA: 0x0024831C File Offset: 0x0024651C
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250526, XrefRangeEnd = 250539, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void SendConfigurationToClient(NetworkConnection conn)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_SendConfigurationToClient_Public_Virtual_Final_New_Void_NetworkConnection_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085A5 RID: 34213 RVA: 0x00248360 File Offset: 0x00246560
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250539, XrefRangeEnd = 250558, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe override bool CanBeDestroyed(out string reason)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			ref IntPtr ptr2 = ref *ptr;
+			IntPtr intPtr = 0;
+			ptr2 = &intPtr;
+			IntPtr intPtr3;
+			IntPtr intPtr2 = IL2CPP.il2cpp_runtime_invoke(IL2CPP.il2cpp_object_get_virtual_method(IL2CPP.Il2CppObjectBaseToPtr(this), ChemistryStation.NativeMethodInfoPtr_CanBeDestroyed_Public_Virtual_Boolean_byref_String_0), IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr3);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr3);
+			reason = IL2CPP.Il2CppStringToManaged(intPtr);
+			return *IL2CPP.il2cpp_object_unbox(intPtr2);
+		}
+
+		// Token: 0x060085A6 RID: 34214 RVA: 0x002483C4 File Offset: 0x002465C4
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250558, XrefRangeEnd = 250593, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe override void Destroy()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(IL2CPP.il2cpp_object_get_virtual_method(IL2CPP.Il2CppObjectBaseToPtr(this), ChemistryStation.NativeMethodInfoPtr_Destroy_Protected_Virtual_Void_1), IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085A7 RID: 34215 RVA: 0x00248400 File Offset: 0x00246600
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250593, XrefRangeEnd = 250594, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void OnMinPass()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(IL2CPP.il2cpp_object_get_virtual_method(IL2CPP.Il2CppObjectBaseToPtr(this), ChemistryStation.NativeMethodInfoPtr_OnMinPass_Protected_Virtual_New_Void_0), IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085A8 RID: 34216 RVA: 0x0024843C File Offset: 0x0024663C
+		[CallerCount(1)]
+		[CachedScanResults(RefRangeStart = 250624, RefRangeEnd = 250625, XrefRangeStart = 250594, XrefRangeEnd = 250624, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void OnTimePass(int minutes)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = ref minutes;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_OnTimePass_Private_Void_Int32_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085A9 RID: 34217 RVA: 0x0024847C File Offset: 0x0024667C
+		[CallerCount(2)]
+		[CachedScanResults(RefRangeStart = 250635, RefRangeEnd = 250637, XrefRangeStart = 250625, XrefRangeEnd = 250635, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void UpdateClock()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_UpdateClock_Private_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085AA RID: 34218 RVA: 0x002484B0 File Offset: 0x002466B0
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250637, XrefRangeEnd = 250642, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void Update()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(IL2CPP.il2cpp_object_get_virtual_method(IL2CPP.Il2CppObjectBaseToPtr(this), ChemistryStation.NativeMethodInfoPtr_Update_Protected_Virtual_New_Void_0), IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085AB RID: 34219 RVA: 0x002484EC File Offset: 0x002466EC
+		[CallerCount(3)]
+		[CachedScanResults(RefRangeStart = 250657, RefRangeEnd = 250660, XrefRangeStart = 250642, XrefRangeEnd = 250657, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe Beaker CreateBeaker()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_CreateBeaker_Public_Beaker_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			IntPtr intPtr3 = intPtr;
+			return (intPtr3 != 0) ? Il2CppObjectPool.Get<Beaker>(intPtr3) : null;
+		}
+
+		// Token: 0x060085AC RID: 34220 RVA: 0x0024852C File Offset: 0x0024672C
+		[CallerCount(1)]
+		[CachedScanResults(RefRangeStart = 250678, RefRangeEnd = 250679, XrefRangeStart = 250660, XrefRangeEnd = 250678, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe StirringRod CreateStirringRod()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_CreateStirringRod_Public_StirringRod_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			IntPtr intPtr3 = intPtr;
+			return (intPtr3 != 0) ? Il2CppObjectPool.Get<StirringRod>(intPtr3) : null;
+		}
+
+		// Token: 0x060085AD RID: 34221 RVA: 0x0024856C File Offset: 0x0024676C
+		[CallerCount(2)]
+		[CachedScanResults(RefRangeStart = 250701, RefRangeEnd = 250703, XrefRangeStart = 250679, XrefRangeEnd = 250701, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void SendCookOperation(ChemistryCookOperation op)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(op);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_SendCookOperation_Public_Void_ChemistryCookOperation_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085AE RID: 34222 RVA: 0x002485B0 File Offset: 0x002467B0
+		[CallerCount(6)]
+		[CachedScanResults(RefRangeStart = 250742, RefRangeEnd = 250748, XrefRangeStart = 250703, XrefRangeEnd = 250742, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void SetCookOperation(NetworkConnection conn, ChemistryCookOperation operation)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(operation);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_SetCookOperation_Public_Void_NetworkConnection_ChemistryCookOperation_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085AF RID: 34223 RVA: 0x00248604 File Offset: 0x00246804
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250748, XrefRangeEnd = 250757, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void FinalizeOperation()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_FinalizeOperation_Private_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085B0 RID: 34224 RVA: 0x00248638 File Offset: 0x00246838
+		[CallerCount(2)]
+		[CachedScanResults(RefRangeStart = 250763, RefRangeEnd = 250765, XrefRangeStart = 250757, XrefRangeEnd = 250763, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void ResetStation()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_ResetStation_Public_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085B1 RID: 34225 RVA: 0x0024866C File Offset: 0x0024686C
+		[CallerCount(1)]
+		[CachedScanResults(RefRangeStart = 250767, RefRangeEnd = 250768, XrefRangeStart = 250765, XrefRangeEnd = 250767, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe bool DoesOutputHaveSpace(StationRecipe recipe)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(recipe);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_DoesOutputHaveSpace_Public_Boolean_StationRecipe_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			return *IL2CPP.il2cpp_object_unbox(intPtr);
+		}
+
+		// Token: 0x060085B2 RID: 34226 RVA: 0x002486BC File Offset: 0x002468BC
+		[CallerCount(2)]
+		[CachedScanResults(RefRangeStart = 250778, RefRangeEnd = 250780, XrefRangeStart = 250768, XrefRangeEnd = 250778, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe List<ItemInstance> GetIngredients()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_GetIngredients_Public_List_1_ItemInstance_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			IntPtr intPtr3 = intPtr;
+			return (intPtr3 != 0) ? Il2CppObjectPool.Get<List<ItemInstance>>(intPtr3) : null;
+		}
+
+		// Token: 0x060085B3 RID: 34227 RVA: 0x002486FC File Offset: 0x002468FC
+		[CallerCount(2)]
+		[CachedScanResults(RefRangeStart = 250783, RefRangeEnd = 250785, XrefRangeStart = 250780, XrefRangeEnd = 250783, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe bool HasIngredientsForRecipe(StationRecipe recipe)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(recipe);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_HasIngredientsForRecipe_Public_Boolean_StationRecipe_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			return *IL2CPP.il2cpp_object_unbox(intPtr);
+		}
+
+		// Token: 0x060085B4 RID: 34228 RVA: 0x0024874C File Offset: 0x0024694C
+		[CallerCount(1)]
+		[CachedScanResults(RefRangeStart = 250817, RefRangeEnd = 250818, XrefRangeStart = 250785, XrefRangeEnd = 250817, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void CreateTrash(List<StationItem> mixerItems)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(mixerItems);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_CreateTrash_Public_Void_List_1_StationItem_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085B5 RID: 34229 RVA: 0x00248790 File Offset: 0x00246990
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250818, XrefRangeEnd = 250829, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void Hovered()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_Hovered_Public_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085B6 RID: 34230 RVA: 0x002487C4 File Offset: 0x002469C4
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250829, XrefRangeEnd = 250837, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void Interacted()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_Interacted_Public_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085B7 RID: 34231 RVA: 0x002487F8 File Offset: 0x002469F8
+		[CallerCount(1)]
+		[CachedScanResults(RefRangeStart = 250864, RefRangeEnd = 250865, XrefRangeStart = 250837, XrefRangeEnd = 250864, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void Use()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_Use_Public_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085B8 RID: 34232 RVA: 0x0024882C File Offset: 0x00246A2C
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250865, XrefRangeEnd = 250875, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void OnEndUse()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_OnEndUse_Private_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085B9 RID: 34233 RVA: 0x00248860 File Offset: 0x00246A60
+		[CallerCount(2)]
+		[CachedScanResults(RefRangeStart = 250897, RefRangeEnd = 250899, XrefRangeStart = 250875, XrefRangeEnd = 250897, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void SetPlayerUser(NetworkObject playerObject)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(playerObject);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_SetPlayerUser_Public_Virtual_Final_New_Void_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085BA RID: 34234 RVA: 0x002488A4 File Offset: 0x00246AA4
+		[CallerCount(2)]
+		[CachedScanResults(RefRangeStart = 250921, RefRangeEnd = 250923, XrefRangeStart = 250899, XrefRangeEnd = 250921, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void SetNPCUser(NetworkObject npcObject)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(npcObject);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_SetNPCUser_Public_Virtual_Final_New_Void_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085BB RID: 34235 RVA: 0x002488E8 File Offset: 0x00246AE8
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250923, XrefRangeEnd = 250950, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void SetStoredInstance(NetworkConnection conn, int itemSlotIndex, ItemInstance instance)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(instance);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_SetStoredInstance_Public_Virtual_Final_New_Void_NetworkConnection_Int32_ItemInstance_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085BC RID: 34236 RVA: 0x0024894C File Offset: 0x00246B4C
+		[CallerCount(3)]
+		[CachedScanResults(RefRangeStart = 250962, RefRangeEnd = 250965, XrefRangeStart = 250950, XrefRangeEnd = 250962, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void SetStoredInstance_Internal(NetworkConnection conn, int itemSlotIndex, ItemInstance instance)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(instance);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_SetStoredInstance_Internal_Private_Void_NetworkConnection_Int32_ItemInstance_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085BD RID: 34237 RVA: 0x002489B0 File Offset: 0x00246BB0
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250965, XrefRangeEnd = 250990, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void SetItemSlotQuantity(int itemSlotIndex, int quantity)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref quantity;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_SetItemSlotQuantity_Public_Virtual_Final_New_Void_Int32_Int32_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085BE RID: 34238 RVA: 0x002489FC File Offset: 0x00246BFC
+		[CallerCount(3)]
+		[CachedScanResults(RefRangeStart = 251018, RefRangeEnd = 251021, XrefRangeStart = 250990, XrefRangeEnd = 251018, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void SetItemSlotQuantity_Internal(int itemSlotIndex, int quantity)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref quantity;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_SetItemSlotQuantity_Internal_Private_Void_Int32_Int32_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085BF RID: 34239 RVA: 0x00248A48 File Offset: 0x00246C48
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251021, XrefRangeEnd = 251050, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void SetSlotLocked(NetworkConnection conn, int itemSlotIndex, bool locked, NetworkObject lockOwner, string lockReason)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)5) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref locked;
+			ptr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(lockOwner);
+			ptr[checked(unchecked((UIntPtr)4) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.ManagedStringToIl2Cpp(lockReason);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_SetSlotLocked_Public_Virtual_Final_New_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085C0 RID: 34240 RVA: 0x00248ACC File Offset: 0x00246CCC
+		[CallerCount(3)]
+		[CachedScanResults(RefRangeStart = 251097, RefRangeEnd = 251100, XrefRangeStart = 251050, XrefRangeEnd = 251097, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void SetSlotLocked_Internal(NetworkConnection conn, int itemSlotIndex, bool locked, NetworkObject lockOwner, string lockReason)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)5) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref locked;
+			ptr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(lockOwner);
+			ptr[checked(unchecked((UIntPtr)4) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.ManagedStringToIl2Cpp(lockReason);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_SetSlotLocked_Internal_Private_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085C1 RID: 34241 RVA: 0x00248B50 File Offset: 0x00246D50
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251100, XrefRangeEnd = 251127, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void SetSlotFilter(NetworkConnection conn, int itemSlotIndex, SlotFilter filter)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(filter);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_SetSlotFilter_Public_Virtual_Final_New_Void_NetworkConnection_Int32_SlotFilter_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085C2 RID: 34242 RVA: 0x00248BB4 File Offset: 0x00246DB4
+		[CallerCount(3)]
+		[CachedScanResults(RefRangeStart = 251170, RefRangeEnd = 251173, XrefRangeStart = 251127, XrefRangeEnd = 251170, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void SetSlotFilter_Internal(NetworkConnection conn, int itemSlotIndex, SlotFilter filter)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(filter);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_SetSlotFilter_Internal_Private_Void_NetworkConnection_Int32_SlotFilter_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085C3 RID: 34243 RVA: 0x00248C18 File Offset: 0x00246E18
+		[CallerCount(1)]
+		[CachedScanResults(RefRangeStart = 251200, RefRangeEnd = 251201, XrefRangeStart = 251173, XrefRangeEnd = 251200, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual WorldspaceUIElement CreateWorldspaceUI()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_CreateWorldspaceUI_Public_Virtual_Final_New_WorldspaceUIElement_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			IntPtr intPtr3 = intPtr;
+			return (intPtr3 != 0) ? Il2CppObjectPool.Get<WorldspaceUIElement>(intPtr3) : null;
+		}
+
+		// Token: 0x060085C4 RID: 34244 RVA: 0x00248C58 File Offset: 0x00246E58
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251201, XrefRangeEnd = 251205, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void DestroyWorldspaceUI()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_DestroyWorldspaceUI_Public_Virtual_Final_New_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085C5 RID: 34245 RVA: 0x00248C8C File Offset: 0x00246E8C
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251205, XrefRangeEnd = 251230, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe override BuildableItemData GetBaseData()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(IL2CPP.il2cpp_object_get_virtual_method(IL2CPP.Il2CppObjectBaseToPtr(this), ChemistryStation.NativeMethodInfoPtr_GetBaseData_Public_Virtual_BuildableItemData_0), IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			IntPtr intPtr3 = intPtr;
+			return (intPtr3 != 0) ? Il2CppObjectPool.Get<BuildableItemData>(intPtr3) : null;
+		}
+
+		// Token: 0x060085C6 RID: 34246 RVA: 0x00248CD8 File Offset: 0x00246ED8
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251230, XrefRangeEnd = 251234, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe override DynamicSaveData GetSaveData()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(IL2CPP.il2cpp_object_get_virtual_method(IL2CPP.Il2CppObjectBaseToPtr(this), ChemistryStation.NativeMethodInfoPtr_GetSaveData_Public_Virtual_DynamicSaveData_0), IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			IntPtr intPtr3 = intPtr;
+			return (intPtr3 != 0) ? Il2CppObjectPool.Get<DynamicSaveData>(intPtr3) : null;
+		}
+
+		// Token: 0x060085C7 RID: 34247 RVA: 0x00248D24 File Offset: 0x00246F24
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251234, XrefRangeEnd = 251252, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe ChemistryStation() : this(IL2CPP.il2cpp_object_new(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr))
+		{
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr__ctor_Public_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085C8 RID: 34248 RVA: 0x00248D60 File Offset: 0x00246F60
+		[CallerCount(0)]
+		public unsafe void _Awake_b__98_0()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr__Awake_b__98_0_Private_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085C9 RID: 34249 RVA: 0x00248D94 File Offset: 0x00246F94
+		[CallerCount(0)]
+		public unsafe void _Awake_b__98_1()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr__Awake_b__98_1_Private_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085CA RID: 34250 RVA: 0x00248DC8 File Offset: 0x00246FC8
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251252, XrefRangeEnd = 251393, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe override void NetworkInitialize___Early()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(IL2CPP.il2cpp_object_get_virtual_method(IL2CPP.Il2CppObjectBaseToPtr(this), ChemistryStation.NativeMethodInfoPtr_NetworkInitialize___Early_Public_Virtual_Void_0), IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085CB RID: 34251 RVA: 0x00248E04 File Offset: 0x00247004
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251393, XrefRangeEnd = 251394, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe override void NetworkInitialize__Late()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(IL2CPP.il2cpp_object_get_virtual_method(IL2CPP.Il2CppObjectBaseToPtr(this), ChemistryStation.NativeMethodInfoPtr_NetworkInitialize__Late_Public_Virtual_Void_0), IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085CC RID: 34252 RVA: 0x00248E40 File Offset: 0x00247040
+		[CallerCount(0)]
+		public unsafe override void NetworkInitializeIfDisabled()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(IL2CPP.il2cpp_object_get_virtual_method(IL2CPP.Il2CppObjectBaseToPtr(this), ChemistryStation.NativeMethodInfoPtr_NetworkInitializeIfDisabled_Public_Virtual_Void_0), IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085CD RID: 34253 RVA: 0x00248E7C File Offset: 0x0024707C
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251394, XrefRangeEnd = 251404, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Server_SetConfigurer_3323014238(NetworkObject player)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(player);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SetConfigurer_3323014238_Private_Void_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085CE RID: 34254 RVA: 0x00248EC0 File Offset: 0x002470C0
+		[CallerCount(2)]
+		[CachedScanResults(RefRangeStart = 250420, RefRangeEnd = 250422, XrefRangeStart = 250420, XrefRangeEnd = 250422, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void RpcLogic___SetConfigurer_3323014238(NetworkObject player)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(player);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetConfigurer_3323014238_Public_Virtual_Final_New_Void_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085CF RID: 34255 RVA: 0x00248F04 File Offset: 0x00247104
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251404, XrefRangeEnd = 251408, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Server_SetConfigurer_3323014238(PooledReader PooledReader0, Channel channel, NetworkConnection conn)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SetConfigurer_3323014238_Private_Void_PooledReader_Channel_NetworkConnection_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085D0 RID: 34256 RVA: 0x00248F68 File Offset: 0x00247168
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251408, XrefRangeEnd = 251418, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Server_SendCookOperation_3552222198(ChemistryCookOperation op)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(op);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SendCookOperation_3552222198_Private_Void_ChemistryCookOperation_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085D1 RID: 34257 RVA: 0x00248FAC File Offset: 0x002471AC
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251418, XrefRangeEnd = 251419, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcLogic___SendCookOperation_3552222198(ChemistryCookOperation op)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(op);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcLogic___SendCookOperation_3552222198_Public_Void_ChemistryCookOperation_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085D2 RID: 34258 RVA: 0x00248FF0 File Offset: 0x002471F0
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251419, XrefRangeEnd = 251423, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Server_SendCookOperation_3552222198(PooledReader PooledReader0, Channel channel, NetworkConnection conn)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SendCookOperation_3552222198_Private_Void_PooledReader_Channel_NetworkConnection_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085D3 RID: 34259 RVA: 0x00249054 File Offset: 0x00247254
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251423, XrefRangeEnd = 251433, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Observers_SetCookOperation_1024887225(NetworkConnection conn, ChemistryCookOperation operation)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(operation);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Observers_SetCookOperation_1024887225_Private_Void_NetworkConnection_ChemistryCookOperation_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085D4 RID: 34260 RVA: 0x002490A8 File Offset: 0x002472A8
+		[CallerCount(3)]
+		[CachedScanResults(RefRangeStart = 251443, RefRangeEnd = 251446, XrefRangeStart = 251433, XrefRangeEnd = 251443, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcLogic___SetCookOperation_1024887225(NetworkConnection conn, ChemistryCookOperation operation)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(operation);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetCookOperation_1024887225_Public_Void_NetworkConnection_ChemistryCookOperation_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085D5 RID: 34261 RVA: 0x002490FC File Offset: 0x002472FC
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251446, XrefRangeEnd = 251450, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Observers_SetCookOperation_1024887225(PooledReader PooledReader0, Channel channel)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Observers_SetCookOperation_1024887225_Private_Void_PooledReader_Channel_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085D6 RID: 34262 RVA: 0x0024914C File Offset: 0x0024734C
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251450, XrefRangeEnd = 251460, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Target_SetCookOperation_1024887225(NetworkConnection conn, ChemistryCookOperation operation)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(operation);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Target_SetCookOperation_1024887225_Private_Void_NetworkConnection_ChemistryCookOperation_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085D7 RID: 34263 RVA: 0x002491A0 File Offset: 0x002473A0
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251460, XrefRangeEnd = 251464, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Target_SetCookOperation_1024887225(PooledReader PooledReader0, Channel channel)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Target_SetCookOperation_1024887225_Private_Void_PooledReader_Channel_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085D8 RID: 34264 RVA: 0x002491F0 File Offset: 0x002473F0
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 0, XrefRangeEnd = 0, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Observers_FinalizeOperation_2166136261()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Observers_FinalizeOperation_2166136261_Private_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085D9 RID: 34265 RVA: 0x00249224 File Offset: 0x00247424
+		[CallerCount(1)]
+		[CachedScanResults(RefRangeStart = 251488, RefRangeEnd = 251489, XrefRangeStart = 251464, XrefRangeEnd = 251488, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcLogic___FinalizeOperation_2166136261()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcLogic___FinalizeOperation_2166136261_Private_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085DA RID: 34266 RVA: 0x00249258 File Offset: 0x00247458
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251489, XrefRangeEnd = 251491, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Observers_FinalizeOperation_2166136261(PooledReader PooledReader0, Channel channel)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Observers_FinalizeOperation_2166136261_Private_Void_PooledReader_Channel_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085DB RID: 34267 RVA: 0x002492A8 File Offset: 0x002474A8
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251491, XrefRangeEnd = 251501, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Server_SetPlayerUser_3323014238(NetworkObject playerObject)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(playerObject);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SetPlayerUser_3323014238_Private_Void_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085DC RID: 34268 RVA: 0x002492EC File Offset: 0x002474EC
+		[CallerCount(2)]
+		[CachedScanResults(RefRangeStart = 250387, RefRangeEnd = 250389, XrefRangeStart = 250387, XrefRangeEnd = 250389, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void RpcLogic___SetPlayerUser_3323014238(NetworkObject playerObject)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(playerObject);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetPlayerUser_3323014238_Public_Virtual_Final_New_Void_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085DD RID: 34269 RVA: 0x00249330 File Offset: 0x00247530
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251501, XrefRangeEnd = 251505, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Server_SetPlayerUser_3323014238(PooledReader PooledReader0, Channel channel, NetworkConnection conn)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SetPlayerUser_3323014238_Private_Void_PooledReader_Channel_NetworkConnection_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085DE RID: 34270 RVA: 0x00249394 File Offset: 0x00247594
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251505, XrefRangeEnd = 251515, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Server_SetNPCUser_3323014238(NetworkObject npcObject)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(npcObject);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SetNPCUser_3323014238_Private_Void_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085DF RID: 34271 RVA: 0x002493D8 File Offset: 0x002475D8
+		[CallerCount(2)]
+		[CachedScanResults(RefRangeStart = 250377, RefRangeEnd = 250379, XrefRangeStart = 250377, XrefRangeEnd = 250379, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void RpcLogic___SetNPCUser_3323014238(NetworkObject npcObject)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(npcObject);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetNPCUser_3323014238_Public_Virtual_Final_New_Void_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085E0 RID: 34272 RVA: 0x0024941C File Offset: 0x0024761C
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251515, XrefRangeEnd = 251519, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Server_SetNPCUser_3323014238(PooledReader PooledReader0, Channel channel, NetworkConnection conn)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SetNPCUser_3323014238_Private_Void_PooledReader_Channel_NetworkConnection_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085E1 RID: 34273 RVA: 0x00249480 File Offset: 0x00247680
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251519, XrefRangeEnd = 251532, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Server_SetStoredInstance_2652194801(NetworkConnection conn, int itemSlotIndex, ItemInstance instance)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(instance);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SetStoredInstance_2652194801_Private_Void_NetworkConnection_Int32_ItemInstance_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085E2 RID: 34274 RVA: 0x002494E4 File Offset: 0x002476E4
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251532, XrefRangeEnd = 251536, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void RpcLogic___SetStoredInstance_2652194801(NetworkConnection conn, int itemSlotIndex, ItemInstance instance)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(instance);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetStoredInstance_2652194801_Public_Virtual_Final_New_Void_NetworkConnection_Int32_ItemInstance_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085E3 RID: 34275 RVA: 0x00249548 File Offset: 0x00247748
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251536, XrefRangeEnd = 251544, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Server_SetStoredInstance_2652194801(PooledReader PooledReader0, Channel channel, NetworkConnection conn)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SetStoredInstance_2652194801_Private_Void_PooledReader_Channel_NetworkConnection_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085E4 RID: 34276 RVA: 0x002495AC File Offset: 0x002477AC
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251544, XrefRangeEnd = 251556, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Observers_SetStoredInstance_Internal_2652194801(NetworkConnection conn, int itemSlotIndex, ItemInstance instance)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(instance);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Observers_SetStoredInstance_Internal_2652194801_Private_Void_NetworkConnection_Int32_ItemInstance_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085E5 RID: 34277 RVA: 0x00249610 File Offset: 0x00247810
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251556, XrefRangeEnd = 251560, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcLogic___SetStoredInstance_Internal_2652194801(NetworkConnection conn, int itemSlotIndex, ItemInstance instance)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(instance);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetStoredInstance_Internal_2652194801_Private_Void_NetworkConnection_Int32_ItemInstance_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085E6 RID: 34278 RVA: 0x00249674 File Offset: 0x00247874
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251560, XrefRangeEnd = 251568, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Observers_SetStoredInstance_Internal_2652194801(PooledReader PooledReader0, Channel channel)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Observers_SetStoredInstance_Internal_2652194801_Private_Void_PooledReader_Channel_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085E7 RID: 34279 RVA: 0x002496C4 File Offset: 0x002478C4
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251568, XrefRangeEnd = 251580, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Target_SetStoredInstance_Internal_2652194801(NetworkConnection conn, int itemSlotIndex, ItemInstance instance)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(instance);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Target_SetStoredInstance_Internal_2652194801_Private_Void_NetworkConnection_Int32_ItemInstance_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085E8 RID: 34280 RVA: 0x00249728 File Offset: 0x00247928
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251580, XrefRangeEnd = 251588, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Target_SetStoredInstance_Internal_2652194801(PooledReader PooledReader0, Channel channel)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Target_SetStoredInstance_Internal_2652194801_Private_Void_PooledReader_Channel_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085E9 RID: 34281 RVA: 0x00249778 File Offset: 0x00247978
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251588, XrefRangeEnd = 251601, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Server_SetItemSlotQuantity_1692629761(int itemSlotIndex, int quantity)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref quantity;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SetItemSlotQuantity_1692629761_Private_Void_Int32_Int32_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085EA RID: 34282 RVA: 0x002497C4 File Offset: 0x002479C4
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251601, XrefRangeEnd = 251602, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void RpcLogic___SetItemSlotQuantity_1692629761(int itemSlotIndex, int quantity)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref quantity;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetItemSlotQuantity_1692629761_Public_Virtual_Final_New_Void_Int32_Int32_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085EB RID: 34283 RVA: 0x00249810 File Offset: 0x00247A10
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251602, XrefRangeEnd = 251609, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Server_SetItemSlotQuantity_1692629761(PooledReader PooledReader0, Channel channel, NetworkConnection conn)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SetItemSlotQuantity_1692629761_Private_Void_PooledReader_Channel_NetworkConnection_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085EC RID: 34284 RVA: 0x00249874 File Offset: 0x00247A74
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251609, XrefRangeEnd = 251622, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Observers_SetItemSlotQuantity_Internal_1692629761(int itemSlotIndex, int quantity)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref quantity;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Observers_SetItemSlotQuantity_Internal_1692629761_Private_Void_Int32_Int32_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085ED RID: 34285 RVA: 0x002498C0 File Offset: 0x00247AC0
+		[CallerCount(1)]
+		[CachedScanResults(RefRangeStart = 251627, RefRangeEnd = 251628, XrefRangeStart = 251622, XrefRangeEnd = 251627, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcLogic___SetItemSlotQuantity_Internal_1692629761(int itemSlotIndex, int quantity)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref quantity;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetItemSlotQuantity_Internal_1692629761_Private_Void_Int32_Int32_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085EE RID: 34286 RVA: 0x0024990C File Offset: 0x00247B0C
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251628, XrefRangeEnd = 251635, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Observers_SetItemSlotQuantity_Internal_1692629761(PooledReader PooledReader0, Channel channel)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Observers_SetItemSlotQuantity_Internal_1692629761_Private_Void_PooledReader_Channel_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085EF RID: 34287 RVA: 0x0024995C File Offset: 0x00247B5C
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251635, XrefRangeEnd = 251650, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Server_SetSlotLocked_3170825843(NetworkConnection conn, int itemSlotIndex, bool locked, NetworkObject lockOwner, string lockReason)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)5) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref locked;
+			ptr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(lockOwner);
+			ptr[checked(unchecked((UIntPtr)4) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.ManagedStringToIl2Cpp(lockReason);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SetSlotLocked_3170825843_Private_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085F0 RID: 34288 RVA: 0x002499E0 File Offset: 0x00247BE0
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251650, XrefRangeEnd = 251654, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void RpcLogic___SetSlotLocked_3170825843(NetworkConnection conn, int itemSlotIndex, bool locked, NetworkObject lockOwner, string lockReason)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)5) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref locked;
+			ptr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(lockOwner);
+			ptr[checked(unchecked((UIntPtr)4) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.ManagedStringToIl2Cpp(lockReason);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetSlotLocked_3170825843_Public_Virtual_Final_New_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085F1 RID: 34289 RVA: 0x00249A64 File Offset: 0x00247C64
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251654, XrefRangeEnd = 251663, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Server_SetSlotLocked_3170825843(PooledReader PooledReader0, Channel channel, NetworkConnection conn)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SetSlotLocked_3170825843_Private_Void_PooledReader_Channel_NetworkConnection_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085F2 RID: 34290 RVA: 0x00249AC8 File Offset: 0x00247CC8
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251663, XrefRangeEnd = 251677, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Target_SetSlotLocked_Internal_3170825843(NetworkConnection conn, int itemSlotIndex, bool locked, NetworkObject lockOwner, string lockReason)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)5) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref locked;
+			ptr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(lockOwner);
+			ptr[checked(unchecked((UIntPtr)4) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.ManagedStringToIl2Cpp(lockReason);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Target_SetSlotLocked_Internal_3170825843_Private_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085F3 RID: 34291 RVA: 0x00249B4C File Offset: 0x00247D4C
+		[CallerCount(3)]
+		[CachedScanResults(RefRangeStart = 251683, RefRangeEnd = 251686, XrefRangeStart = 251677, XrefRangeEnd = 251683, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcLogic___SetSlotLocked_Internal_3170825843(NetworkConnection conn, int itemSlotIndex, bool locked, NetworkObject lockOwner, string lockReason)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)5) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref locked;
+			ptr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(lockOwner);
+			ptr[checked(unchecked((UIntPtr)4) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.ManagedStringToIl2Cpp(lockReason);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetSlotLocked_Internal_3170825843_Private_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085F4 RID: 34292 RVA: 0x00249BD0 File Offset: 0x00247DD0
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251686, XrefRangeEnd = 251693, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Target_SetSlotLocked_Internal_3170825843(PooledReader PooledReader0, Channel channel)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Target_SetSlotLocked_Internal_3170825843_Private_Void_PooledReader_Channel_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085F5 RID: 34293 RVA: 0x00249C20 File Offset: 0x00247E20
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251693, XrefRangeEnd = 251707, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Observers_SetSlotLocked_Internal_3170825843(NetworkConnection conn, int itemSlotIndex, bool locked, NetworkObject lockOwner, string lockReason)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)5) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref locked;
+			ptr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(lockOwner);
+			ptr[checked(unchecked((UIntPtr)4) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.ManagedStringToIl2Cpp(lockReason);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Observers_SetSlotLocked_Internal_3170825843_Private_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085F6 RID: 34294 RVA: 0x00249CA4 File Offset: 0x00247EA4
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251707, XrefRangeEnd = 251714, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Observers_SetSlotLocked_Internal_3170825843(PooledReader PooledReader0, Channel channel)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Observers_SetSlotLocked_Internal_3170825843_Private_Void_PooledReader_Channel_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085F7 RID: 34295 RVA: 0x00249CF4 File Offset: 0x00247EF4
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251714, XrefRangeEnd = 251727, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Server_SetSlotFilter_527532783(NetworkConnection conn, int itemSlotIndex, SlotFilter filter)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(filter);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Server_SetSlotFilter_527532783_Private_Void_NetworkConnection_Int32_SlotFilter_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085F8 RID: 34296 RVA: 0x00249D58 File Offset: 0x00247F58
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251727, XrefRangeEnd = 251731, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe virtual void RpcLogic___SetSlotFilter_527532783(NetworkConnection conn, int itemSlotIndex, SlotFilter filter)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(filter);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetSlotFilter_527532783_Public_Virtual_Final_New_Void_NetworkConnection_Int32_SlotFilter_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085F9 RID: 34297 RVA: 0x00249DBC File Offset: 0x00247FBC
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251731, XrefRangeEnd = 251739, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Server_SetSlotFilter_527532783(PooledReader PooledReader0, Channel channel, NetworkConnection conn)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Server_SetSlotFilter_527532783_Private_Void_PooledReader_Channel_NetworkConnection_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085FA RID: 34298 RVA: 0x00249E20 File Offset: 0x00248020
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251739, XrefRangeEnd = 251751, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Observers_SetSlotFilter_Internal_527532783(NetworkConnection conn, int itemSlotIndex, SlotFilter filter)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(filter);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Observers_SetSlotFilter_Internal_527532783_Private_Void_NetworkConnection_Int32_SlotFilter_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085FB RID: 34299 RVA: 0x00249E84 File Offset: 0x00248084
+		[CallerCount(3)]
+		[CachedScanResults(RefRangeStart = 251756, RefRangeEnd = 251759, XrefRangeStart = 251751, XrefRangeEnd = 251756, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcLogic___SetSlotFilter_Internal_527532783(NetworkConnection conn, int itemSlotIndex, SlotFilter filter)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(filter);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcLogic___SetSlotFilter_Internal_527532783_Private_Void_NetworkConnection_Int32_SlotFilter_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085FC RID: 34300 RVA: 0x00249EE8 File Offset: 0x002480E8
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251759, XrefRangeEnd = 251765, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Observers_SetSlotFilter_Internal_527532783(PooledReader PooledReader0, Channel channel)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Observers_SetSlotFilter_Internal_527532783_Private_Void_PooledReader_Channel_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085FD RID: 34301 RVA: 0x00249F38 File Offset: 0x00248138
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251765, XrefRangeEnd = 251777, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcWriter___Target_SetSlotFilter_Internal_527532783(NetworkConnection conn, int itemSlotIndex, SlotFilter filter)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(conn);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref itemSlotIndex;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = IL2CPP.Il2CppObjectBaseToPtr(filter);
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcWriter___Target_SetSlotFilter_Internal_527532783_Private_Void_NetworkConnection_Int32_SlotFilter_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x060085FE RID: 34302 RVA: 0x00249F9C File Offset: 0x0024819C
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251777, XrefRangeEnd = 251783, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe void RpcReader___Target_SetSlotFilter_Internal_527532783(PooledReader PooledReader0, Channel channel)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref channel;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_RpcReader___Target_SetSlotFilter_Internal_527532783_Private_Void_PooledReader_Channel_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x17002991 RID: 10641
+		// (get) Token: 0x060085FF RID: 34303 RVA: 0x00249FEC File Offset: 0x002481EC
+		// (set) Token: 0x06008600 RID: 34304 RVA: 0x0024A02C File Offset: 0x0024822C
+		public unsafe NetworkObject SyncAccessor_<NPCUserObject>k__BackingField
+		{
+			[CallerCount(2)]
+			[CachedScanResults(RefRangeStart = 102129, RefRangeEnd = 102131, XrefRangeStart = 102129, XrefRangeEnd = 102131, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_sync___get_value__NPCUserObject_k__BackingField_Public_get_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<NetworkObject>(intPtr3) : null;
+			}
+			[CallerCount(0)]
+			[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251783, XrefRangeEnd = 251792, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			set
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+				*ptr = IL2CPP.Il2CppObjectBaseToPtr(value);
+				ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref value;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_sync___set_value__NPCUserObject_k__BackingField_Public_set_Void_NetworkObject_Boolean_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			}
+		}
+
+		// Token: 0x06008601 RID: 34305 RVA: 0x0024A07C File Offset: 0x0024827C
+		[CallerCount(0)]
+		[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251792, XrefRangeEnd = 251793, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe override bool ReadSyncVar___ScheduleOne_ObjectScripts_ChemistryStation(PooledReader PooledReader0, uint UInt321, bool Boolean2)
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)3) * (UIntPtr)sizeof(IntPtr))];
+			*ptr = IL2CPP.Il2CppObjectBaseToPtr(PooledReader0);
+			ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref UInt321;
+			ptr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref Boolean2;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(IL2CPP.il2cpp_object_get_virtual_method(IL2CPP.Il2CppObjectBaseToPtr(this), ChemistryStation.NativeMethodInfoPtr_ReadSyncVar___ScheduleOne_ObjectScripts_ChemistryStation_Public_Virtual_Boolean_PooledReader_UInt32_Boolean_0), IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			return *IL2CPP.il2cpp_object_unbox(intPtr);
+		}
+
+		// Token: 0x17002992 RID: 10642
+		// (get) Token: 0x06008602 RID: 34306 RVA: 0x0024A0F0 File Offset: 0x002482F0
+		// (set) Token: 0x06008603 RID: 34307 RVA: 0x0024A130 File Offset: 0x00248330
+		public unsafe NetworkObject SyncAccessor_<PlayerUserObject>k__BackingField
+		{
+			[CallerCount(0)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_sync___get_value__PlayerUserObject_k__BackingField_Public_get_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<NetworkObject>(intPtr3) : null;
+			}
+			[CallerCount(0)]
+			[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251793, XrefRangeEnd = 251802, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			set
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+				*ptr = IL2CPP.Il2CppObjectBaseToPtr(value);
+				ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref value;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_sync___set_value__PlayerUserObject_k__BackingField_Public_set_Void_NetworkObject_Boolean_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			}
+		}
+
+		// Token: 0x17002993 RID: 10643
+		// (get) Token: 0x06008604 RID: 34308 RVA: 0x0024A180 File Offset: 0x00248380
+		// (set) Token: 0x06008605 RID: 34309 RVA: 0x0024A1C0 File Offset: 0x002483C0
+		public unsafe NetworkObject SyncAccessor_<CurrentPlayerConfigurer>k__BackingField
+		{
+			[CallerCount(5)]
+			[CachedScanResults(RefRangeStart = 174469, RefRangeEnd = 174474, XrefRangeStart = 174469, XrefRangeEnd = 174474, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			get
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_sync___get_value__CurrentPlayerConfigurer_k__BackingField_Public_get_NetworkObject_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<NetworkObject>(intPtr3) : null;
+			}
+			[CallerCount(0)]
+			[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 251802, XrefRangeEnd = 251811, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			set
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)2) * (UIntPtr)sizeof(IntPtr))];
+				*ptr = IL2CPP.Il2CppObjectBaseToPtr(value);
+				ptr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr)) / (UIntPtr)sizeof(IntPtr)] = ref value;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.NativeMethodInfoPtr_sync___set_value__CurrentPlayerConfigurer_k__BackingField_Public_set_Void_NetworkObject_Boolean_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			}
+		}
+
+		// Token: 0x06008606 RID: 34310 RVA: 0x0024A210 File Offset: 0x00248410
+		[CallerCount(1)]
+		[CachedScanResults(RefRangeStart = 251860, RefRangeEnd = 251861, XrefRangeStart = 251811, XrefRangeEnd = 251860, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+		public unsafe override void Method_Protected_Virtual_Void_0()
+		{
+			IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+			IntPtr* ptr = null;
+			IntPtr intPtr2;
+			IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(IL2CPP.il2cpp_object_get_virtual_method(IL2CPP.Il2CppObjectBaseToPtr(this), ChemistryStation.NativeMethodInfoPtr_Method_Protected_Virtual_Void_0), IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+			Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+		}
+
+		// Token: 0x06008607 RID: 34311 RVA: 0x0003F708 File Offset: 0x0003D908
+		public ChemistryStation(IntPtr pointer) : base(pointer)
+		{
+		}
+
+		// Token: 0x1700294C RID: 10572
+		// (get) Token: 0x06008608 RID: 34312 RVA: 0x0024A24C File Offset: 0x0024844C
+		// (set) Token: 0x06008609 RID: 34313 RVA: 0x0003F711 File Offset: 0x0003D911
+		public unsafe static float FOV_OVERRIDE
+		{
+			get
+			{
+				float result;
+				IL2CPP.il2cpp_field_static_get_value(ChemistryStation.NativeFieldInfoPtr_FOV_OVERRIDE, (void*)(&result));
+				return result;
+			}
+			set
+			{
+				IL2CPP.il2cpp_field_static_set_value(ChemistryStation.NativeFieldInfoPtr_FOV_OVERRIDE, (void*)(&value));
+			}
+		}
+
+		// Token: 0x1700294D RID: 10573
+		// (get) Token: 0x0600860A RID: 34314 RVA: 0x0024A268 File Offset: 0x00248468
+		// (set) Token: 0x0600860B RID: 34315 RVA: 0x0003F71F File Offset: 0x0003D91F
+		public unsafe static int INPUT_SLOT_COUNT
+		{
+			get
+			{
+				int result;
+				IL2CPP.il2cpp_field_static_get_value(ChemistryStation.NativeFieldInfoPtr_INPUT_SLOT_COUNT, (void*)(&result));
+				return result;
+			}
+			set
+			{
+				IL2CPP.il2cpp_field_static_set_value(ChemistryStation.NativeFieldInfoPtr_INPUT_SLOT_COUNT, (void*)(&value));
+			}
+		}
+
+		// Token: 0x1700294E RID: 10574
+		// (get) Token: 0x0600860C RID: 34316 RVA: 0x0024A284 File Offset: 0x00248484
+		// (set) Token: 0x0600860D RID: 34317 RVA: 0x0003F72D File Offset: 0x0003D92D
+		public unsafe List<ItemSlot> _ItemSlots_k__BackingField
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__ItemSlots_k__BackingField);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<List<ItemSlot>>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__ItemSlots_k__BackingField), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x1700294F RID: 10575
+		// (get) Token: 0x0600860E RID: 34318 RVA: 0x0024A2B4 File Offset: 0x002484B4
+		// (set) Token: 0x0600860F RID: 34319 RVA: 0x0003F74C File Offset: 0x0003D94C
+		public unsafe NetworkObject _NPCUserObject_k__BackingField
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__NPCUserObject_k__BackingField);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<NetworkObject>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__NPCUserObject_k__BackingField), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002950 RID: 10576
+		// (get) Token: 0x06008610 RID: 34320 RVA: 0x0024A2E4 File Offset: 0x002484E4
+		// (set) Token: 0x06008611 RID: 34321 RVA: 0x0003F76B File Offset: 0x0003D96B
+		public unsafe NetworkObject _PlayerUserObject_k__BackingField
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__PlayerUserObject_k__BackingField);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<NetworkObject>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__PlayerUserObject_k__BackingField), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002951 RID: 10577
+		// (get) Token: 0x06008612 RID: 34322 RVA: 0x0024A314 File Offset: 0x00248514
+		// (set) Token: 0x06008613 RID: 34323 RVA: 0x0003F78A File Offset: 0x0003D98A
+		public unsafe ChemistryCookOperation _CurrentCookOperation_k__BackingField
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__CurrentCookOperation_k__BackingField);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<ChemistryCookOperation>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__CurrentCookOperation_k__BackingField), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002952 RID: 10578
+		// (get) Token: 0x06008614 RID: 34324 RVA: 0x0024A344 File Offset: 0x00248544
+		// (set) Token: 0x06008615 RID: 34325 RVA: 0x0003F7A9 File Offset: 0x0003D9A9
+		public unsafe Il2CppReferenceArray<ItemSlot> IngredientSlots
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_IngredientSlots);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Il2CppReferenceArray<ItemSlot>>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_IngredientSlots), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002953 RID: 10579
+		// (get) Token: 0x06008616 RID: 34326 RVA: 0x0024A374 File Offset: 0x00248574
+		// (set) Token: 0x06008617 RID: 34327 RVA: 0x0003F7C8 File Offset: 0x0003D9C8
+		public unsafe ItemSlot OutputSlot
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_OutputSlot);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<ItemSlot>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_OutputSlot), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002954 RID: 10580
+		// (get) Token: 0x06008618 RID: 34328 RVA: 0x0024A3A4 File Offset: 0x002485A4
+		// (set) Token: 0x06008619 RID: 34329 RVA: 0x0003F7E7 File Offset: 0x0003D9E7
+		public unsafe InteractableObject IntObj
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_IntObj);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<InteractableObject>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_IntObj), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002955 RID: 10581
+		// (get) Token: 0x0600861A RID: 34330 RVA: 0x0024A3D4 File Offset: 0x002485D4
+		// (set) Token: 0x0600861B RID: 34331 RVA: 0x0003F806 File Offset: 0x0003DA06
+		public unsafe Transform CameraPosition_Default
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_CameraPosition_Default);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Transform>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_CameraPosition_Default), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002956 RID: 10582
+		// (get) Token: 0x0600861C RID: 34332 RVA: 0x0024A404 File Offset: 0x00248604
+		// (set) Token: 0x0600861D RID: 34333 RVA: 0x0003F825 File Offset: 0x0003DA25
+		public unsafe Transform CameraPosition_Stirring
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_CameraPosition_Stirring);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Transform>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_CameraPosition_Stirring), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002957 RID: 10583
+		// (get) Token: 0x0600861E RID: 34334 RVA: 0x0024A434 File Offset: 0x00248634
+		// (set) Token: 0x0600861F RID: 34335 RVA: 0x0003F844 File Offset: 0x0003DA44
+		public unsafe Transform StaticBeaker
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_StaticBeaker);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Transform>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_StaticBeaker), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002958 RID: 10584
+		// (get) Token: 0x06008620 RID: 34336 RVA: 0x0024A464 File Offset: 0x00248664
+		// (set) Token: 0x06008621 RID: 34337 RVA: 0x0003F863 File Offset: 0x0003DA63
+		public unsafe Transform StaticFunnel
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_StaticFunnel);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Transform>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_StaticFunnel), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002959 RID: 10585
+		// (get) Token: 0x06008622 RID: 34338 RVA: 0x0024A494 File Offset: 0x00248694
+		// (set) Token: 0x06008623 RID: 34339 RVA: 0x0003F882 File Offset: 0x0003DA82
+		public unsafe Transform StaticStirringRod
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_StaticStirringRod);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Transform>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_StaticStirringRod), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x1700295A RID: 10586
+		// (get) Token: 0x06008624 RID: 34340 RVA: 0x0024A4C4 File Offset: 0x002486C4
+		// (set) Token: 0x06008625 RID: 34341 RVA: 0x0003F8A1 File Offset: 0x0003DAA1
+		public unsafe Transform ItemContainer
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_ItemContainer);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Transform>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_ItemContainer), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x1700295B RID: 10587
+		// (get) Token: 0x06008626 RID: 34342 RVA: 0x0024A4F4 File Offset: 0x002486F4
+		// (set) Token: 0x06008627 RID: 34343 RVA: 0x0003F8C0 File Offset: 0x0003DAC0
+		public unsafe LabStand LabStand
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_LabStand);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<LabStand>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_LabStand), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x1700295C RID: 10588
+		// (get) Token: 0x06008628 RID: 34344 RVA: 0x0024A524 File Offset: 0x00248724
+		// (set) Token: 0x06008629 RID: 34345 RVA: 0x0003F8DF File Offset: 0x0003DADF
+		public unsafe StorageVisualizer InputVisuals
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_InputVisuals);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<StorageVisualizer>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_InputVisuals), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x1700295D RID: 10589
+		// (get) Token: 0x0600862A RID: 34346 RVA: 0x0024A554 File Offset: 0x00248754
+		// (set) Token: 0x0600862B RID: 34347 RVA: 0x0003F8FE File Offset: 0x0003DAFE
+		public unsafe StorageVisualizer OutputVisuals
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_OutputVisuals);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<StorageVisualizer>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_OutputVisuals), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x1700295E RID: 10590
+		// (get) Token: 0x0600862C RID: 34348 RVA: 0x0024A584 File Offset: 0x00248784
+		// (set) Token: 0x0600862D RID: 34349 RVA: 0x0003F91D File Offset: 0x0003DB1D
+		public unsafe Rigidbody AnchorRb
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_AnchorRb);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Rigidbody>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_AnchorRb), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x1700295F RID: 10591
+		// (get) Token: 0x0600862E RID: 34350 RVA: 0x0024A5B4 File Offset: 0x002487B4
+		// (set) Token: 0x0600862F RID: 34351 RVA: 0x0003F93C File Offset: 0x0003DB3C
+		public unsafe BunsenBurner Burner
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_Burner);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<BunsenBurner>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_Burner), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002960 RID: 10592
+		// (get) Token: 0x06008630 RID: 34352 RVA: 0x0024A5E4 File Offset: 0x002487E4
+		// (set) Token: 0x06008631 RID: 34353 RVA: 0x0003F95B File Offset: 0x0003DB5B
+		public unsafe BoilingFlask BoilingFlask
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_BoilingFlask);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<BoilingFlask>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_BoilingFlask), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002961 RID: 10593
+		// (get) Token: 0x06008632 RID: 34354 RVA: 0x0024A614 File Offset: 0x00248814
+		// (set) Token: 0x06008633 RID: 34355 RVA: 0x0003F97A File Offset: 0x0003DB7A
+		public unsafe DigitalAlarm Alarm
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_Alarm);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<DigitalAlarm>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_Alarm), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002962 RID: 10594
+		// (get) Token: 0x06008634 RID: 34356 RVA: 0x0024A644 File Offset: 0x00248844
+		// (set) Token: 0x06008635 RID: 34357 RVA: 0x0003F999 File Offset: 0x0003DB99
+		public unsafe Transform uiPoint
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_uiPoint);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Transform>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_uiPoint), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002963 RID: 10595
+		// (get) Token: 0x06008636 RID: 34358 RVA: 0x0024A674 File Offset: 0x00248874
+		// (set) Token: 0x06008637 RID: 34359 RVA: 0x0003F9B8 File Offset: 0x0003DBB8
+		public unsafe Il2CppReferenceArray<Transform> accessPoints
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_accessPoints);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Il2CppReferenceArray<Transform>>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_accessPoints), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002964 RID: 10596
+		// (get) Token: 0x06008638 RID: 34360 RVA: 0x0024A6A4 File Offset: 0x002488A4
+		// (set) Token: 0x06008639 RID: 34361 RVA: 0x0003F9D7 File Offset: 0x0003DBD7
+		public unsafe ConfigurationReplicator configReplicator
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_configReplicator);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<ConfigurationReplicator>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_configReplicator), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002965 RID: 10597
+		// (get) Token: 0x0600863A RID: 34362 RVA: 0x0024A6D4 File Offset: 0x002488D4
+		// (set) Token: 0x0600863B RID: 34363 RVA: 0x0003F9F6 File Offset: 0x0003DBF6
+		public unsafe BoxCollider TrashSpawnVolume
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_TrashSpawnVolume);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<BoxCollider>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_TrashSpawnVolume), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002966 RID: 10598
+		// (get) Token: 0x0600863C RID: 34364 RVA: 0x0024A704 File Offset: 0x00248904
+		// (set) Token: 0x0600863D RID: 34365 RVA: 0x0003FA15 File Offset: 0x0003DC15
+		public unsafe Transform ExplosionPoint
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_ExplosionPoint);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Transform>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_ExplosionPoint), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002967 RID: 10599
+		// (get) Token: 0x0600863E RID: 34366 RVA: 0x0024A734 File Offset: 0x00248934
+		// (set) Token: 0x0600863F RID: 34367 RVA: 0x0003FA34 File Offset: 0x0003DC34
+		public unsafe Transform InputSlotsPosition
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_InputSlotsPosition);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Transform>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_InputSlotsPosition), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002968 RID: 10600
+		// (get) Token: 0x06008640 RID: 34368 RVA: 0x0024A764 File Offset: 0x00248964
+		// (set) Token: 0x06008641 RID: 34369 RVA: 0x0003FA53 File Offset: 0x0003DC53
+		public unsafe Transform OutputSlotPosition
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_OutputSlotPosition);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Transform>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_OutputSlotPosition), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002969 RID: 10601
+		// (get) Token: 0x06008642 RID: 34370 RVA: 0x0024A794 File Offset: 0x00248994
+		// (set) Token: 0x06008643 RID: 34371 RVA: 0x0003FA72 File Offset: 0x0003DC72
+		public unsafe Il2CppReferenceArray<Transform> IngredientTransforms
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_IngredientTransforms);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Il2CppReferenceArray<Transform>>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_IngredientTransforms), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x1700296A RID: 10602
+		// (get) Token: 0x06008644 RID: 34372 RVA: 0x0024A7C4 File Offset: 0x002489C4
+		// (set) Token: 0x06008645 RID: 34373 RVA: 0x0003FA91 File Offset: 0x0003DC91
+		public unsafe Transform BeakerAlignmentTransform
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_BeakerAlignmentTransform);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Transform>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_BeakerAlignmentTransform), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x1700296B RID: 10603
+		// (get) Token: 0x06008646 RID: 34374 RVA: 0x0024A7F4 File Offset: 0x002489F4
+		// (set) Token: 0x06008647 RID: 34375 RVA: 0x0003FAB0 File Offset: 0x0003DCB0
+		public unsafe GameObject BeakerPrefab
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_BeakerPrefab);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<GameObject>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_BeakerPrefab), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x1700296C RID: 10604
+		// (get) Token: 0x06008648 RID: 34376 RVA: 0x0024A824 File Offset: 0x00248A24
+		// (set) Token: 0x06008649 RID: 34377 RVA: 0x0003FACF File Offset: 0x0003DCCF
+		public unsafe StirringRod StirringRodPrefab
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_StirringRodPrefab);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<StirringRod>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_StirringRodPrefab), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x1700296D RID: 10605
+		// (get) Token: 0x0600864A RID: 34378 RVA: 0x0024A854 File Offset: 0x00248A54
+		// (set) Token: 0x0600864B RID: 34379 RVA: 0x0003FAEE File Offset: 0x0003DCEE
+		public unsafe ChemistryStationUIElement WorldspaceUIPrefab
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_WorldspaceUIPrefab);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<ChemistryStationUIElement>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_WorldspaceUIPrefab), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x1700296E RID: 10606
+		// (get) Token: 0x0600864C RID: 34380 RVA: 0x0024A884 File Offset: 0x00248A84
+		// (set) Token: 0x0600864D RID: 34381 RVA: 0x0003FB0D File Offset: 0x0003DD0D
+		public unsafe Sprite typeIcon
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_typeIcon);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<Sprite>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_typeIcon), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x1700296F RID: 10607
+		// (get) Token: 0x0600864E RID: 34382 RVA: 0x0024A8B4 File Offset: 0x00248AB4
+		// (set) Token: 0x0600864F RID: 34383 RVA: 0x0003FB2C File Offset: 0x0003DD2C
+		public unsafe List<ItemSlot> _InputSlots_k__BackingField
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__InputSlots_k__BackingField);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<List<ItemSlot>>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__InputSlots_k__BackingField), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002970 RID: 10608
+		// (get) Token: 0x06008650 RID: 34384 RVA: 0x0024A8E4 File Offset: 0x00248AE4
+		// (set) Token: 0x06008651 RID: 34385 RVA: 0x0003FB4B File Offset: 0x0003DD4B
+		public unsafe List<ItemSlot> _OutputSlots_k__BackingField
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__OutputSlots_k__BackingField);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<List<ItemSlot>>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__OutputSlots_k__BackingField), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002971 RID: 10609
+		// (get) Token: 0x06008652 RID: 34386 RVA: 0x0024A914 File Offset: 0x00248B14
+		// (set) Token: 0x06008653 RID: 34387 RVA: 0x0003FB6A File Offset: 0x0003DD6A
+		public unsafe bool _Selectable_k__BackingField
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__Selectable_k__BackingField);
+				return *intPtr;
+			}
+			set
+			{
+				*(IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__Selectable_k__BackingField)) = value;
+			}
+		}
+
+		// Token: 0x17002972 RID: 10610
+		// (get) Token: 0x06008654 RID: 34388 RVA: 0x0024A93C File Offset: 0x00248B3C
+		// (set) Token: 0x06008655 RID: 34389 RVA: 0x0003FB85 File Offset: 0x0003DD85
+		public unsafe bool _IsAcceptingItems_k__BackingField
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__IsAcceptingItems_k__BackingField);
+				return *intPtr;
+			}
+			set
+			{
+				*(IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__IsAcceptingItems_k__BackingField)) = value;
+			}
+		}
+
+		// Token: 0x17002973 RID: 10611
+		// (get) Token: 0x06008656 RID: 34390 RVA: 0x0024A964 File Offset: 0x00248B64
+		// (set) Token: 0x06008657 RID: 34391 RVA: 0x0003FBA0 File Offset: 0x0003DDA0
+		public unsafe ChemistryStationConfiguration _stationConfiguration_k__BackingField
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__stationConfiguration_k__BackingField);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<ChemistryStationConfiguration>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__stationConfiguration_k__BackingField), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002974 RID: 10612
+		// (get) Token: 0x06008658 RID: 34392 RVA: 0x0024A994 File Offset: 0x00248B94
+		// (set) Token: 0x06008659 RID: 34393 RVA: 0x0003FBBF File Offset: 0x0003DDBF
+		public unsafe WorldspaceUIElement _WorldspaceUI_k__BackingField
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__WorldspaceUI_k__BackingField);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<WorldspaceUIElement>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__WorldspaceUI_k__BackingField), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002975 RID: 10613
+		// (get) Token: 0x0600865A RID: 34394 RVA: 0x0024A9C4 File Offset: 0x00248BC4
+		// (set) Token: 0x0600865B RID: 34395 RVA: 0x0003FBDE File Offset: 0x0003DDDE
+		public unsafe NetworkObject _CurrentPlayerConfigurer_k__BackingField
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__CurrentPlayerConfigurer_k__BackingField);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<NetworkObject>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr__CurrentPlayerConfigurer_k__BackingField), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002976 RID: 10614
+		// (get) Token: 0x0600865C RID: 34396 RVA: 0x0024A9F4 File Offset: 0x00248BF4
+		// (set) Token: 0x0600865D RID: 34397 RVA: 0x0003FBFD File Offset: 0x0003DDFD
+		public unsafe SyncVar<NetworkObject> syncVar____NPCUserObject_k__BackingField
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_syncVar____NPCUserObject_k__BackingField);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<SyncVar<NetworkObject>>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_syncVar____NPCUserObject_k__BackingField), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002977 RID: 10615
+		// (get) Token: 0x0600865E RID: 34398 RVA: 0x0024AA24 File Offset: 0x00248C24
+		// (set) Token: 0x0600865F RID: 34399 RVA: 0x0003FC1C File Offset: 0x0003DE1C
+		public unsafe SyncVar<NetworkObject> syncVar____PlayerUserObject_k__BackingField
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_syncVar____PlayerUserObject_k__BackingField);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<SyncVar<NetworkObject>>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_syncVar____PlayerUserObject_k__BackingField), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002978 RID: 10616
+		// (get) Token: 0x06008660 RID: 34400 RVA: 0x0024AA54 File Offset: 0x00248C54
+		// (set) Token: 0x06008661 RID: 34401 RVA: 0x0003FC3B File Offset: 0x0003DE3B
+		public unsafe SyncVar<NetworkObject> syncVar____CurrentPlayerConfigurer_k__BackingField
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_syncVar____CurrentPlayerConfigurer_k__BackingField);
+				IntPtr intPtr2 = *intPtr;
+				return (intPtr2 != 0) ? Il2CppObjectPool.Get<SyncVar<NetworkObject>>(intPtr2) : null;
+			}
+			set
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_syncVar____CurrentPlayerConfigurer_k__BackingField), IL2CPP.Il2CppObjectBaseToPtr(value));
+			}
+		}
+
+		// Token: 0x17002979 RID: 10617
+		// (get) Token: 0x06008662 RID: 34402 RVA: 0x0024AA84 File Offset: 0x00248C84
+		// (set) Token: 0x06008663 RID: 34403 RVA: 0x0003FC5A File Offset: 0x0003DE5A
+		public new unsafe bool field_Private_Boolean_0
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_field_Private_Boolean_0);
+				return *intPtr;
+			}
+			set
+			{
+				*(IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_field_Private_Boolean_0)) = value;
+			}
+		}
+
+		// Token: 0x1700297A RID: 10618
+		// (get) Token: 0x06008664 RID: 34404 RVA: 0x0024AAAC File Offset: 0x00248CAC
+		// (set) Token: 0x06008665 RID: 34405 RVA: 0x0003FC75 File Offset: 0x0003DE75
+		public new unsafe bool field_Private_Boolean_1
+		{
+			get
+			{
+				IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_field_Private_Boolean_1);
+				return *intPtr;
+			}
+			set
+			{
+				*(IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.NativeFieldInfoPtr_field_Private_Boolean_1)) = value;
+			}
+		}
+
+		// Token: 0x04005B1D RID: 23325
+		private static readonly IntPtr NativeFieldInfoPtr_FOV_OVERRIDE;
+
+		// Token: 0x04005B1E RID: 23326
+		private static readonly IntPtr NativeFieldInfoPtr_INPUT_SLOT_COUNT;
+
+		// Token: 0x04005B1F RID: 23327
+		private static readonly IntPtr NativeFieldInfoPtr__ItemSlots_k__BackingField;
+
+		// Token: 0x04005B20 RID: 23328
+		private static readonly IntPtr NativeFieldInfoPtr__NPCUserObject_k__BackingField;
+
+		// Token: 0x04005B21 RID: 23329
+		private static readonly IntPtr NativeFieldInfoPtr__PlayerUserObject_k__BackingField;
+
+		// Token: 0x04005B22 RID: 23330
+		private static readonly IntPtr NativeFieldInfoPtr__CurrentCookOperation_k__BackingField;
+
+		// Token: 0x04005B23 RID: 23331
+		private static readonly IntPtr NativeFieldInfoPtr_IngredientSlots;
+
+		// Token: 0x04005B24 RID: 23332
+		private static readonly IntPtr NativeFieldInfoPtr_OutputSlot;
+
+		// Token: 0x04005B25 RID: 23333
+		private static readonly IntPtr NativeFieldInfoPtr_IntObj;
+
+		// Token: 0x04005B26 RID: 23334
+		private static readonly IntPtr NativeFieldInfoPtr_CameraPosition_Default;
+
+		// Token: 0x04005B27 RID: 23335
+		private static readonly IntPtr NativeFieldInfoPtr_CameraPosition_Stirring;
+
+		// Token: 0x04005B28 RID: 23336
+		private static readonly IntPtr NativeFieldInfoPtr_StaticBeaker;
+
+		// Token: 0x04005B29 RID: 23337
+		private static readonly IntPtr NativeFieldInfoPtr_StaticFunnel;
+
+		// Token: 0x04005B2A RID: 23338
+		private static readonly IntPtr NativeFieldInfoPtr_StaticStirringRod;
+
+		// Token: 0x04005B2B RID: 23339
+		private static readonly IntPtr NativeFieldInfoPtr_ItemContainer;
+
+		// Token: 0x04005B2C RID: 23340
+		private static readonly IntPtr NativeFieldInfoPtr_LabStand;
+
+		// Token: 0x04005B2D RID: 23341
+		private static readonly IntPtr NativeFieldInfoPtr_InputVisuals;
+
+		// Token: 0x04005B2E RID: 23342
+		private static readonly IntPtr NativeFieldInfoPtr_OutputVisuals;
+
+		// Token: 0x04005B2F RID: 23343
+		private static readonly IntPtr NativeFieldInfoPtr_AnchorRb;
+
+		// Token: 0x04005B30 RID: 23344
+		private static readonly IntPtr NativeFieldInfoPtr_Burner;
+
+		// Token: 0x04005B31 RID: 23345
+		private static readonly IntPtr NativeFieldInfoPtr_BoilingFlask;
+
+		// Token: 0x04005B32 RID: 23346
+		private static readonly IntPtr NativeFieldInfoPtr_Alarm;
+
+		// Token: 0x04005B33 RID: 23347
+		private static readonly IntPtr NativeFieldInfoPtr_uiPoint;
+
+		// Token: 0x04005B34 RID: 23348
+		private static readonly IntPtr NativeFieldInfoPtr_accessPoints;
+
+		// Token: 0x04005B35 RID: 23349
+		private static readonly IntPtr NativeFieldInfoPtr_configReplicator;
+
+		// Token: 0x04005B36 RID: 23350
+		private static readonly IntPtr NativeFieldInfoPtr_TrashSpawnVolume;
+
+		// Token: 0x04005B37 RID: 23351
+		private static readonly IntPtr NativeFieldInfoPtr_ExplosionPoint;
+
+		// Token: 0x04005B38 RID: 23352
+		private static readonly IntPtr NativeFieldInfoPtr_InputSlotsPosition;
+
+		// Token: 0x04005B39 RID: 23353
+		private static readonly IntPtr NativeFieldInfoPtr_OutputSlotPosition;
+
+		// Token: 0x04005B3A RID: 23354
+		private static readonly IntPtr NativeFieldInfoPtr_IngredientTransforms;
+
+		// Token: 0x04005B3B RID: 23355
+		private static readonly IntPtr NativeFieldInfoPtr_BeakerAlignmentTransform;
+
+		// Token: 0x04005B3C RID: 23356
+		private static readonly IntPtr NativeFieldInfoPtr_BeakerPrefab;
+
+		// Token: 0x04005B3D RID: 23357
+		private static readonly IntPtr NativeFieldInfoPtr_StirringRodPrefab;
+
+		// Token: 0x04005B3E RID: 23358
+		private static readonly IntPtr NativeFieldInfoPtr_WorldspaceUIPrefab;
+
+		// Token: 0x04005B3F RID: 23359
+		private static readonly IntPtr NativeFieldInfoPtr_typeIcon;
+
+		// Token: 0x04005B40 RID: 23360
+		private static readonly IntPtr NativeFieldInfoPtr__InputSlots_k__BackingField;
+
+		// Token: 0x04005B41 RID: 23361
+		private static readonly IntPtr NativeFieldInfoPtr__OutputSlots_k__BackingField;
+
+		// Token: 0x04005B42 RID: 23362
+		private static readonly IntPtr NativeFieldInfoPtr__Selectable_k__BackingField;
+
+		// Token: 0x04005B43 RID: 23363
+		private static readonly IntPtr NativeFieldInfoPtr__IsAcceptingItems_k__BackingField;
+
+		// Token: 0x04005B44 RID: 23364
+		private static readonly IntPtr NativeFieldInfoPtr__stationConfiguration_k__BackingField;
+
+		// Token: 0x04005B45 RID: 23365
+		private static readonly IntPtr NativeFieldInfoPtr__WorldspaceUI_k__BackingField;
+
+		// Token: 0x04005B46 RID: 23366
+		private static readonly IntPtr NativeFieldInfoPtr__CurrentPlayerConfigurer_k__BackingField;
+
+		// Token: 0x04005B47 RID: 23367
+		private static readonly IntPtr NativeFieldInfoPtr_syncVar____NPCUserObject_k__BackingField;
+
+		// Token: 0x04005B48 RID: 23368
+		private static readonly IntPtr NativeFieldInfoPtr_syncVar____PlayerUserObject_k__BackingField;
+
+		// Token: 0x04005B49 RID: 23369
+		private static readonly IntPtr NativeFieldInfoPtr_syncVar____CurrentPlayerConfigurer_k__BackingField;
+
+		// Token: 0x04005B4A RID: 23370
+		private static readonly IntPtr NativeFieldInfoPtr_field_Private_Boolean_0;
+
+		// Token: 0x04005B4B RID: 23371
+		private static readonly IntPtr NativeFieldInfoPtr_field_Private_Boolean_1;
+
+		// Token: 0x04005B4C RID: 23372
+		private static readonly IntPtr NativeMethodInfoPtr_get_isOpen_Public_get_Boolean_0;
+
+		// Token: 0x04005B4D RID: 23373
+		private static readonly IntPtr NativeMethodInfoPtr_get_ItemSlots_Public_Virtual_Final_New_get_List_1_ItemSlot_0;
+
+		// Token: 0x04005B4E RID: 23374
+		private static readonly IntPtr NativeMethodInfoPtr_set_ItemSlots_Public_Virtual_Final_New_set_Void_List_1_ItemSlot_0;
+
+		// Token: 0x04005B4F RID: 23375
+		private static readonly IntPtr NativeMethodInfoPtr_get_NPCUserObject_Public_Virtual_Final_New_get_NetworkObject_0;
+
+		// Token: 0x04005B50 RID: 23376
+		private static readonly IntPtr NativeMethodInfoPtr_set_NPCUserObject_Public_Virtual_Final_New_set_Void_NetworkObject_0;
+
+		// Token: 0x04005B51 RID: 23377
+		private static readonly IntPtr NativeMethodInfoPtr_get_PlayerUserObject_Public_Virtual_Final_New_get_NetworkObject_0;
+
+		// Token: 0x04005B52 RID: 23378
+		private static readonly IntPtr NativeMethodInfoPtr_set_PlayerUserObject_Public_Virtual_Final_New_set_Void_NetworkObject_0;
+
+		// Token: 0x04005B53 RID: 23379
+		private static readonly IntPtr NativeMethodInfoPtr_get_CurrentCookOperation_Public_get_ChemistryCookOperation_0;
+
+		// Token: 0x04005B54 RID: 23380
+		private static readonly IntPtr NativeMethodInfoPtr_set_CurrentCookOperation_Public_set_Void_ChemistryCookOperation_0;
+
+		// Token: 0x04005B55 RID: 23381
+		private static readonly IntPtr NativeMethodInfoPtr_get_Name_Public_Virtual_Final_New_get_String_0;
+
+		// Token: 0x04005B56 RID: 23382
+		private static readonly IntPtr NativeMethodInfoPtr_get_InputSlots_Public_Virtual_Final_New_get_List_1_ItemSlot_0;
+
+		// Token: 0x04005B57 RID: 23383
+		private static readonly IntPtr NativeMethodInfoPtr_set_InputSlots_Public_Virtual_Final_New_set_Void_List_1_ItemSlot_0;
+
+		// Token: 0x04005B58 RID: 23384
+		private static readonly IntPtr NativeMethodInfoPtr_get_OutputSlots_Public_Virtual_Final_New_get_List_1_ItemSlot_0;
+
+		// Token: 0x04005B59 RID: 23385
+		private static readonly IntPtr NativeMethodInfoPtr_set_OutputSlots_Public_Virtual_Final_New_set_Void_List_1_ItemSlot_0;
+
+		// Token: 0x04005B5A RID: 23386
+		private static readonly IntPtr NativeMethodInfoPtr_get_LinkOrigin_Public_Virtual_Final_New_get_Transform_0;
+
+		// Token: 0x04005B5B RID: 23387
+		private static readonly IntPtr NativeMethodInfoPtr_get_AccessPoints_Public_Virtual_Final_New_get_Il2CppReferenceArray_1_Transform_0;
+
+		// Token: 0x04005B5C RID: 23388
+		private static readonly IntPtr NativeMethodInfoPtr_get_Selectable_Public_Virtual_Final_New_get_Boolean_0;
+
+		// Token: 0x04005B5D RID: 23389
+		private static readonly IntPtr NativeMethodInfoPtr_get_IsAcceptingItems_Public_Virtual_Final_New_get_Boolean_0;
+
+		// Token: 0x04005B5E RID: 23390
+		private static readonly IntPtr NativeMethodInfoPtr_set_IsAcceptingItems_Public_set_Void_Boolean_0;
+
+		// Token: 0x04005B5F RID: 23391
+		private static readonly IntPtr NativeMethodInfoPtr_get_Configuration_Public_Virtual_Final_New_get_EntityConfiguration_0;
+
+		// Token: 0x04005B60 RID: 23392
+		private static readonly IntPtr NativeMethodInfoPtr_get_stationConfiguration_Protected_get_ChemistryStationConfiguration_0;
+
+		// Token: 0x04005B61 RID: 23393
+		private static readonly IntPtr NativeMethodInfoPtr_set_stationConfiguration_Protected_set_Void_ChemistryStationConfiguration_0;
+
+		// Token: 0x04005B62 RID: 23394
+		private static readonly IntPtr NativeMethodInfoPtr_get_ConfigReplicator_Public_Virtual_Final_New_get_ConfigurationReplicator_0;
+
+		// Token: 0x04005B63 RID: 23395
+		private static readonly IntPtr NativeMethodInfoPtr_get_ConfigurableType_Public_Virtual_Final_New_get_EConfigurableType_0;
+
+		// Token: 0x04005B64 RID: 23396
+		private static readonly IntPtr NativeMethodInfoPtr_get_WorldspaceUI_Public_Virtual_Final_New_get_WorldspaceUIElement_0;
+
+		// Token: 0x04005B65 RID: 23397
+		private static readonly IntPtr NativeMethodInfoPtr_set_WorldspaceUI_Public_Virtual_Final_New_set_Void_WorldspaceUIElement_0;
+
+		// Token: 0x04005B66 RID: 23398
+		private static readonly IntPtr NativeMethodInfoPtr_get_CurrentPlayerConfigurer_Public_Virtual_Final_New_get_NetworkObject_0;
+
+		// Token: 0x04005B67 RID: 23399
+		private static readonly IntPtr NativeMethodInfoPtr_set_CurrentPlayerConfigurer_Public_Virtual_Final_New_set_Void_NetworkObject_0;
+
+		// Token: 0x04005B68 RID: 23400
+		private static readonly IntPtr NativeMethodInfoPtr_SetConfigurer_Public_Virtual_Final_New_Void_NetworkObject_0;
+
+		// Token: 0x04005B69 RID: 23401
+		private static readonly IntPtr NativeMethodInfoPtr_get_TypeIcon_Public_Virtual_Final_New_get_Sprite_0;
+
+		// Token: 0x04005B6A RID: 23402
+		private static readonly IntPtr NativeMethodInfoPtr_get_Transform_Public_Virtual_Final_New_get_Transform_0;
+
+		// Token: 0x04005B6B RID: 23403
+		private static readonly IntPtr NativeMethodInfoPtr_get_UIPoint_Public_Virtual_Final_New_get_Transform_0;
+
+		// Token: 0x04005B6C RID: 23404
+		private static readonly IntPtr NativeMethodInfoPtr_get_CanBeSelected_Public_Virtual_Final_New_get_Boolean_0;
+
+		// Token: 0x04005B6D RID: 23405
+		private static readonly IntPtr NativeMethodInfoPtr_Awake_Public_Virtual_Void_0;
+
+		// Token: 0x04005B6E RID: 23406
+		private static readonly IntPtr NativeMethodInfoPtr_InitializeGridItem_Public_Virtual_Void_ItemInstance_Grid_Vector2_Int32_String_0;
+
+		// Token: 0x04005B6F RID: 23407
+		private static readonly IntPtr NativeMethodInfoPtr_GetManagementName_Public_Virtual_String_0;
+
+		// Token: 0x04005B70 RID: 23408
+		private static readonly IntPtr NativeMethodInfoPtr_OnSpawnServer_Public_Virtual_Void_NetworkConnection_0;
+
+		// Token: 0x04005B71 RID: 23409
+		private static readonly IntPtr NativeMethodInfoPtr_SendConfigurationToClient_Public_Virtual_Final_New_Void_NetworkConnection_0;
+
+		// Token: 0x04005B72 RID: 23410
+		private static readonly IntPtr NativeMethodInfoPtr_CanBeDestroyed_Public_Virtual_Boolean_byref_String_0;
+
+		// Token: 0x04005B73 RID: 23411
+		private static readonly IntPtr NativeMethodInfoPtr_Destroy_Protected_Virtual_Void_1;
+
+		// Token: 0x04005B74 RID: 23412
+		private static readonly IntPtr NativeMethodInfoPtr_OnMinPass_Protected_Virtual_New_Void_0;
+
+		// Token: 0x04005B75 RID: 23413
+		private static readonly IntPtr NativeMethodInfoPtr_OnTimePass_Private_Void_Int32_0;
+
+		// Token: 0x04005B76 RID: 23414
+		private static readonly IntPtr NativeMethodInfoPtr_UpdateClock_Private_Void_0;
+
+		// Token: 0x04005B77 RID: 23415
+		private static readonly IntPtr NativeMethodInfoPtr_Update_Protected_Virtual_New_Void_0;
+
+		// Token: 0x04005B78 RID: 23416
+		private static readonly IntPtr NativeMethodInfoPtr_CreateBeaker_Public_Beaker_0;
+
+		// Token: 0x04005B79 RID: 23417
+		private static readonly IntPtr NativeMethodInfoPtr_CreateStirringRod_Public_StirringRod_0;
+
+		// Token: 0x04005B7A RID: 23418
+		private static readonly IntPtr NativeMethodInfoPtr_SendCookOperation_Public_Void_ChemistryCookOperation_0;
+
+		// Token: 0x04005B7B RID: 23419
+		private static readonly IntPtr NativeMethodInfoPtr_SetCookOperation_Public_Void_NetworkConnection_ChemistryCookOperation_0;
+
+		// Token: 0x04005B7C RID: 23420
+		private static readonly IntPtr NativeMethodInfoPtr_FinalizeOperation_Private_Void_0;
+
+		// Token: 0x04005B7D RID: 23421
+		private static readonly IntPtr NativeMethodInfoPtr_ResetStation_Public_Void_0;
+
+		// Token: 0x04005B7E RID: 23422
+		private static readonly IntPtr NativeMethodInfoPtr_DoesOutputHaveSpace_Public_Boolean_StationRecipe_0;
+
+		// Token: 0x04005B7F RID: 23423
+		private static readonly IntPtr NativeMethodInfoPtr_GetIngredients_Public_List_1_ItemInstance_0;
+
+		// Token: 0x04005B80 RID: 23424
+		private static readonly IntPtr NativeMethodInfoPtr_HasIngredientsForRecipe_Public_Boolean_StationRecipe_0;
+
+		// Token: 0x04005B81 RID: 23425
+		private static readonly IntPtr NativeMethodInfoPtr_CreateTrash_Public_Void_List_1_StationItem_0;
+
+		// Token: 0x04005B82 RID: 23426
+		private static readonly IntPtr NativeMethodInfoPtr_Hovered_Public_Void_0;
+
+		// Token: 0x04005B83 RID: 23427
+		private static readonly IntPtr NativeMethodInfoPtr_Interacted_Public_Void_0;
+
+		// Token: 0x04005B84 RID: 23428
+		private static readonly IntPtr NativeMethodInfoPtr_Use_Public_Void_0;
+
+		// Token: 0x04005B85 RID: 23429
+		private static readonly IntPtr NativeMethodInfoPtr_OnEndUse_Private_Void_0;
+
+		// Token: 0x04005B86 RID: 23430
+		private static readonly IntPtr NativeMethodInfoPtr_SetPlayerUser_Public_Virtual_Final_New_Void_NetworkObject_0;
+
+		// Token: 0x04005B87 RID: 23431
+		private static readonly IntPtr NativeMethodInfoPtr_SetNPCUser_Public_Virtual_Final_New_Void_NetworkObject_0;
+
+		// Token: 0x04005B88 RID: 23432
+		private static readonly IntPtr NativeMethodInfoPtr_SetStoredInstance_Public_Virtual_Final_New_Void_NetworkConnection_Int32_ItemInstance_0;
+
+		// Token: 0x04005B89 RID: 23433
+		private static readonly IntPtr NativeMethodInfoPtr_SetStoredInstance_Internal_Private_Void_NetworkConnection_Int32_ItemInstance_0;
+
+		// Token: 0x04005B8A RID: 23434
+		private static readonly IntPtr NativeMethodInfoPtr_SetItemSlotQuantity_Public_Virtual_Final_New_Void_Int32_Int32_0;
+
+		// Token: 0x04005B8B RID: 23435
+		private static readonly IntPtr NativeMethodInfoPtr_SetItemSlotQuantity_Internal_Private_Void_Int32_Int32_0;
+
+		// Token: 0x04005B8C RID: 23436
+		private static readonly IntPtr NativeMethodInfoPtr_SetSlotLocked_Public_Virtual_Final_New_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0;
+
+		// Token: 0x04005B8D RID: 23437
+		private static readonly IntPtr NativeMethodInfoPtr_SetSlotLocked_Internal_Private_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0;
+
+		// Token: 0x04005B8E RID: 23438
+		private static readonly IntPtr NativeMethodInfoPtr_SetSlotFilter_Public_Virtual_Final_New_Void_NetworkConnection_Int32_SlotFilter_0;
+
+		// Token: 0x04005B8F RID: 23439
+		private static readonly IntPtr NativeMethodInfoPtr_SetSlotFilter_Internal_Private_Void_NetworkConnection_Int32_SlotFilter_0;
+
+		// Token: 0x04005B90 RID: 23440
+		private static readonly IntPtr NativeMethodInfoPtr_CreateWorldspaceUI_Public_Virtual_Final_New_WorldspaceUIElement_0;
+
+		// Token: 0x04005B91 RID: 23441
+		private static readonly IntPtr NativeMethodInfoPtr_DestroyWorldspaceUI_Public_Virtual_Final_New_Void_0;
+
+		// Token: 0x04005B92 RID: 23442
+		private static readonly IntPtr NativeMethodInfoPtr_GetBaseData_Public_Virtual_BuildableItemData_0;
+
+		// Token: 0x04005B93 RID: 23443
+		private static readonly IntPtr NativeMethodInfoPtr_GetSaveData_Public_Virtual_DynamicSaveData_0;
+
+		// Token: 0x04005B94 RID: 23444
+		private static readonly IntPtr NativeMethodInfoPtr__ctor_Public_Void_0;
+
+		// Token: 0x04005B95 RID: 23445
+		private static readonly IntPtr NativeMethodInfoPtr__Awake_b__98_0_Private_Void_0;
+
+		// Token: 0x04005B96 RID: 23446
+		private static readonly IntPtr NativeMethodInfoPtr__Awake_b__98_1_Private_Void_0;
+
+		// Token: 0x04005B97 RID: 23447
+		private static readonly IntPtr NativeMethodInfoPtr_NetworkInitialize___Early_Public_Virtual_Void_0;
+
+		// Token: 0x04005B98 RID: 23448
+		private static readonly IntPtr NativeMethodInfoPtr_NetworkInitialize__Late_Public_Virtual_Void_0;
+
+		// Token: 0x04005B99 RID: 23449
+		private static readonly IntPtr NativeMethodInfoPtr_NetworkInitializeIfDisabled_Public_Virtual_Void_0;
+
+		// Token: 0x04005B9A RID: 23450
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Server_SetConfigurer_3323014238_Private_Void_NetworkObject_0;
+
+		// Token: 0x04005B9B RID: 23451
+		private static readonly IntPtr NativeMethodInfoPtr_RpcLogic___SetConfigurer_3323014238_Public_Virtual_Final_New_Void_NetworkObject_0;
+
+		// Token: 0x04005B9C RID: 23452
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Server_SetConfigurer_3323014238_Private_Void_PooledReader_Channel_NetworkConnection_0;
+
+		// Token: 0x04005B9D RID: 23453
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Server_SendCookOperation_3552222198_Private_Void_ChemistryCookOperation_0;
+
+		// Token: 0x04005B9E RID: 23454
+		private static readonly IntPtr NativeMethodInfoPtr_RpcLogic___SendCookOperation_3552222198_Public_Void_ChemistryCookOperation_0;
+
+		// Token: 0x04005B9F RID: 23455
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Server_SendCookOperation_3552222198_Private_Void_PooledReader_Channel_NetworkConnection_0;
+
+		// Token: 0x04005BA0 RID: 23456
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Observers_SetCookOperation_1024887225_Private_Void_NetworkConnection_ChemistryCookOperation_0;
+
+		// Token: 0x04005BA1 RID: 23457
+		private static readonly IntPtr NativeMethodInfoPtr_RpcLogic___SetCookOperation_1024887225_Public_Void_NetworkConnection_ChemistryCookOperation_0;
+
+		// Token: 0x04005BA2 RID: 23458
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Observers_SetCookOperation_1024887225_Private_Void_PooledReader_Channel_0;
+
+		// Token: 0x04005BA3 RID: 23459
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Target_SetCookOperation_1024887225_Private_Void_NetworkConnection_ChemistryCookOperation_0;
+
+		// Token: 0x04005BA4 RID: 23460
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Target_SetCookOperation_1024887225_Private_Void_PooledReader_Channel_0;
+
+		// Token: 0x04005BA5 RID: 23461
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Observers_FinalizeOperation_2166136261_Private_Void_0;
+
+		// Token: 0x04005BA6 RID: 23462
+		private static readonly IntPtr NativeMethodInfoPtr_RpcLogic___FinalizeOperation_2166136261_Private_Void_0;
+
+		// Token: 0x04005BA7 RID: 23463
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Observers_FinalizeOperation_2166136261_Private_Void_PooledReader_Channel_0;
+
+		// Token: 0x04005BA8 RID: 23464
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Server_SetPlayerUser_3323014238_Private_Void_NetworkObject_0;
+
+		// Token: 0x04005BA9 RID: 23465
+		private static readonly IntPtr NativeMethodInfoPtr_RpcLogic___SetPlayerUser_3323014238_Public_Virtual_Final_New_Void_NetworkObject_0;
+
+		// Token: 0x04005BAA RID: 23466
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Server_SetPlayerUser_3323014238_Private_Void_PooledReader_Channel_NetworkConnection_0;
+
+		// Token: 0x04005BAB RID: 23467
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Server_SetNPCUser_3323014238_Private_Void_NetworkObject_0;
+
+		// Token: 0x04005BAC RID: 23468
+		private static readonly IntPtr NativeMethodInfoPtr_RpcLogic___SetNPCUser_3323014238_Public_Virtual_Final_New_Void_NetworkObject_0;
+
+		// Token: 0x04005BAD RID: 23469
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Server_SetNPCUser_3323014238_Private_Void_PooledReader_Channel_NetworkConnection_0;
+
+		// Token: 0x04005BAE RID: 23470
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Server_SetStoredInstance_2652194801_Private_Void_NetworkConnection_Int32_ItemInstance_0;
+
+		// Token: 0x04005BAF RID: 23471
+		private static readonly IntPtr NativeMethodInfoPtr_RpcLogic___SetStoredInstance_2652194801_Public_Virtual_Final_New_Void_NetworkConnection_Int32_ItemInstance_0;
+
+		// Token: 0x04005BB0 RID: 23472
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Server_SetStoredInstance_2652194801_Private_Void_PooledReader_Channel_NetworkConnection_0;
+
+		// Token: 0x04005BB1 RID: 23473
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Observers_SetStoredInstance_Internal_2652194801_Private_Void_NetworkConnection_Int32_ItemInstance_0;
+
+		// Token: 0x04005BB2 RID: 23474
+		private static readonly IntPtr NativeMethodInfoPtr_RpcLogic___SetStoredInstance_Internal_2652194801_Private_Void_NetworkConnection_Int32_ItemInstance_0;
+
+		// Token: 0x04005BB3 RID: 23475
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Observers_SetStoredInstance_Internal_2652194801_Private_Void_PooledReader_Channel_0;
+
+		// Token: 0x04005BB4 RID: 23476
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Target_SetStoredInstance_Internal_2652194801_Private_Void_NetworkConnection_Int32_ItemInstance_0;
+
+		// Token: 0x04005BB5 RID: 23477
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Target_SetStoredInstance_Internal_2652194801_Private_Void_PooledReader_Channel_0;
+
+		// Token: 0x04005BB6 RID: 23478
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Server_SetItemSlotQuantity_1692629761_Private_Void_Int32_Int32_0;
+
+		// Token: 0x04005BB7 RID: 23479
+		private static readonly IntPtr NativeMethodInfoPtr_RpcLogic___SetItemSlotQuantity_1692629761_Public_Virtual_Final_New_Void_Int32_Int32_0;
+
+		// Token: 0x04005BB8 RID: 23480
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Server_SetItemSlotQuantity_1692629761_Private_Void_PooledReader_Channel_NetworkConnection_0;
+
+		// Token: 0x04005BB9 RID: 23481
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Observers_SetItemSlotQuantity_Internal_1692629761_Private_Void_Int32_Int32_0;
+
+		// Token: 0x04005BBA RID: 23482
+		private static readonly IntPtr NativeMethodInfoPtr_RpcLogic___SetItemSlotQuantity_Internal_1692629761_Private_Void_Int32_Int32_0;
+
+		// Token: 0x04005BBB RID: 23483
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Observers_SetItemSlotQuantity_Internal_1692629761_Private_Void_PooledReader_Channel_0;
+
+		// Token: 0x04005BBC RID: 23484
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Server_SetSlotLocked_3170825843_Private_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0;
+
+		// Token: 0x04005BBD RID: 23485
+		private static readonly IntPtr NativeMethodInfoPtr_RpcLogic___SetSlotLocked_3170825843_Public_Virtual_Final_New_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0;
+
+		// Token: 0x04005BBE RID: 23486
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Server_SetSlotLocked_3170825843_Private_Void_PooledReader_Channel_NetworkConnection_0;
+
+		// Token: 0x04005BBF RID: 23487
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Target_SetSlotLocked_Internal_3170825843_Private_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0;
+
+		// Token: 0x04005BC0 RID: 23488
+		private static readonly IntPtr NativeMethodInfoPtr_RpcLogic___SetSlotLocked_Internal_3170825843_Private_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0;
+
+		// Token: 0x04005BC1 RID: 23489
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Target_SetSlotLocked_Internal_3170825843_Private_Void_PooledReader_Channel_0;
+
+		// Token: 0x04005BC2 RID: 23490
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Observers_SetSlotLocked_Internal_3170825843_Private_Void_NetworkConnection_Int32_Boolean_NetworkObject_String_0;
+
+		// Token: 0x04005BC3 RID: 23491
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Observers_SetSlotLocked_Internal_3170825843_Private_Void_PooledReader_Channel_0;
+
+		// Token: 0x04005BC4 RID: 23492
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Server_SetSlotFilter_527532783_Private_Void_NetworkConnection_Int32_SlotFilter_0;
+
+		// Token: 0x04005BC5 RID: 23493
+		private static readonly IntPtr NativeMethodInfoPtr_RpcLogic___SetSlotFilter_527532783_Public_Virtual_Final_New_Void_NetworkConnection_Int32_SlotFilter_0;
+
+		// Token: 0x04005BC6 RID: 23494
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Server_SetSlotFilter_527532783_Private_Void_PooledReader_Channel_NetworkConnection_0;
+
+		// Token: 0x04005BC7 RID: 23495
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Observers_SetSlotFilter_Internal_527532783_Private_Void_NetworkConnection_Int32_SlotFilter_0;
+
+		// Token: 0x04005BC8 RID: 23496
+		private static readonly IntPtr NativeMethodInfoPtr_RpcLogic___SetSlotFilter_Internal_527532783_Private_Void_NetworkConnection_Int32_SlotFilter_0;
+
+		// Token: 0x04005BC9 RID: 23497
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Observers_SetSlotFilter_Internal_527532783_Private_Void_PooledReader_Channel_0;
+
+		// Token: 0x04005BCA RID: 23498
+		private static readonly IntPtr NativeMethodInfoPtr_RpcWriter___Target_SetSlotFilter_Internal_527532783_Private_Void_NetworkConnection_Int32_SlotFilter_0;
+
+		// Token: 0x04005BCB RID: 23499
+		private static readonly IntPtr NativeMethodInfoPtr_RpcReader___Target_SetSlotFilter_Internal_527532783_Private_Void_PooledReader_Channel_0;
+
+		// Token: 0x04005BCC RID: 23500
+		private static readonly IntPtr NativeMethodInfoPtr_sync___get_value__NPCUserObject_k__BackingField_Public_get_NetworkObject_0;
+
+		// Token: 0x04005BCD RID: 23501
+		private static readonly IntPtr NativeMethodInfoPtr_sync___set_value__NPCUserObject_k__BackingField_Public_set_Void_NetworkObject_Boolean_0;
+
+		// Token: 0x04005BCE RID: 23502
+		private static readonly IntPtr NativeMethodInfoPtr_ReadSyncVar___ScheduleOne_ObjectScripts_ChemistryStation_Public_Virtual_Boolean_PooledReader_UInt32_Boolean_0;
+
+		// Token: 0x04005BCF RID: 23503
+		private static readonly IntPtr NativeMethodInfoPtr_sync___get_value__PlayerUserObject_k__BackingField_Public_get_NetworkObject_0;
+
+		// Token: 0x04005BD0 RID: 23504
+		private static readonly IntPtr NativeMethodInfoPtr_sync___set_value__PlayerUserObject_k__BackingField_Public_set_Void_NetworkObject_Boolean_0;
+
+		// Token: 0x04005BD1 RID: 23505
+		private static readonly IntPtr NativeMethodInfoPtr_sync___get_value__CurrentPlayerConfigurer_k__BackingField_Public_get_NetworkObject_0;
+
+		// Token: 0x04005BD2 RID: 23506
+		private static readonly IntPtr NativeMethodInfoPtr_sync___set_value__CurrentPlayerConfigurer_k__BackingField_Public_set_Void_NetworkObject_Boolean_0;
+
+		// Token: 0x04005BD3 RID: 23507
+		private static readonly IntPtr NativeMethodInfoPtr_Method_Protected_Virtual_Void_0;
+
+		// Token: 0x02000BFE RID: 3070
+		[OriginalName("Assembly-CSharp.dll", "", "EStep")]
+		public enum EStep
+		{
+			// Token: 0x0400A0A8 RID: 41128
+			CombineIngredients,
+			// Token: 0x0400A0A9 RID: 41129
+			Stir,
+			// Token: 0x0400A0AA RID: 41130
+			LowerBoilingFlask,
+			// Token: 0x0400A0AB RID: 41131
+			PourIntoBoilingFlask,
+			// Token: 0x0400A0AC RID: 41132
+			RaiseBoilingFlask,
+			// Token: 0x0400A0AD RID: 41133
+			StartHeat,
+			// Token: 0x0400A0AE RID: 41134
+			Cook,
+			// Token: 0x0400A0AF RID: 41135
+			LowerBoilingFlaskAgain,
+			// Token: 0x0400A0B0 RID: 41136
+			PourThroughFilter
+		}
+
+		// Token: 0x02000BFF RID: 3071
+		[ObfuscatedName("ScheduleOne.ObjectScripts.ChemistryStation+<>c__DisplayClass102_0")]
+		public sealed class __c__DisplayClass102_0 : Il2CppSystem.Object
+		{
+			// Token: 0x0600ED61 RID: 60769 RVA: 0x00397A48 File Offset: 0x00395C48
+			// Note: this type is marked as 'beforefieldinit'.
+			static __c__DisplayClass102_0()
+			{
+				Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0>.NativeClassPtr = IL2CPP.GetIl2CppNestedType(Il2CppClassPointerStore<ChemistryStation>.NativeClassPtr, "<>c__DisplayClass102_0");
+				IL2CPP.il2cpp_runtime_class_init(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0>.NativeClassPtr);
+				ChemistryStation.__c__DisplayClass102_0.NativeFieldInfoPtr___4__this = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0>.NativeClassPtr, "<>4__this");
+				ChemistryStation.__c__DisplayClass102_0.NativeFieldInfoPtr_conn = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0>.NativeClassPtr, "conn");
+				ChemistryStation.__c__DisplayClass102_0.NativeMethodInfoPtr__ctor_Public_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0>.NativeClassPtr, 100680596);
+				ChemistryStation.__c__DisplayClass102_0.NativeMethodInfoPtr_Method_Internal_IEnumerator_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0>.NativeClassPtr, 100680597);
+				ChemistryStation.__c__DisplayClass102_0.NativeMethodInfoPtr__SendConfigurationToClient_b__1_Internal_Boolean_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0>.NativeClassPtr, 100680598);
+			}
+
+			// Token: 0x0600ED62 RID: 60770 RVA: 0x00397AD8 File Offset: 0x00395CD8
+			[CallerCount(2575)]
+			[CachedScanResults(RefRangeStart = 370, RefRangeEnd = 2945, XrefRangeStart = 370, XrefRangeEnd = 2945, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			public unsafe __c__DisplayClass102_0() : this(IL2CPP.il2cpp_object_new(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0>.NativeClassPtr))
+			{
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.__c__DisplayClass102_0.NativeMethodInfoPtr__ctor_Public_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+			}
+
+			// Token: 0x0600ED63 RID: 60771 RVA: 0x00397B14 File Offset: 0x00395D14
+			[CallerCount(2)]
+			[CachedScanResults(RefRangeStart = 250357, RefRangeEnd = 250359, XrefRangeStart = 250352, XrefRangeEnd = 250357, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			public unsafe IEnumerator Method_Internal_IEnumerator_0()
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.__c__DisplayClass102_0.NativeMethodInfoPtr_Method_Internal_IEnumerator_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				IntPtr intPtr3 = intPtr;
+				return (intPtr3 != 0) ? Il2CppObjectPool.Get<IEnumerator>(intPtr3) : null;
+			}
+
+			// Token: 0x0600ED64 RID: 60772 RVA: 0x00397B54 File Offset: 0x00395D54
+			[CallerCount(0)]
+			[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250359, XrefRangeEnd = 250360, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+			public unsafe bool _SendConfigurationToClient_b__1()
+			{
+				IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+				IntPtr* ptr = null;
+				IntPtr intPtr2;
+				IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.__c__DisplayClass102_0.NativeMethodInfoPtr__SendConfigurationToClient_b__1_Internal_Boolean_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+				Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				return *IL2CPP.il2cpp_object_unbox(intPtr);
+			}
+
+			// Token: 0x0600ED65 RID: 60773 RVA: 0x00070084 File Offset: 0x0006E284
+			public __c__DisplayClass102_0(IntPtr pointer) : base(pointer)
+			{
+			}
+
+			// Token: 0x170047F9 RID: 18425
+			// (get) Token: 0x0600ED66 RID: 60774 RVA: 0x00397B90 File Offset: 0x00395D90
+			// (set) Token: 0x0600ED67 RID: 60775 RVA: 0x0007008D File Offset: 0x0006E28D
+			public unsafe ChemistryStation __4__this
+			{
+				get
+				{
+					IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.__c__DisplayClass102_0.NativeFieldInfoPtr___4__this);
+					IntPtr intPtr2 = *intPtr;
+					return (intPtr2 != 0) ? Il2CppObjectPool.Get<ChemistryStation>(intPtr2) : null;
+				}
+				set
+				{
+					IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+					IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.__c__DisplayClass102_0.NativeFieldInfoPtr___4__this), IL2CPP.Il2CppObjectBaseToPtr(value));
+				}
+			}
+
+			// Token: 0x170047FA RID: 18426
+			// (get) Token: 0x0600ED68 RID: 60776 RVA: 0x00397BC0 File Offset: 0x00395DC0
+			// (set) Token: 0x0600ED69 RID: 60777 RVA: 0x000700AC File Offset: 0x0006E2AC
+			public unsafe NetworkConnection conn
+			{
+				get
+				{
+					IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.__c__DisplayClass102_0.NativeFieldInfoPtr_conn);
+					IntPtr intPtr2 = *intPtr;
+					return (intPtr2 != 0) ? Il2CppObjectPool.Get<NetworkConnection>(intPtr2) : null;
+				}
+				set
+				{
+					IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+					IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.__c__DisplayClass102_0.NativeFieldInfoPtr_conn), IL2CPP.Il2CppObjectBaseToPtr(value));
+				}
+			}
+
+			// Token: 0x0400A0B1 RID: 41137
+			private static readonly IntPtr NativeFieldInfoPtr___4__this;
+
+			// Token: 0x0400A0B2 RID: 41138
+			private static readonly IntPtr NativeFieldInfoPtr_conn;
+
+			// Token: 0x0400A0B3 RID: 41139
+			private static readonly IntPtr NativeMethodInfoPtr__ctor_Public_Void_0;
+
+			// Token: 0x0400A0B4 RID: 41140
+			private static readonly IntPtr NativeMethodInfoPtr_Method_Internal_IEnumerator_0;
+
+			// Token: 0x0400A0B5 RID: 41141
+			private static readonly IntPtr NativeMethodInfoPtr__SendConfigurationToClient_b__1_Internal_Boolean_0;
+
+			// Token: 0x02000DEF RID: 3567
+			[ObfuscatedName("ScheduleOne.ObjectScripts.ChemistryStation+<>c__DisplayClass102_0+<<SendConfigurationToClient>g__WaitForConfig|0>d")]
+			public sealed class ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique : Il2CppSystem.Object
+			{
+				// Token: 0x06010132 RID: 65842 RVA: 0x003D1354 File Offset: 0x003CF554
+				// Note: this type is marked as 'beforefieldinit'.
+				static ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique()
+				{
+					Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique>.NativeClassPtr = IL2CPP.GetIl2CppNestedType(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0>.NativeClassPtr, "<<SendConfigurationToClient>g__WaitForConfig|0>d");
+					IL2CPP.il2cpp_runtime_class_init(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique>.NativeClassPtr);
+					ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeFieldInfoPtr___1__state = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique>.NativeClassPtr, "<>1__state");
+					ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeFieldInfoPtr___2__current = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique>.NativeClassPtr, "<>2__current");
+					ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeFieldInfoPtr___4__this = IL2CPP.GetIl2CppField(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique>.NativeClassPtr, "<>4__this");
+					ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeMethodInfoPtr__ctor_Public_Void_Int32_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique>.NativeClassPtr, 100680599);
+					ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeMethodInfoPtr_System_IDisposable_Dispose_Private_Virtual_Final_New_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique>.NativeClassPtr, 100680600);
+					ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeMethodInfoPtr_MoveNext_Private_Virtual_Final_New_Boolean_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique>.NativeClassPtr, 100680601);
+					ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeMethodInfoPtr_System_Collections_Generic_IEnumerator_System_Object__get_Current_Private_Virtual_Final_New_get_Object_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique>.NativeClassPtr, 100680602);
+					ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeMethodInfoPtr_System_Collections_IEnumerator_Reset_Private_Virtual_Final_New_Void_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique>.NativeClassPtr, 100680603);
+					ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeMethodInfoPtr_System_Collections_IEnumerator_get_Current_Private_Virtual_Final_New_get_Object_0 = IL2CPP.GetIl2CppMethodByToken(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique>.NativeClassPtr, 100680604);
+				}
+
+				// Token: 0x06010133 RID: 65843 RVA: 0x003D1434 File Offset: 0x003CF634
+				[CallerCount(83)]
+				[CachedScanResults(RefRangeStart = 65267, RefRangeEnd = 65350, XrefRangeStart = 65267, XrefRangeEnd = 65350, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+				public unsafe ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique(int <>1__state) : this(IL2CPP.il2cpp_object_new(Il2CppClassPointerStore<ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique>.NativeClassPtr))
+				{
+					IntPtr* ptr = stackalloc IntPtr[checked(unchecked((UIntPtr)1) * (UIntPtr)sizeof(IntPtr))];
+					*ptr = ref <>1__state;
+					IntPtr intPtr2;
+					IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeMethodInfoPtr__ctor_Public_Void_Int32_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+					Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				}
+
+				// Token: 0x06010134 RID: 65844 RVA: 0x003D147C File Offset: 0x003CF67C
+				[CallerCount(14950)]
+				[CachedScanResults(RefRangeStart = 4192, RefRangeEnd = 19142, XrefRangeStart = 4192, XrefRangeEnd = 19142, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+				public unsafe void System_IDisposable_Dispose()
+				{
+					IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+					IntPtr* ptr = null;
+					IntPtr intPtr2;
+					IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeMethodInfoPtr_System_IDisposable_Dispose_Private_Virtual_Final_New_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+					Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				}
+
+				// Token: 0x06010135 RID: 65845 RVA: 0x003D14B0 File Offset: 0x003CF6B0
+				[CallerCount(0)]
+				[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250336, XrefRangeEnd = 250347, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+				public unsafe bool MoveNext()
+				{
+					IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+					IntPtr* ptr = null;
+					IntPtr intPtr2;
+					IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeMethodInfoPtr_MoveNext_Private_Virtual_Final_New_Boolean_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+					Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+					return *IL2CPP.il2cpp_object_unbox(intPtr);
+				}
+
+				// Token: 0x17004E6D RID: 20077
+				// (get) Token: 0x06010136 RID: 65846 RVA: 0x003D14EC File Offset: 0x003CF6EC
+				public unsafe Il2CppSystem.Object Current
+				{
+					[CallerCount(24)]
+					[CachedScanResults(RefRangeStart = 19619, RefRangeEnd = 19643, XrefRangeStart = 19619, XrefRangeEnd = 19643, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+					get
+					{
+						IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+						IntPtr* ptr = null;
+						IntPtr intPtr2;
+						IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeMethodInfoPtr_System_Collections_Generic_IEnumerator_System_Object__get_Current_Private_Virtual_Final_New_get_Object_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+						Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+						IntPtr intPtr3 = intPtr;
+						return (intPtr3 != 0) ? Il2CppObjectPool.Get<Il2CppSystem.Object>(intPtr3) : null;
+					}
+				}
+
+				// Token: 0x06010137 RID: 65847 RVA: 0x003D152C File Offset: 0x003CF72C
+				[CallerCount(0)]
+				[CachedScanResults(RefRangeStart = 0, RefRangeEnd = 0, XrefRangeStart = 250347, XrefRangeEnd = 250352, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+				public unsafe void System_Collections_IEnumerator_Reset()
+				{
+					IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+					IntPtr* ptr = null;
+					IntPtr intPtr2;
+					IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeMethodInfoPtr_System_Collections_IEnumerator_Reset_Private_Virtual_Final_New_Void_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+					Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+				}
+
+				// Token: 0x17004E6E RID: 20078
+				// (get) Token: 0x06010138 RID: 65848 RVA: 0x003D1560 File Offset: 0x003CF760
+				public unsafe Il2CppSystem.Object Current
+				{
+					[CallerCount(24)]
+					[CachedScanResults(RefRangeStart = 19619, RefRangeEnd = 19643, XrefRangeStart = 19619, XrefRangeEnd = 19643, MetadataInitTokenRva = 0L, MetadataInitFlagRva = 0L)]
+					get
+					{
+						IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+						IntPtr* ptr = null;
+						IntPtr intPtr2;
+						IntPtr intPtr = IL2CPP.il2cpp_runtime_invoke(ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeMethodInfoPtr_System_Collections_IEnumerator_get_Current_Private_Virtual_Final_New_get_Object_0, IL2CPP.Il2CppObjectBaseToPtrNotNull(this), (void**)ptr, ref intPtr2);
+						Il2CppException.RaiseExceptionIfNecessary(intPtr2);
+						IntPtr intPtr3 = intPtr;
+						return (intPtr3 != 0) ? Il2CppObjectPool.Get<Il2CppSystem.Object>(intPtr3) : null;
+					}
+				}
+
+				// Token: 0x06010139 RID: 65849 RVA: 0x00079E57 File Offset: 0x00078057
+				public ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique(IntPtr pointer) : base(pointer)
+				{
+				}
+
+				// Token: 0x17004E6A RID: 20074
+				// (get) Token: 0x0601013A RID: 65850 RVA: 0x003D15A0 File Offset: 0x003CF7A0
+				// (set) Token: 0x0601013B RID: 65851 RVA: 0x00079E60 File Offset: 0x00078060
+				public unsafe int __1__state
+				{
+					get
+					{
+						IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeFieldInfoPtr___1__state);
+						return *intPtr;
+					}
+					set
+					{
+						*(IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeFieldInfoPtr___1__state)) = value;
+					}
+				}
+
+				// Token: 0x17004E6B RID: 20075
+				// (get) Token: 0x0601013C RID: 65852 RVA: 0x003D15C8 File Offset: 0x003CF7C8
+				// (set) Token: 0x0601013D RID: 65853 RVA: 0x00079E7B File Offset: 0x0007807B
+				public unsafe Il2CppSystem.Object __2__current
+				{
+					get
+					{
+						IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeFieldInfoPtr___2__current);
+						IntPtr intPtr2 = *intPtr;
+						return (intPtr2 != 0) ? Il2CppObjectPool.Get<Il2CppSystem.Object>(intPtr2) : null;
+					}
+					set
+					{
+						IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+						IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeFieldInfoPtr___2__current), IL2CPP.Il2CppObjectBaseToPtr(value));
+					}
+				}
+
+				// Token: 0x17004E6C RID: 20076
+				// (get) Token: 0x0601013E RID: 65854 RVA: 0x003D15F8 File Offset: 0x003CF7F8
+				// (set) Token: 0x0601013F RID: 65855 RVA: 0x00079E9A File Offset: 0x0007809A
+				public unsafe ChemistryStation.__c__DisplayClass102_0 __4__this
+				{
+					get
+					{
+						IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this) + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeFieldInfoPtr___4__this);
+						IntPtr intPtr2 = *intPtr;
+						return (intPtr2 != 0) ? Il2CppObjectPool.Get<ChemistryStation.__c__DisplayClass102_0>(intPtr2) : null;
+					}
+					set
+					{
+						IntPtr intPtr = IL2CPP.Il2CppObjectBaseToPtrNotNull(this);
+						IL2CPP.il2cpp_gc_wbarrier_set_field(intPtr, intPtr + (IntPtr)IL2CPP.il2cpp_field_get_offset(ChemistryStation.__c__DisplayClass102_0.ObjectCompilerGeneratedNPrivateSealedIEnumerator1ObjectIEnumeratorIDisposableInObObObUnique.NativeFieldInfoPtr___4__this), IL2CPP.Il2CppObjectBaseToPtr(value));
+					}
+				}
+
+				// Token: 0x0400AD34 RID: 44340
+				private static readonly IntPtr NativeFieldInfoPtr___1__state;
+
+				// Token: 0x0400AD35 RID: 44341
+				private static readonly IntPtr NativeFieldInfoPtr___2__current;
+
+				// Token: 0x0400AD36 RID: 44342
+				private static readonly IntPtr NativeFieldInfoPtr___4__this;
+
+				// Token: 0x0400AD37 RID: 44343
+				private static readonly IntPtr NativeMethodInfoPtr__ctor_Public_Void_Int32_0;
+
+				// Token: 0x0400AD38 RID: 44344
+				private static readonly IntPtr NativeMethodInfoPtr_System_IDisposable_Dispose_Private_Virtual_Final_New_Void_0;
+
+				// Token: 0x0400AD39 RID: 44345
+				private static readonly IntPtr NativeMethodInfoPtr_MoveNext_Private_Virtual_Final_New_Boolean_0;
+
+				// Token: 0x0400AD3A RID: 44346
+				private static readonly IntPtr NativeMethodInfoPtr_System_Collections_Generic_IEnumerator_System_Object__get_Current_Private_Virtual_Final_New_get_Object_0;
+
+				// Token: 0x0400AD3B RID: 44347
+				private static readonly IntPtr NativeMethodInfoPtr_System_Collections_IEnumerator_Reset_Private_Virtual_Final_New_Void_0;
+
+				// Token: 0x0400AD3C RID: 44348
+				private static readonly IntPtr NativeMethodInfoPtr_System_Collections_IEnumerator_get_Current_Private_Virtual_Final_New_get_Object_0;
+			}
+		}
+	}
+}
