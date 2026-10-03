@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using HarmonyLib;
 using HUB.Graffiti.Network;
 using Il2CppScheduleOne.Networking;
@@ -11,55 +10,71 @@ using UnityEngine;
 
 namespace HUB.Graffiti
 {
-	// Token: 0x02000008 RID: 8
-	[NullableContext(2)]
-	[Nullable(0)]
 	public class GraffitiMod : MelonMod
 	{
-		// Token: 0x06000014 RID: 20 RVA: 0x00003010 File Offset: 0x00001210
-		public override void OnInitializeMelon()
+		internal const string ModName = "HUB - Graffiti";
+		internal const string ModVersion = "1.3.0";
+
+		internal const int DefaultStickerResolution = 2048;
+		internal const int MinStickerResolution = 256;
+		internal const int MaxStickerResolutionLimit = 4096;
+
+		private const float MaxLoadWaitSeconds = 120f;
+		private const float UnknownLoadStateWaitSeconds = 8f;
+
+		internal static MelonPreferences_Category Category;
+		internal static MelonPreferences_Entry<bool> EnableMod;
+		internal static MelonPreferences_Entry<int> SpotsTagged;
+		internal static MelonPreferences_Entry<int> StickerResolution;
+
+		/// <summary>Bumped on every scene load so coroutines started for an earlier scene can bail out.</summary>
+		internal static int SceneToken { get; private set; }
+
+		/// <summary>Longest side, in pixels, a placed sticker is rendered at (capped by the PNG's own size).</summary>
+		internal static int MaxStickerResolution
 		{
-			this.SetupPreferences();
-			MelonLogger.Msg("===========================================");
-			MelonLogger.Msg("  HUB - Graffiti v1.2.1");
-			MelonLogger.Msg("  by Trippzad");
-			MelonLogger.Msg("===========================================");
-			DebugLog.LogSessionStart();
-			string modName = "HUB - Graffiti";
-			CustomContentRenderer renderer;
-			if ((renderer = GraffitiMod.<>O.<0>__RenderContent) == null)
+			get
 			{
-				renderer = (GraffitiMod.<>O.<0>__RenderContent = new CustomContentRenderer(CustomUI.RenderContent));
+				int value = StickerResolution != null ? StickerResolution.Value : DefaultStickerResolution;
+				return Math.Max(MinStickerResolution, Math.Min(MaxStickerResolutionLimit, value));
 			}
-			ModHubCore.RegisterCustomContent(modName, renderer);
-			this.ApplyLobbyChatPatch();
 		}
 
-		// Token: 0x06000015 RID: 21 RVA: 0x0000307C File Offset: 0x0000127C
+		public override void OnInitializeMelon()
+		{
+			SetupPreferences();
+			MelonLogger.Msg("===========================================");
+			MelonLogger.Msg("  " + ModName + " v" + ModVersion);
+			MelonLogger.Msg("  by Trippzad (community fork)");
+			MelonLogger.Msg("===========================================");
+			DebugLog.LogSessionStart();
+			ModHubCore.RegisterCustomContent(ModName, new CustomContentRenderer(CustomUI.RenderContent));
+			ApplyLobbyChatPatch();
+		}
+
 		private void SetupPreferences()
 		{
-			GraffitiMod.Category = MelonPreferences.CreateCategory("HUB - Graffiti", "HUB - Graffiti");
-			GraffitiMod.EnableMod = GraffitiMod.Category.CreateEntry<bool>("01_EnableMod", true, "Enable Mod", null, false, false, null, null);
-			GraffitiMod.SpotsTagged = GraffitiMod.Category.CreateEntry<int>("02_SpotsTagged", 0, "Spots Tagged", null, false, false, null, null);
+			Category = MelonPreferences.CreateCategory("HUB - Graffiti", "HUB - Graffiti");
+			EnableMod = Category.CreateEntry("01_EnableMod", true, "Enable Mod");
+			SpotsTagged = Category.CreateEntry("02_SpotsTagged", 0, "Spots Tagged");
+			StickerResolution = Category.CreateEntry("03_StickerResolution", DefaultStickerResolution, "Sticker Resolution",
+				"Longest side in pixels that placed stickers are rendered at (" + MinStickerResolution + "-" + MaxStickerResolutionLimit + "). Never exceeds the PNG's own size.");
 			MelonPreferences.Save();
 		}
 
-		// Token: 0x06000016 RID: 22 RVA: 0x000030E0 File Offset: 0x000012E0
 		private void ApplyLobbyChatPatch()
 		{
 			try
 			{
-				MethodInfo method = typeof(Lobby).GetMethod("OnLobbyChatMessage", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-				if (method != null)
+				MethodInfo target = typeof(Lobby).GetMethod("OnLobbyChatMessage", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+				if (target == null)
 				{
-					MethodInfo method2 = typeof(LobbyChatPatch).GetMethod("Postfix", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-					base.HarmonyInstance.Patch(method, null, new HarmonyMethod(method2), null, null, null);
-					DebugLog.Log("Init", "Lobby chat patch applied");
+					DebugLog.Log("Init", "Lobby.OnLobbyChatMessage not found - MP chat sync unavailable");
+					return;
 				}
-				else
-				{
-					DebugLog.Log("Init", "Lobby.OnLobbyChatMessage not found â€” MP chat sync unavailable");
-				}
+				MethodInfo postfix = typeof(LobbyChatPatch).GetMethod("Postfix", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+				HarmonyInstance.Patch(target, null, new HarmonyMethod(postfix));
+				DebugLog.Log("Init", "Lobby chat patch applied");
 			}
 			catch (Exception ex)
 			{
@@ -67,12 +82,11 @@ namespace HUB.Graffiti
 			}
 		}
 
-		// Token: 0x06000017 RID: 23 RVA: 0x0000318C File Offset: 0x0000138C
 		public override void OnUpdate()
 		{
 			DebugLog.Update(Time.deltaTime);
-			MelonPreferences_Entry<bool> enableMod = GraffitiMod.EnableMod;
-			if (enableMod == null || !enableMod.Value)
+			CustomUI.Tick();
+			if (EnableMod == null || !EnableMod.Value)
 			{
 				return;
 			}
@@ -80,53 +94,75 @@ namespace HUB.Graffiti
 			GraffitiSync.Tick(Time.deltaTime);
 		}
 
-		// Token: 0x06000018 RID: 24 RVA: 0x000031C0 File Offset: 0x000013C0
-		[NullableContext(1)]
 		public override void OnSceneWasLoaded(int buildIndex, string sceneName)
 		{
+			SceneToken++;
 			DebugLog.Log("Scene", "Scene loaded: " + sceneName);
+			StickerPickerUI.Close();
 			GraffitiPlacer.OnSceneLoaded(sceneName);
 			NetworkHelper.Reset();
+			GraffitiSync.Shutdown();
+			StickerSaveManager.Reset();
 			if (sceneName == "Main")
 			{
 				StickerManager.Initialize();
-				MelonCoroutines.Start(this.RestoreAndSyncCoroutine());
-				return;
+				MelonCoroutines.Start(RestoreAndSyncCoroutine(SceneToken));
 			}
-			GraffitiSync.Shutdown();
-			StickerSaveManager.Reset();
+			CustomUI.RequestRefresh();
 		}
 
-		// Token: 0x06000019 RID: 25 RVA: 0x00003216 File Offset: 0x00001416
-		[NullableContext(1)]
-		private IEnumerator RestoreAndSyncCoroutine()
+		/// <summary>
+		/// Waits for the game to finish loading the save, then loads this save's placements, starts
+		/// multiplayer sync and puts the stickers back on their surfaces.
+		/// </summary>
+		private static IEnumerator RestoreAndSyncCoroutine(int sceneToken)
 		{
-			return new GraffitiMod.<RestoreAndSyncCoroutine>d__8(0);
+			float waited = 0f;
+			while (waited < MaxLoadWaitSeconds)
+			{
+				bool? loaded = SaveContext.IsGameLoaded();
+				if (loaded == true || (loaded == null && waited >= UnknownLoadStateWaitSeconds))
+				{
+					break;
+				}
+				yield return new WaitForSeconds(0.5f);
+				waited += 0.5f;
+				if (sceneToken != SceneToken)
+				{
+					yield break;
+				}
+			}
+			// The game restores its own graffiti right after loading; let it finish so it can't overwrite ours.
+			yield return new WaitForSeconds(2f);
+			if (sceneToken != SceneToken)
+			{
+				yield break;
+			}
+
+			StickerSaveManager.Load();
+			GraffitiSync.Initialize();
+			foreach (bool _ in GraffitiPlacer.SyncSteps())
+			{
+				yield return null;
+				if (sceneToken != SceneToken)
+				{
+					yield break;
+				}
+			}
+			CustomUI.RequestRefresh();
+
+			yield return new WaitForSeconds(5f);
+			if (sceneToken != SceneToken)
+			{
+				yield break;
+			}
+			SurfaceDecals.ReassertAll();
 		}
 
-		// Token: 0x0600001A RID: 26 RVA: 0x0000321E File Offset: 0x0000141E
 		public override void OnApplicationQuit()
 		{
 			GraffitiSync.Shutdown();
 			DebugLog.Reset();
-		}
-
-		// Token: 0x0400000C RID: 12
-		internal static MelonPreferences_Category Category;
-
-		// Token: 0x0400000D RID: 13
-		internal static MelonPreferences_Entry<bool> EnableMod;
-
-		// Token: 0x0400000E RID: 14
-		internal static MelonPreferences_Entry<int> SpotsTagged;
-
-		// Token: 0x02000013 RID: 19
-		[CompilerGenerated]
-		private static class <>O
-		{
-			// Token: 0x04000036 RID: 54
-			[Nullable(0)]
-			public static CustomContentRenderer <0>__RenderContent;
 		}
 	}
 }

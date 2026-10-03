@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
@@ -10,151 +9,185 @@ using MelonLoader;
 
 namespace HUB.Graffiti.Network
 {
-	// Token: 0x0200000F RID: 15
-	[NullableContext(1)]
-	[Nullable(0)]
+	/// <summary>
+	/// Multiplayer sync over the Steam lobby. The host owns the placement list and publishes it as lobby
+	/// data; clients poll it and send their own place/remove requests to the host as lobby chat messages.
+	/// </summary>
 	internal static class GraffitiSync
 	{
-		// Token: 0x1700000B RID: 11
-		// (get) Token: 0x06000058 RID: 88 RVA: 0x00006709 File Offset: 0x00004909
-		internal static bool IsRunning
-		{
-			get
-			{
-				return GraffitiSync._running;
-			}
-		}
+		private const float BroadcastInterval = 5f;
+		private const float PollInterval = 1f;
+		private const float SleepResumeDelay = 3f;
+		private const string StateKey = "graf_state";
+		private const string MsgPrefix = "GRAF:";
+		private const string ActionPlace = "place_sticker";
+		private const string ActionRemove = "remove_sticker";
+		private const int ChatBufferSize = 4096;
+		// Steam rejects lobby data values above 8 KB.
+		private const int MaxLobbyDataBytes = 8192;
+		private const int MaxGuidLength = 64;
+		private const int MaxNameLength = 128;
 
-		// Token: 0x06000059 RID: 89 RVA: 0x00006710 File Offset: 0x00004910
+		private static bool _running;
+		private static float _broadcastTimer;
+		private static float _pollTimer;
+		private static string _lastReceivedState = "";
+		private static string _lastBroadcastState;
+		private static bool _warnedOversize;
+		private static bool _sleepPaused;
+		private static float _sleepResumeDelay;
+
+		internal static bool IsRunning => _running;
+
 		internal static void Initialize()
 		{
-			if (GraffitiSync._running)
+			if (_running)
 			{
 				return;
 			}
 			if (!NetworkHelper.IsMultiplayer)
 			{
-				DebugLog.Log("Sync", "Single-player — sync disabled.");
+				DebugLog.Log("Sync", "Single-player - sync disabled.");
 				return;
 			}
-			GraffitiSync._running = true;
-			GraffitiSync._broadcastTimer = 0f;
-			GraffitiSync._lastStateHash = "";
-			string str = NetworkHelper.IsHost ? "HOST" : "CLIENT";
-			MelonLogger.Msg("[Graffiti] Steam lobby sync initialized as " + str);
+			_running = true;
+			_broadcastTimer = 0f;
+			_pollTimer = PollInterval;
+			_lastReceivedState = "";
+			_lastBroadcastState = null;
+			MelonLogger.Msg("[Graffiti] Steam lobby sync initialized as " + (NetworkHelper.IsHost ? "HOST" : "CLIENT"));
 			if (NetworkHelper.IsHost)
 			{
-				GraffitiSync.BroadcastState();
+				BroadcastState();
 			}
 		}
 
-		// Token: 0x0600005A RID: 90 RVA: 0x00006788 File Offset: 0x00004988
 		internal static void Shutdown()
 		{
-			if (GraffitiSync._running && NetworkHelper.IsHost)
+			if (_running && NetworkHelper.IsHost)
 			{
 				try
 				{
 					Lobby lobby = NetworkHelper.GetLobby();
 					if (lobby != null && lobby.IsInLobby)
 					{
-						lobby.SetLobbyData("graf_state", "");
+						lobby.SetLobbyData(StateKey, "");
 					}
 				}
 				catch
 				{
 				}
 			}
-			GraffitiSync._running = false;
-			GraffitiSync._sleepPaused = false;
-			GraffitiSync._sleepResumeDelay = 0f;
-			GraffitiSync._lastStateHash = "";
+			_running = false;
+			_sleepPaused = false;
+			_sleepResumeDelay = 0f;
+			_lastReceivedState = "";
+			_lastBroadcastState = null;
 		}
 
-		// Token: 0x0600005B RID: 91 RVA: 0x00006800 File Offset: 0x00004A00
 		internal static void OnSleepStart()
 		{
-			if (!GraffitiSync._running)
+			if (_running)
 			{
-				return;
+				_sleepPaused = true;
 			}
-			GraffitiSync._sleepPaused = true;
 		}
 
-		// Token: 0x0600005C RID: 92 RVA: 0x00006810 File Offset: 0x00004A10
 		internal static void OnSleepEnd()
 		{
-			if (!GraffitiSync._running)
+			if (_running)
 			{
-				return;
+				_sleepResumeDelay = SleepResumeDelay;
 			}
-			GraffitiSync._sleepResumeDelay = 3f;
 		}
 
-		// Token: 0x0600005D RID: 93 RVA: 0x00006824 File Offset: 0x00004A24
 		internal static void Tick(float dt)
 		{
-			if (!GraffitiSync._running)
+			if (!_running)
 			{
 				return;
 			}
-			if (GraffitiSync._sleepResumeDelay > 0f)
+			if (_sleepResumeDelay > 0f)
 			{
-				GraffitiSync._sleepResumeDelay -= dt;
-				if (GraffitiSync._sleepResumeDelay <= 0f)
+				_sleepResumeDelay -= dt;
+				if (_sleepResumeDelay <= 0f)
 				{
-					GraffitiSync._sleepPaused = false;
-					GraffitiSync._sleepResumeDelay = 0f;
-					GraffitiSync._broadcastTimer = 0f;
+					_sleepPaused = false;
+					_sleepResumeDelay = 0f;
+					_broadcastTimer = 0f;
 				}
 				return;
 			}
-			if (GraffitiSync._sleepPaused)
+			if (_sleepPaused)
 			{
 				return;
 			}
+
 			if (NetworkHelper.IsHost)
 			{
-				GraffitiSync._broadcastTimer += dt;
-				if (GraffitiSync._broadcastTimer >= 5f)
+				_broadcastTimer += dt;
+				if (_broadcastTimer >= BroadcastInterval)
 				{
-					GraffitiSync._broadcastTimer = 0f;
-					GraffitiSync.BroadcastState();
-					return;
+					_broadcastTimer = 0f;
+					BroadcastState();
 				}
 			}
 			else
 			{
-				GraffitiSync.PollState();
+				_pollTimer += dt;
+				if (_pollTimer >= PollInterval)
+				{
+					_pollTimer = 0f;
+					PollState();
+				}
 			}
 		}
 
-		// Token: 0x0600005E RID: 94 RVA: 0x000068B4 File Offset: 0x00004AB4
 		internal static void NotifyPlacement(string surfaceGuid, string stickerFileName)
 		{
-			if (!GraffitiSync._running)
+			NotifyAction(ActionPlace, surfaceGuid, stickerFileName);
+		}
+
+		internal static void NotifyRemoval(string surfaceGuid)
+		{
+			NotifyAction(ActionRemove, surfaceGuid, "");
+		}
+
+		/// <summary>Host: publish the current list now (after a bulk change such as a legacy import).</summary>
+		internal static void NotifyStateChanged()
+		{
+			if (_running && NetworkHelper.IsHost)
+			{
+				BroadcastState();
+			}
+		}
+
+		private static void NotifyAction(string type, string surfaceGuid, string stickerFileName)
+		{
+			if (!_running)
 			{
 				return;
 			}
 			if (NetworkHelper.IsHost)
 			{
-				GraffitiSync.BroadcastState();
+				BroadcastState();
 				return;
 			}
 			try
 			{
 				Lobby lobby = NetworkHelper.GetLobby();
-				if (!(lobby == null) && lobby.IsInLobby)
+				if (lobby == null || !lobby.IsInLobby)
 				{
-					string str = JsonSerializer.Serialize<GraffitiSync.PlacementAction>(new GraffitiSync.PlacementAction
-					{
-						Type = "place_sticker",
-						SurfaceGuid = surfaceGuid,
-						StickerFileName = stickerFileName
-					}, null);
-					lobby.SendLobbyMessage("GRAF:" + str);
-					DebugLog.Log("Sync", "Sent placement to host: " + stickerFileName + " on " + surfaceGuid);
+					return;
 				}
+				string json = JsonSerializer.Serialize(new PlacementAction
+				{
+					Type = type,
+					SurfaceGuid = surfaceGuid,
+					StickerFileName = stickerFileName
+				});
+				lobby.SendLobbyMessage(MsgPrefix + json);
+				DebugLog.Log("Sync", "Sent " + type + " to host: " + stickerFileName + " on " + surfaceGuid);
 			}
 			catch (Exception ex)
 			{
@@ -162,17 +195,31 @@ namespace HUB.Graffiti.Network
 			}
 		}
 
-		// Token: 0x0600005F RID: 95 RVA: 0x00006970 File Offset: 0x00004B70
 		private static void BroadcastState()
 		{
 			try
 			{
 				Lobby lobby = NetworkHelper.GetLobby();
-				if (!(lobby == null) && lobby.IsInLobby)
+				if (lobby == null || !lobby.IsInLobby)
 				{
-					string text = JsonSerializer.Serialize<IReadOnlyList<StickerPlacement>>(StickerSaveManager.Placements, null);
-					lobby.SetLobbyData("graf_state", text);
+					return;
 				}
+				string state = JsonSerializer.Serialize(StickerSaveManager.Placements);
+				if (state == _lastBroadcastState)
+				{
+					return;
+				}
+				if (Encoding.UTF8.GetByteCount(state) >= MaxLobbyDataBytes)
+				{
+					if (!_warnedOversize)
+					{
+						_warnedOversize = true;
+						MelonLogger.Warning("[HUB - Graffiti] Too many stickers to sync over the Steam lobby (" + StickerSaveManager.Placements.Count + "); other players may not see all of them.");
+					}
+					return;
+				}
+				lobby.SetLobbyData(StateKey, state);
+				_lastBroadcastState = state;
 			}
 			catch (Exception ex)
 			{
@@ -180,36 +227,30 @@ namespace HUB.Graffiti.Network
 			}
 		}
 
-		// Token: 0x06000060 RID: 96 RVA: 0x000069E0 File Offset: 0x00004BE0
 		private static void PollState()
 		{
 			try
 			{
 				Lobby lobby = NetworkHelper.GetLobby();
-				if (!(lobby == null) && lobby.IsInLobby)
+				if (lobby == null || !lobby.IsInLobby)
 				{
-					string lobbyData = SteamMatchmaking.GetLobbyData(lobby.LobbySteamID, "graf_state");
-					if (!string.IsNullOrEmpty(lobbyData))
-					{
-						string text = lobbyData.GetHashCode().ToString();
-						if (!(text == GraffitiSync._lastStateHash))
-						{
-							GraffitiSync._lastStateHash = text;
-							List<StickerPlacement> list = JsonSerializer.Deserialize<List<StickerPlacement>>(lobbyData, null);
-							if (list != null)
-							{
-								StickerSaveManager.ApplyFromNetwork(list);
-								GraffitiPlacer.ApplyAllStickers();
-								string category = "Sync";
-								DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(29, 1);
-								defaultInterpolatedStringHandler.AppendLiteral("Applied ");
-								defaultInterpolatedStringHandler.AppendFormatted<int>(list.Count);
-								defaultInterpolatedStringHandler.AppendLiteral(" placements from host");
-								DebugLog.Log(category, defaultInterpolatedStringHandler.ToStringAndClear());
-							}
-						}
-					}
+					return;
 				}
+				string state = SteamMatchmaking.GetLobbyData(lobby.LobbySteamID, StateKey);
+				if (string.IsNullOrEmpty(state) || state == _lastReceivedState)
+				{
+					return;
+				}
+				_lastReceivedState = state;
+				List<StickerPlacement> placements = JsonSerializer.Deserialize<List<StickerPlacement>>(state);
+				if (placements == null)
+				{
+					return;
+				}
+				StickerSaveManager.ApplyFromNetwork(placements);
+				GraffitiPlacer.SyncWorldToPlacements();
+				CustomUI.RequestRefresh();
+				DebugLog.Log("Sync", "Applied " + placements.Count + " placements from host");
 			}
 			catch (Exception ex)
 			{
@@ -217,45 +258,61 @@ namespace HUB.Graffiti.Network
 			}
 		}
 
-		// Token: 0x06000061 RID: 97 RVA: 0x00006AD4 File Offset: 0x00004CD4
 		internal static void OnLobbyChatReceived(LobbyChatMsg_t result)
 		{
-			if (!GraffitiSync._running || !NetworkHelper.IsHost || GraffitiSync._sleepPaused)
+			if (!_running || !NetworkHelper.IsHost || _sleepPaused)
 			{
 				return;
 			}
 			try
 			{
 				Lobby lobby = NetworkHelper.GetLobby();
-				if (!(lobby == null))
+				if (lobby == null)
 				{
-					Il2CppStructArray<byte> il2CppStructArray = new Il2CppStructArray<byte>(4096L);
-					CSteamID csteamID;
-					EChatEntryType echatEntryType;
-					int lobbyChatEntry = SteamMatchmaking.GetLobbyChatEntry(lobby.LobbySteamID, (int)result.m_iChatID, ref csteamID, il2CppStructArray, 4096, ref echatEntryType);
-					if (lobbyChatEntry > 0)
+					return;
+				}
+				Il2CppStructArray<byte> buffer = new Il2CppStructArray<byte>(ChatBufferSize);
+				CSteamID sender = default(CSteamID);
+				EChatEntryType entryType = default(EChatEntryType);
+				int length = SteamMatchmaking.GetLobbyChatEntry(lobby.LobbySteamID, (int)result.m_iChatID, ref sender, buffer, ChatBufferSize, ref entryType);
+				if (length <= 0)
+				{
+					return;
+				}
+				length = Math.Min(length, ChatBufferSize);
+				byte[] bytes = new byte[length];
+				for (int i = 0; i < length; i++)
+				{
+					bytes[i] = buffer[i];
+				}
+				string message = Encoding.UTF8.GetString(bytes, 0, length).TrimEnd('\0');
+				if (!message.StartsWith(MsgPrefix))
+				{
+					return;
+				}
+				PlacementAction action = JsonSerializer.Deserialize<PlacementAction>(message.Substring(MsgPrefix.Length));
+				if (action == null || string.IsNullOrEmpty(action.SurfaceGuid) || action.SurfaceGuid.Length > MaxGuidLength)
+				{
+					return;
+				}
+
+				if (action.Type == ActionPlace)
+				{
+					if (string.IsNullOrEmpty(action.StickerFileName) || action.StickerFileName.Length > MaxNameLength)
 					{
-						byte[] array = new byte[lobbyChatEntry];
-						for (int i = 0; i < lobbyChatEntry; i++)
-						{
-							array[i] = il2CppStructArray[i];
-						}
-						string @string = Encoding.UTF8.GetString(array, 0, lobbyChatEntry);
-						if (@string.StartsWith("GRAF:"))
-						{
-							GraffitiSync.PlacementAction placementAction = JsonSerializer.Deserialize<GraffitiSync.PlacementAction>(@string.Substring("GRAF:".Length), null);
-							if (placementAction != null)
-							{
-								if (placementAction.Type == "place_sticker" && !string.IsNullOrEmpty(placementAction.SurfaceGuid) && !string.IsNullOrEmpty(placementAction.StickerFileName))
-								{
-									StickerSaveManager.RecordPlacement(placementAction.SurfaceGuid, placementAction.StickerFileName);
-									GraffitiPlacer.ApplyAllStickers();
-									GraffitiSync.BroadcastState();
-									DebugLog.Log("Sync", "Host recorded remote placement: " + placementAction.StickerFileName + " on " + placementAction.SurfaceGuid);
-								}
-							}
-						}
+						return;
 					}
+					StickerSaveManager.RecordPlacement(action.SurfaceGuid, action.StickerFileName);
+					GraffitiPlacer.SyncWorldToPlacements();
+					BroadcastState();
+					CustomUI.RequestRefresh();
+					DebugLog.Log("Sync", "Host recorded remote placement: " + action.StickerFileName + " on " + action.SurfaceGuid);
+				}
+				else if (action.Type == ActionRemove)
+				{
+					GraffitiPlacer.RemovePlacement(action.SurfaceGuid, true);
+					BroadcastState();
+					DebugLog.Log("Sync", "Host removed sticker on request: " + action.SurfaceGuid);
 				}
 			}
 			catch (Exception ex)
@@ -264,50 +321,12 @@ namespace HUB.Graffiti.Network
 			}
 		}
 
-		// Token: 0x04000028 RID: 40
-		private const float BROADCAST_INTERVAL = 5f;
-
-		// Token: 0x04000029 RID: 41
-		private const string STATE_KEY = "graf_state";
-
-		// Token: 0x0400002A RID: 42
-		private const string MSG_PREFIX = "GRAF:";
-
-		// Token: 0x0400002B RID: 43
-		private static bool _running;
-
-		// Token: 0x0400002C RID: 44
-		private static float _broadcastTimer;
-
-		// Token: 0x0400002D RID: 45
-		private static string _lastStateHash = "";
-
-		// Token: 0x0400002E RID: 46
-		private static bool _sleepPaused;
-
-		// Token: 0x0400002F RID: 47
-		private static float _sleepResumeDelay;
-
-		// Token: 0x04000030 RID: 48
-		private const float SLEEP_RESUME_DELAY = 3f;
-
-		// Token: 0x0200001B RID: 27
-		[Nullable(0)]
 		private class PlacementAction
 		{
-			// Token: 0x17000011 RID: 17
-			// (get) Token: 0x0600007B RID: 123 RVA: 0x00006F1F File Offset: 0x0000511F
-			// (set) Token: 0x0600007C RID: 124 RVA: 0x00006F27 File Offset: 0x00005127
 			public string Type { get; set; } = "";
 
-			// Token: 0x17000012 RID: 18
-			// (get) Token: 0x0600007D RID: 125 RVA: 0x00006F30 File Offset: 0x00005130
-			// (set) Token: 0x0600007E RID: 126 RVA: 0x00006F38 File Offset: 0x00005138
 			public string SurfaceGuid { get; set; } = "";
 
-			// Token: 0x17000013 RID: 19
-			// (get) Token: 0x0600007F RID: 127 RVA: 0x00006F41 File Offset: 0x00005141
-			// (set) Token: 0x06000080 RID: 128 RVA: 0x00006F49 File Offset: 0x00005149
 			public string StickerFileName { get; set; } = "";
 		}
 	}

@@ -1,12 +1,11 @@
-﻿using System;
+using System;
 using Il2CppSteamworks;
 
 namespace HUB.Graffiti.Network
 {
-	// Token: 0x02000010 RID: 16
 	internal static class LobbyChatPatch
 	{
-		// Token: 0x06000063 RID: 99 RVA: 0x00006C68 File Offset: 0x00004E68
+		// Harmony binds by parameter name, so this must stay "result" to match Lobby.OnLobbyChatMessage.
 		internal static void Postfix(LobbyChatMsg_t result)
 		{
 			try
