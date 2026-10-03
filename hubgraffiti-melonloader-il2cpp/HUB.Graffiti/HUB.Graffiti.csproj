@@ -1,92 +1,52 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Build:  dotnet build -c Release -p:GamePath="D:\Steam\steamapps\common\Schedule I"
+    GamePath must point at a Schedule I install that has MelonLoader (IL2CPP) and ModHub.Core installed,
+    and the game must have been started once so MelonLoader generated MelonLoader\Il2CppAssemblies.
+  -->
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1CCC4E42-CF8D-4772-861E-041A697F4305}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HUB.Graffiti</RootNamespace>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>HUB.Graffiti</AssemblyName>
-    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
-    <TargetFrameworkIdentifier>.NETCoreApp</TargetFrameworkIdentifier>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <RootNamespace>HUB.Graffiti</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <GamePath Condition="'$(GamePath)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Schedule I</GamePath>
+    <MelonLoaderPath>$(GamePath)\MelonLoader</MelonLoaderPath>
+    <!-- Set to true to copy the built DLL into the game's Mods folder after each build. -->
+    <CopyToMods Condition="'$(CopyToMods)' == ''">false</CopyToMods>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="0Harmony" />
-    <Reference Include="Assembly-CSharp" />
-    <Reference Include="Il2Cppcom.rlabrecque.steamworks.net" />
-    <Reference Include="Il2CppInterop.Runtime" />
-    <Reference Include="Il2Cppmscorlib" />
-    <Reference Include="MelonLoader" />
+    <Reference Include="MelonLoader">
+      <HintPath>$(MelonLoaderPath)\net6\MelonLoader.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(MelonLoaderPath)\net6\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Il2CppInterop.Runtime">
+      <HintPath>$(MelonLoaderPath)\net6\Il2CppInterop.Runtime.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="ModHub.Core">
-      <HintPath>D:\Steam\steamapps\common\Schedule I\Mods\ModHub.Core.dll</HintPath>
+      <HintPath>$(GamePath)\Mods\ModHub.Core.dll</HintPath>
+      <Private>false</Private>
     </Reference>
-    <Reference Include="System.Collections">
-      <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.36\System.Collections.dll</HintPath>
+    <!-- Every generated interop assembly (Assembly-CSharp, UnityEngine.*, Il2CppTMPro, FishNet, Steamworks, ...). -->
+    <Reference Include="$(MelonLoaderPath)\Il2CppAssemblies\*.dll">
+      <Private>false</Private>
     </Reference>
-    <Reference Include="System.Diagnostics.Process">
-      <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.36\System.Diagnostics.Process.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Linq">
-      <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.36\System.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime">
-      <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.36\System.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Text.Json">
-      <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\6.0.36\System.Text.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.RenderPipelines.Universal.Runtime" />
-    <Reference Include="Unity.TextMeshPro" />
-    <Reference Include="UnityEngine.CoreModule" />
-    <Reference Include="UnityEngine.ImageConversionModule" />
-    <Reference Include="UnityEngine.TextRenderingModule" />
-    <Reference Include="UnityEngine.UI" />
-    <Reference Include="UnityEngine.UIModule" />
   </ItemGroup>
-  <ItemGroup>
-    <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="CustomUI.cs" />
-    <Compile Include="DebugLog.cs" />
-    <Compile Include="GraffitiMod.cs" />
-    <Compile Include="GraffitiPlacer.cs" />
-    <Compile Include="Microsoft\CodeAnalysis\EmbeddedAttribute.cs" />
-    <Compile Include="Network\GraffitiSync.cs" />
-    <Compile Include="Network\LobbyChatPatch.cs" />
-    <Compile Include="Network\NetworkHelper.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StickerData.cs" />
-    <Compile Include="StickerManager.cs" />
-    <Compile Include="StickerPickerUI.cs" />
-    <Compile Include="StickerPlacement.cs" />
-    <Compile Include="StickerSaveManager.cs" />
-    <Compile Include="System\Runtime\CompilerServices\NullableAttribute.cs" />
-    <Compile Include="System\Runtime\CompilerServices\NullableContextAttribute.cs" />
-    <Compile Include="System\Runtime\CompilerServices\RefSafetyRulesAttribute.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+  <Target Name="CopyToModsFolder" AfterTargets="Build" Condition="'$(CopyToMods)' == 'true'">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(GamePath)\Mods" />
+  </Target>
+
 </Project>
