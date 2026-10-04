@@ -26,7 +26,7 @@ namespace HUB.Graffiti
 		{
 			public string Key = "";
 			public string StickerName = "";
-			public string RegionName = "";
+			public string Location = "";
 			public SpraySurface Surface;
 			public Material Material;
 			public Texture2D DecalTexture;
@@ -59,9 +59,10 @@ namespace HUB.Graffiti
 			return !string.IsNullOrEmpty(key) && _applied.ContainsKey(key);
 		}
 
-		internal static string GetRegionName(string key)
+		/// <summary>Where the sticker is, e.g. "Northtown" or "Veeper (left side)"; "" if not applied.</summary>
+		internal static string GetLocation(string key)
 		{
-			return !string.IsNullOrEmpty(key) && _applied.TryGetValue(key, out Applied entry) ? entry.RegionName : "";
+			return !string.IsNullOrEmpty(key) && _applied.TryGetValue(key, out Applied entry) ? entry.Location : "";
 		}
 
 		/// <summary>
@@ -87,14 +88,7 @@ namespace HUB.Graffiti
 			if (entry == null)
 			{
 				entry = new Applied { Key = key, Surface = surface };
-				try
-				{
-					WorldSpraySurface world = surface.TryCast<WorldSpraySurface>();
-					entry.RegionName = world != null ? world.Region.ToString() : "";
-				}
-				catch
-				{
-				}
+				entry.Location = SurfaceKeys.Describe(surface);
 				_applied[key] = entry;
 			}
 

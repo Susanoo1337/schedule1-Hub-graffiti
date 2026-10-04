@@ -104,7 +104,6 @@ namespace HUB.Graffiti
 					return sticker;
 				}
 			}
-			DebugLog.Log("Stickers", "FindByFileName('" + name + "') failed; " + _stickers.Count + " stickers loaded");
 			return null;
 		}
 

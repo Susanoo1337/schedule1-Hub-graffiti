@@ -209,9 +209,20 @@ namespace HUB.Graffiti
 			name.horizontalOverflow = HorizontalWrapMode.Wrap;
 			SetAnchors(name.GetComponent<RectTransform>(), 0f, 0.5f, 0.66f, 1f, 54f, 0f);
 
-			string region = SurfaceDecals.GetRegionName(placement.SurfaceGuid);
-			string guid = placement.SurfaceGuid.Length > 8 ? placement.SurfaceGuid.Substring(0, 8) : placement.SurfaceGuid;
-			Text detail = ModHubUI.CreateText((string.IsNullOrEmpty(region) ? "" : region + "  |  ") + "#" + guid, card.transform, font, 10, FontStyle.Normal);
+			bool isVehicle = SurfaceKeys.IsVehicleKey(placement.SurfaceGuid);
+			string location = SurfaceDecals.GetLocation(placement.SurfaceGuid);
+			if (string.IsNullOrEmpty(location))
+			{
+				location = isVehicle ? "Vehicle" : "";
+			}
+			if (GraffitiPlacer.IsSurfaceMissing(placement.SurfaceGuid))
+			{
+				location += isVehicle ? " (not in world - sold or not spawned yet)" : " (surface not found)";
+			}
+			// Show the start of the GUID (the vehicle's GUID for vehicle panels) to tell entries apart.
+			string id = isVehicle ? placement.SurfaceGuid.Substring("vehicle:".Length) : placement.SurfaceGuid;
+			id = id.Length > 8 ? id.Substring(0, 8) : id;
+			Text detail = ModHubUI.CreateText((string.IsNullOrEmpty(location) ? "" : location.Trim() + "  |  ") + "#" + id, card.transform, font, 10, FontStyle.Normal);
 			detail.color = ModHubUI.TextMuted;
 			detail.alignment = TextAnchor.MiddleLeft;
 			SetAnchors(detail.GetComponent<RectTransform>(), 0f, 0f, 0.66f, 0.5f, 54f, 0f);
