@@ -322,9 +322,9 @@ namespace HUB.Graffiti
 			}
 			else
 			{
-				const int columns = 3;
 				const float cell = 80f;
 				const float gap = 6f;
+				int columns = GridColumns(parent, cell, gap);
 				int rows = (int)Math.Ceiling(StickerManager.Count / (double)columns);
 				GameObject gridCard = ModHubUI.CreateCard("StickerGrid", parent, rows * (cell + gap) + gap, new Color(0.1f, 0.1f, 0.14f, 1f));
 				GameObject gridContent = new GameObject("GridContent");
@@ -377,6 +377,31 @@ namespace HUB.Graffiti
 			}));
 			AddSpacer(parent, 4f);
 			CreateInfoText(parent, "Drop custom PNGs into UserData/HUB_Graffiti/ (higher res = sharper)", font, 10, ModHubUI.TextMuted);
+		}
+
+		/// <summary>
+		/// As many cells as fit across the menu, so the library doesn't turn into a long 3-wide strip on a wide
+		/// panel. The card height is computed up front from the row count, so this must be decided at build time.
+		/// </summary>
+		private static int GridColumns(Transform parent, float cell, float gap)
+		{
+			const int fallbackColumns = 8;
+			const float cardInset = 24f; // card padding plus the grid's own gap margins
+			float width = 0f;
+			try
+			{
+				RectTransform rect = parent.GetComponent<RectTransform>();
+				width = rect != null ? rect.rect.width : 0f;
+			}
+			catch
+			{
+			}
+			if (width <= cell)
+			{
+				return fallbackColumns;
+			}
+			int fit = (int)((width - cardInset + gap) / (cell + gap));
+			return Math.Max(3, Math.Min(fit, 16));
 		}
 
 		private static void CreateStickerPreview(Transform parent, Font font, StickerData sticker)
