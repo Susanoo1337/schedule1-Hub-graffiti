@@ -18,6 +18,11 @@ not be compiled as-is; every file was rewritten into buildable C#.
     `Metadata.json` creation date) and moved aside instead of being painted onto the new game.
   - The old shared `UserData/HUB_Graffiti/sticker_placements.json` from 1.2.x is not applied automatically.
     The ModHub page offers **Import Into This Save** or **Discard** for it.
+- **Vehicle stickers.** Sprayable vehicle panels (e.g. both sides of a panel van) are now tracked and restored
+  like world spots. The game saves vehicle graffiti in `OwnedVehicles.json` rather than `Graffiti.json`, which
+  is why stickers on vehicles used to vanish on reload. Each panel is keyed by the vehicle's GUID plus its slot
+  (`vehicle:<guid>:<index>`, the same order the game saves them in), and the menu shows it as e.g.
+  "Veeper (left side)". Stickers on a sold vehicle stay listed (marked as not in the world) until removed.
 - **Higher resolution.** Stickers used to be squashed into the game's low-res drawing texture with
   nearest-neighbour sampling. The projector now gets its own texture sized so the sticker is rendered at up to
   the PNG's native resolution (default cap 2048 px on the long side, switchable to 1024 / 4096 in the ModHub

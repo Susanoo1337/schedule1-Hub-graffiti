@@ -18,6 +18,7 @@ namespace HUB.Graffiti
 
 		private const float MaxLoadWaitSeconds = 120f;
 		private const float UnknownLoadStateWaitSeconds = 8f;
+		private const float MissingSurfaceRetrySeconds = 15f;
 
 		internal static MelonPreferences_Category Category;
 		internal static MelonPreferences_Entry<bool> EnableMod;
@@ -133,6 +134,26 @@ namespace HUB.Graffiti
 				yield break;
 			}
 			SurfaceDecals.ReassertAll();
+
+			// Some surfaces appear after the save has loaded: vehicles spawning in, or (for clients) arriving
+			// over the network. Keep looking for the ones not found yet, for as long as this scene lives.
+			while (true)
+			{
+				yield return new WaitForSeconds(MissingSurfaceRetrySeconds);
+				if (sceneToken != SceneToken)
+				{
+					yield break;
+				}
+				if (GraffitiPlacer.MissingSurfaceCount > 0 && EnableMod != null && EnableMod.Value)
+				{
+					int before = GraffitiPlacer.MissingSurfaceCount;
+					GraffitiPlacer.SyncWorldToPlacements();
+					if (GraffitiPlacer.MissingSurfaceCount != before)
+					{
+						CustomUI.RequestRefresh();
+					}
+				}
+			}
 		}
 
 		public override void OnApplicationQuit()

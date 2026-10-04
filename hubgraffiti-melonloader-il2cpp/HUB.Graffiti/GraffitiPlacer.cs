@@ -39,6 +39,10 @@ namespace HUB.Graffiti
 		/// <summary>Surfaces already rewarded this session, so replacing a sticker doesn't pay out twice.</summary>
 		private static readonly HashSet<string> _rewardedSurfaces = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
+		private static readonly HashSet<string> _missingSurfaces = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+		private static readonly HashSet<string> _reportedMissingStickers = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+		private static string _lastSyncResult = "";
+
 		/// <summary>Menu buttons nudged to keep the row centred, with their original positions.</summary>
 		private static readonly List<KeyValuePair<RectTransform, Vector2>> _shiftedButtons = new List<KeyValuePair<RectTransform, Vector2>>();
 
@@ -118,6 +122,9 @@ namespace HUB.Graffiti
 			_wasMenuOpen = false;
 			_savedSurface = null;
 			_rewardedSurfaces.Clear();
+			_missingSurfaces.Clear();
+			_reportedMissingStickers.Clear();
+			_lastSyncResult = "";
 			SurfaceDecals.ResetAll();
 		}
 
@@ -406,8 +413,9 @@ namespace HUB.Graffiti
 				}
 
 				WorldSpraySurface world = surface.TryCast<WorldSpraySurface>();
-				string guid = world != null ? GetGuid(world) : "";
-				// Surfaces without a GUID (not world surfaces) still get the visual, keyed by instance.
+				// World spots and vehicle panels have stable keys and are saved. Anything else still gets
+				// the visual for this session, keyed by instance.
+				string guid = SurfaceKeys.GetKey(surface);
 				string key = !string.IsNullOrEmpty(guid) ? guid : "instance:" + surface.GetInstanceID();
 				bool replacing = !string.IsNullOrEmpty(guid) && StickerSaveManager.Has(guid);
 
@@ -447,6 +455,8 @@ namespace HUB.Graffiti
 				// The game's finalize may have touched the projector; put the sticker back on top.
 				SurfaceDecals.Apply(surface, key, sticker);
 				SetPaintedPixelCount(surface);
+				// Hand-spraying over a sticker would be hidden under it; remove the sticker first instead.
+				SetEditable(surface, false);
 
 				if (!string.IsNullOrEmpty(guid))
 				{
@@ -524,9 +534,13 @@ namespace HUB.Graffiti
 				_rewardedSurfaces.Add(guid);
 			}
 
+		}
+
+		private static void SetEditable(SpraySurface surface, bool editable)
+		{
 			try
 			{
-				world.Editable = false;
+				surface.Editable = editable;
 			}
 			catch
 			{
@@ -678,7 +692,6 @@ namespace HUB.Graffiti
 		internal static IEnumerable<bool> SyncSteps(bool rebuild = false)
 		{
 			IReadOnlyList<StickerPlacement> placements = StickerSaveManager.Placements;
-			DebugLog.Log("Restore", "Sync: " + placements.Count + " placements, " + StickerManager.Count + " stickers loaded");
 
 			HashSet<string> wanted = new HashSet<string>(placements.Select(p => p.SurfaceGuid), StringComparer.OrdinalIgnoreCase);
 			foreach (string key in SurfaceDecals.AppliedKeys)
@@ -703,25 +716,34 @@ namespace HUB.Graffiti
 				yield break;
 			}
 
-			Dictionary<string, WorldSpraySurface> surfaces = FindWorldSurfaces();
+			Dictionary<string, SpraySurface> surfaces = SurfaceKeys.FindAll();
 			if (surfaces.Count == 0)
 			{
-				DebugLog.Log("Restore", "No WorldSpraySurfaces found in scene");
+				DebugLog.Log("Restore", "No spray surfaces found in scene");
 				yield break;
 			}
 
 			int applied = 0;
+			HashSet<string> missing = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 			foreach (StickerPlacement placement in placements.ToList())
 			{
-				if (!surfaces.TryGetValue(placement.SurfaceGuid, out WorldSpraySurface surface))
+				if (!surfaces.TryGetValue(placement.SurfaceGuid, out SpraySurface surface))
 				{
-					DebugLog.Log("Restore", "  Surface '" + placement.SurfaceGuid + "' not found in " + surfaces.Count + " surfaces");
+					// E.g. a vehicle that hasn't spawned yet, or was sold. Retried periodically.
+					missing.Add(placement.SurfaceGuid);
+					if (!_missingSurfaces.Contains(placement.SurfaceGuid))
+					{
+						DebugLog.Log("Restore", "  Surface '" + placement.SurfaceGuid + "' not in scene (yet)");
+					}
 					continue;
 				}
 				StickerData sticker = StickerManager.FindByFileName(placement.StickerFileName);
 				if (sticker == null || sticker.Texture == null)
 				{
-					DebugLog.Log("Restore", "  Sticker '" + placement.StickerFileName + "' is not in the sticker folder");
+					if (_reportedMissingStickers.Add(placement.StickerFileName))
+					{
+						DebugLog.Log("Restore", "  Sticker '" + placement.StickerFileName + "' is not in the sticker folder");
+					}
 					continue;
 				}
 				// Skip the yield when nothing was baked, so already-applied surfaces don't cost a frame each.
@@ -732,6 +754,8 @@ namespace HUB.Graffiti
 					{
 						applied++;
 						_rewardedSurfaces.Add(placement.SurfaceGuid);
+						// Vehicle panels come back editable after a reload; keep them locked like on placement.
+						SetEditable(surface, false);
 					}
 				}
 				catch (Exception ex)
@@ -743,7 +767,22 @@ namespace HUB.Graffiti
 					yield return true;
 				}
 			}
-			DebugLog.Log("Restore", "Result: " + applied + "/" + placements.Count + " stickers shown");
+			_missingSurfaces.Clear();
+			_missingSurfaces.UnionWith(missing);
+			string result = applied + "/" + placements.Count + " stickers shown, " + missing.Count + " surfaces not in scene";
+			if (result != _lastSyncResult)
+			{
+				_lastSyncResult = result;
+				DebugLog.Log("Restore", "Result: " + result);
+			}
+		}
+
+		/// <summary>Placements whose surface wasn't in the scene at the last sync (e.g. a vehicle not spawned yet).</summary>
+		internal static int MissingSurfaceCount => _missingSurfaces.Count;
+
+		internal static bool IsSurfaceMissing(string key)
+		{
+			return _missingSurfaces.Contains(key);
 		}
 
 		/// <summary>Removes the sticker from a surface: stored placement, visual, and (if hosting) other players.</summary>
@@ -755,7 +794,7 @@ namespace HUB.Graffiti
 			{
 				// The sticker wasn't showing (e.g. its PNG is missing), but the game may still hold the
 				// surface as finished from an earlier session; release it so it can be sprayed again.
-				if (FindWorldSurfaces().TryGetValue(surfaceGuid, out WorldSpraySurface surface))
+				if (SurfaceKeys.FindAll().TryGetValue(surfaceGuid, out SpraySurface surface))
 				{
 					SurfaceDecals.ResetGameSurface(surface);
 				}
@@ -777,49 +816,6 @@ namespace HUB.Graffiti
 			foreach (StickerPlacement placement in StickerSaveManager.Placements.ToList())
 			{
 				RemovePlacement(placement.SurfaceGuid);
-			}
-		}
-
-		private static Dictionary<string, WorldSpraySurface> FindWorldSurfaces()
-		{
-			Dictionary<string, WorldSpraySurface> result = new Dictionary<string, WorldSpraySurface>(StringComparer.OrdinalIgnoreCase);
-			try
-			{
-				Il2CppArrayBase<WorldSpraySurface> found = Object.FindObjectsOfType<WorldSpraySurface>();
-				if (found == null)
-				{
-					return result;
-				}
-				for (int i = 0; i < found.Count; i++)
-				{
-					WorldSpraySurface surface = found[i];
-					if (surface == null)
-					{
-						continue;
-					}
-					string guid = GetGuid(surface);
-					if (!string.IsNullOrEmpty(guid))
-					{
-						result[guid] = surface;
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				DebugLog.Log("Restore", "FindObjectsOfType<WorldSpraySurface> failed: " + ex.Message);
-			}
-			return result;
-		}
-
-		private static string GetGuid(WorldSpraySurface surface)
-		{
-			try
-			{
-				return surface.GUID.ToString() ?? "";
-			}
-			catch
-			{
-				return "";
 			}
 		}
 	}
